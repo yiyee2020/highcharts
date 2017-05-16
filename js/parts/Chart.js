@@ -195,6 +195,30 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 		 * @type {Array.<Highcharts.Series>}
 		 */
 		this.series = [];
+
+		/**
+		 * The chart title. The title has an `update` method that allows
+		 * modifying the options directly or indirectly via `chart.update`.
+		 *
+		 * @memberof Highcharts.Chart
+		 * @name title
+		 * @type Object
+		 *
+		 * @sample highcharts/members/title-update/
+		 *         Updating titles
+		 */
+		
+		/**
+		 * The chart subtitle. The subtitle has an `update` method that allows
+		 * modifying the options directly or indirectly via `chart.update`.
+		 *
+		 * @memberof Highcharts.Chart
+		 * @name subtitle
+		 * @type Object
+		 */
+
+
+
 		this.hasCartesianSeries = optionsChart.showAxes;
 		//this.axisOffset = undefined;
 		//this.inverted = undefined;
@@ -594,10 +618,17 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 	},
 
 	/**
-	 * Show the title and subtitle of the chart
+	 * Set a new title or subtitle for the chart.
 	 *
-	 * @param titleOptions {Object} New title options
-	 * @param subtitleOptions {Object} New subtitle options
+	 * @param  titleOptions {TitleOptions}
+	 *         New title options.
+	 * @param  subtitleOptions {SubtitleOptions}
+	 *         New subtitle options.
+	 * @param  redraw {Boolean}
+	 *         Whether to redraw the chart or wait for a later call to 
+	 *         `chart.redraw()`.
+	 *
+	 * @sample highcharts/members/chart-settitle/ Set title text and styles
 	 *
 	 */
 	setTitle: function (titleOptions, subtitleOptions, redraw) {
@@ -771,7 +802,8 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 	 * @param {Boolean} revert - Revert to the saved original styles.
 	 */
 	temporaryDisplay: function (revert) {
-		var node = this.renderTo;
+		var node = this.renderTo,
+			tempStyle;
 		if (!revert) {
 			while (node && node.style) {
 				if (getStyle(node, 'display', false) === 'none') {
@@ -780,11 +812,15 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 						height: node.style.height,
 						overflow: node.style.overflow
 					};
-					H.css(node, {
+					tempStyle = {
 						display: 'block',
-						height: 0,
 						overflow: 'hidden'
-					});
+					};
+					if (node !== this.renderTo) {
+						tempStyle.height = 0;
+					}
+					
+					H.css(node, tempStyle);
 					if (node.style.setProperty) { // #2631
 						node.style.setProperty('display', 'block', 'important');
 					}
@@ -1102,6 +1138,8 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 	 *         Test resizing from buttons
 	 * @sample highcharts/members/chart-setsize-jquery-resizable/
 	 *         Add a jQuery UI resizable
+	 * @sample stock/members/chart-setsize/
+	 *         Highstock with UI resizable
 	 */
 	setSize: function (width, height, animation) {
 		var chart = this,
@@ -1679,7 +1717,10 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 	 * before adding a second chart into the same container, as well as on
 	 * window unload to prevent leaks.
 	 *
-	 * @sample highcharts/members/chart-destroy/ Destroy the chart from a button
+	 * @sample highcharts/members/chart-destroy/
+	 *         Destroy the chart from a button
+	 * @sample stock/members/chart-destroy/
+	 *         Destroy with Highstock
 	 */
 	destroy: function () {
 		var chart = this,
