@@ -247,7 +247,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 		var chart = this,
 			renderer = chart.renderer,
 			options3d = this.options.chart.options3d,
-			frame = chart.frame3d,
+			frame = chart.get3dFrame(),
 			xm = this.plotLeft,
 			xp = this.plotLeft + this.plotWidth,
 			ym = this.plotTop,
@@ -261,6 +261,8 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 			zmm = zm - (frame.front.visible ? frame.front.size : 0),
 			zpp = zp + (frame.back.visible ? frame.back.size : 0),
 			verb = chart.hasRendered ? 'animate' : 'attr';
+
+		this.frame3d = frame;
 
 		if (!this.frameShapes) {
 			this.frameShapes = {
@@ -538,25 +540,19 @@ Chart.prototype.get3dFrame = function () {
 		defaultShowBack = true;
 
 	// The 'default' criteria to visible faces of the frame is looking up every axis to decide whenever the left/right//top/bottom sides of the frame will be shown
-	each(chart.xAxis, function (axis) {
-		if (axis.opposite) {
-			defaultShowTop = true;
+	each([].concat(chart.xAxis, chart.yAxis, chart.zAxis), function (axis) {
+		if (axis.horiz) {
+			if (axis.opposite) {
+				defaultShowTop = true;
+			} else {
+				defaultShowBottom = true;
+			}
 		} else {
-			defaultShowBottom = true;
-		}
-	});
-	each(chart.zAxis, function (axis) {
-		if (axis.opposite) {
-			defaultShowTop = true;
-		} else {
-			defaultShowBottom = true;
-		}
-	});
-	each(chart.yAxis, function (axis) {
-		if (axis.opposite) {
-			defaultShowRight = true;
-		} else {
-			defaultShowLeft = true;
+			if (axis.opposite) {
+				defaultShowRight = true;
+			} else {
+				defaultShowLeft = true;
+			}
 		}
 	});
 
