@@ -49,9 +49,9 @@ TrackerMixin = H.TrackerMixin = {
 			pointer = chart.pointer,
 			onMouseOver = function (e) {
 				var point = pointer.getPointFromEvent(e);
-
 				// undefined on graph in scatterchart
 				if (point !== undefined) { 
+					pointer.isDirectTouch = true;
 					point.onMouseOver(e);
 				}
 			};
