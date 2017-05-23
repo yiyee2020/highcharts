@@ -809,7 +809,13 @@ seriesType('map', 'scatter', {
 			animation = point.series.options.states.normal.animation,
 			duration = animation && (animation.duration || 500);
 
-		if (duration && normalColor.rgba.length === 4 && hoverColor.rgba.length === 4 && point.state !== 'select') {
+		if (
+			duration &&
+			normalColor.rgba.length === 4 &&
+			hoverColor.rgba.length === 4 &&
+			point.state !== 'select' &&
+			point.series.options.states.hover.enabled !== false
+		) {
 			clearTimeout(point.colorInterval);
 			point.colorInterval = setInterval(function () {
 				var pos = (new Date() - start) / duration,
