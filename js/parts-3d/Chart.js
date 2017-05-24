@@ -276,7 +276,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 		}
 
 		this.frameShapes.bottom[verb]({
-			class: 'highcharts-3d-frame highcharts-3d-frame-bottom',
+			'class': 'highcharts-3d-frame highcharts-3d-frame-bottom',
 			zIndex: frame.bottom.frontFacing ? -1000 : 1000,
 			faces: [
 				{ //bottom
@@ -312,7 +312,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 			]
 		});
 		this.frameShapes.top[verb]({
-			class: 'highcharts-3d-frame highcharts-3d-frame-top',
+			'class': 'highcharts-3d-frame highcharts-3d-frame-top',
 			zIndex: frame.top.frontFacing ? -1000 : 1000,
 			faces: [
 				{ //bottom
@@ -348,7 +348,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 			]
 		});
 		this.frameShapes.left[verb]({
-			class: 'highcharts-3d-frame highcharts-3d-frame-left',
+			'class': 'highcharts-3d-frame highcharts-3d-frame-left',
 			zIndex: frame.left.frontFacing ? -1000 : 1000,
 			faces: [
 				{ //bottom
@@ -384,7 +384,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 			]
 		});
 		this.frameShapes.right[verb]({
-			class: 'highcharts-3d-frame highcharts-3d-frame-right',
+			'class': 'highcharts-3d-frame highcharts-3d-frame-right',
 			zIndex: frame.right.frontFacing ? -1000 : 1000,
 			faces: [
 				{ //bottom
@@ -420,7 +420,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 			]
 		});
 		this.frameShapes.back[verb]({
-			class: 'highcharts-3d-frame highcharts-3d-frame-back',
+			'class': 'highcharts-3d-frame highcharts-3d-frame-back',
 			zIndex: frame.back.frontFacing ? -1000 : 1000,
 			faces: [
 				{ //bottom
@@ -456,7 +456,7 @@ wrap(Chart.prototype, 'drawChartBox', function (proceed) {
 			]
 		});
 		this.frameShapes.front[verb]({
-			class: 'highcharts-3d-frame highcharts-3d-frame-front',
+			'class': 'highcharts-3d-frame highcharts-3d-frame-front',
 			zIndex: frame.front.frontFacing ? -1000 : 1000,
 			faces: [
 				{ //bottom
@@ -578,7 +578,7 @@ Chart.prototype.get3dFrame = function () {
 		var isVisible = defaultVisible;
 		if (options.visible === true || options.visible === false) {
 			isVisible = options.visible;
-		} else if (options.visible === 'auto') { // docs, see: https://github.com/highcharts/highcharts/pull/6603#issuecomment-302080878
+		} else if (options.visible === 'auto') {
 			isVisible = faceOrientation >= 0;
 		}
 
@@ -590,24 +590,62 @@ Chart.prototype.get3dFrame = function () {
 		};
 	};
 
-	// docs, more "frame" options for http://api.highcharts.com/highcharts/chart.options3d.frame
+	// docs @TODO: Add all frame options (left, right, top, bottom, front, back) to
+	// apioptions JSDoc once the new system is up.
 	var ret = {
-		//FIXME: Previously, left/right, top/bottom and front/back pairs shared size and color.
-		//For compatibility and consistency sake, when one face have size/color/visibility set, the opposite face will default to the same values
-		//Also, left/right used to be called 'side', so that's also added as a fallback
-		bottom: getFaceOptions([frameOptions.bottom, frameOptions.top, frameOptions], bottomOrientation, defaultShowBottom),
-		top: getFaceOptions([frameOptions.top, frameOptions.bottom, frameOptions], topOrientation, defaultShowTop),
-		left: getFaceOptions([frameOptions.left, frameOptions.right, frameOptions.side, frameOptions], leftOrientation, defaultShowLeft),
-		right: getFaceOptions([frameOptions.right, frameOptions.left, frameOptions.side, frameOptions], rightOrientation, defaultShowRight),
-		back: getFaceOptions([frameOptions.back, frameOptions.front, frameOptions], backOrientation, defaultShowBack),
-		front: getFaceOptions([frameOptions.front, frameOptions.back, frameOptions], frontOrientation, defaultShowFront)
+		// FIXME: Previously, left/right, top/bottom and front/back pairs shared
+		// size and color.
+		// For compatibility and consistency sake, when one face have
+		// size/color/visibility set, the opposite face will default to the same
+		// values. Also, left/right used to be called 'side', so that's also
+		// added as a fallback
+		bottom: getFaceOptions(
+			[frameOptions.bottom, frameOptions.top, frameOptions],
+			bottomOrientation,
+			defaultShowBottom
+		),
+		top: getFaceOptions(
+			[frameOptions.top, frameOptions.bottom, frameOptions],
+			topOrientation,
+			defaultShowTop
+		),
+		left: getFaceOptions(
+			[
+				frameOptions.left,
+				frameOptions.right,
+				frameOptions.side,
+				frameOptions
+			],
+			leftOrientation,
+			defaultShowLeft
+		),
+		right: getFaceOptions(
+			[
+				frameOptions.right,
+				frameOptions.left,
+				frameOptions.side,
+				frameOptions
+			],
+			rightOrientation,
+			defaultShowRight
+		),
+		back: getFaceOptions(
+			[frameOptions.back, frameOptions.front, frameOptions],
+			backOrientation,
+			defaultShowBack
+		),
+		front: getFaceOptions(
+			[frameOptions.front, frameOptions.back, frameOptions],
+			frontOrientation,
+			defaultShowFront
+		)
 	};
 
 
 	// Decide the bast place to put axis title/labels based on the visible faces.
 	// Ideally, The labels can only be on the edge between a visible face and an invisble one.
 	// Also, the Y label should be one the left-most edge (right-most if opposite),
-	if (options3d.axisLabelPosition === 'auto') { // docs, see https://github.com/highcharts/highcharts/pull/6603#issuecomment-300243647
+	if (options3d.axisLabelPosition === 'auto') {
 		var isValidEdge = function (face1, face2) {
 			return (face1.visible !== face2.visible) ||
 				(face1.visible && face2.visible && (face1.frontFacing !== face2.frontFacing));

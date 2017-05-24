@@ -428,7 +428,28 @@ H.Pointer.prototype = {
 			hoverPoint &&
 			(hoverPoint !== chart.hoverPoint || (tooltip && tooltip.isHidden))
 		) {
-			pointer.updateHoverData(chart, hoverSeries, hoverPoint, points);
+			each(chart.hoverPoints || [], function (p) {
+				if (H.inArray(p, points) === -1) {
+					p.setState();
+				}
+			});
+			// Do mouseover on all points (#3919, #3985, #4410, #5622)
+			each(points || [], function (p) {
+				p.setState('hover');
+			});
+			// set normal state to previous series
+			if (chart.hoverSeries !== hoverSeries) {
+				hoverSeries.onMouseOver();
+			}
+
+			// If tracking is on series in stead of on each point, 
+			// fire mouseOver on hover point. // #4448
+			if (chart.hoverPoint) {
+				chart.hoverPoint.firePointEvent('mouseOut');
+			}
+			hoverPoint.firePointEvent('mouseOver');
+			chart.hoverPoints = points;
+			chart.hoverPoint = hoverPoint;
 			// Draw tooltip if necessary
 			if (tooltip) {
 				tooltip.refresh(useSharedTooltip ? points : hoverPoint, e);
@@ -452,6 +473,7 @@ H.Pointer.prototype = {
 		// Issues related to crosshair #4927, #5269 #5066, #5658
 		each(chart.axes, function drawAxisCrosshair(axis) {
 			var snap = pick(axis.crosshair.snap, true);
+			
 			if (!snap) {
 				axis.drawCrosshair(e);
 			

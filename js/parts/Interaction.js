@@ -561,6 +561,7 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
 			pointer.normalize(e) :
 			// In cases where onMouseOver is called directly without an event
 			pointer.getChartCoordinatesFromPoint(point, chart.inverted);
+
 		// runPointActions takes care of calculating hoverData and updating them
 		pointer.runPointActions(e, point);
 	},
@@ -623,18 +624,30 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
 		state = state || ''; // empty string
 
 		if (
-				// already has this state
-				(state === point.state && !move) ||
-				// selected points don't respond to hover
-				(point.selected && state !== 'select') ||
-				// series' state options is disabled
-				(stateOptions.enabled === false) ||
-				// general point marker's state options is disabled
-				(state && (stateDisabled || (normalDisabled && markerStateOptions.enabled === false))) ||
-				// individual point marker's state options is disabled
-				(state && pointMarker.states && pointMarker.states[state] && pointMarker.states[state].enabled === false) // #1610
+			// already has this state
+			(state === point.state && !move) ||
+			
+			// selected points don't respond to hover
+			(point.selected && state !== 'select') ||
+			
+			// series' state options is disabled
+			(stateOptions.enabled === false) ||
+			
+			// general point marker's state options is disabled
+			(state && (
+				stateDisabled || 
+				(normalDisabled && markerStateOptions.enabled === false)
+			)) ||
+			
+			// individual point marker's state options is disabled
+			(
+				state &&
+				pointMarker.states &&
+				pointMarker.states[state] &&
+				pointMarker.states[state].enabled === false
+			) // #1610
 
-			) {
+		) {
 			return;
 		}
 
@@ -661,7 +674,13 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
 
 			/*= if (build.classic) { =*/
 			//attribs = merge(series.pointAttribs(point, state), attribs);
-			point.graphic.attr(series.pointAttribs(point, state));
+			point.graphic.animate(
+				series.pointAttribs(point, state),
+				pick(
+					chart.options.chart.animation,
+					stateOptions.animation
+				)
+			);
 			/*= } =*/
 
 			if (markerAttribs) {
