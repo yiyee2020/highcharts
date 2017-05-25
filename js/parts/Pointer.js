@@ -30,7 +30,7 @@ var addEvent = H.addEvent,
  * event handlers. Subsequent methods should be named differently from what they
  * are doing.
  *
- * @constructor Pointer
+ * @constructor Highcharts.Pointer
  * @param {Object} chart The Chart instance
  * @param {Object} options The root options object
  */
@@ -54,7 +54,7 @@ H.Pointer.prototype = {
 		this.pinchDown = [];
 		this.lastValidTouch = {};
 
-		if (Tooltip && options.tooltip.enabled) {
+		if (Tooltip) {
 			chart.tooltip = new Tooltip(chart, options.tooltip);
 			this.followTouchMove = pick(options.tooltip.followTouchMove, true);
 		}
@@ -264,7 +264,7 @@ H.Pointer.prototype = {
 	 *         The point currrently beeing hovered.
 	 * @param  {undefined|Series} existingHoverSeries
 	 *         The series currently beeing hovered.
-	 * @param  {Array<.Series>} series
+	 * @param  {Array.<Series>} series
 	 *         All the series in the chart.
 	 * @param  {boolean} isDirectTouch
 	 *         Is the pointer directly hovering the point.
