@@ -133,12 +133,9 @@ Highcharts.Legend.prototype = {
 
 			// Apply marker options
 			if (markerOptions && legendSymbol.isMarker) { // #585
-				//symbolAttr.stroke = symbolColor;
 				symbolAttr = item.pointAttribs();
 				if (!visible) {
-					H.objectEach(symbolAttr, function (val, key) {
-						symbolAttr[key] = hiddenColor;
-					});
+					symbolAttr.stroke = symbolAttr.fill = hiddenColor; // #6769
 				}
 			}
 
