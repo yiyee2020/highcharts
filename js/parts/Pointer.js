@@ -964,7 +964,9 @@ H.Pointer.prototype = {
 		);
 		if (!H.chartCount) {
 			removeEvent(doc, 'mouseup', pointer.onDocumentMouseUp);
-			removeEvent(doc, 'touchend', pointer.onDocumentTouchEnd);
+			if (H.hasTouch) {
+				removeEvent(doc, 'touchend', pointer.onDocumentTouchEnd);
+			}
 		}
 
 		// memory and CPU leak
