@@ -1659,8 +1659,7 @@ H.objectEach = function (obj, fn, ctx) {
  */
 H.addEvent = function (el, type, fn) {
 	
-	var events = el.hcEvents = el.hcEvents || {},
-		eventId;
+	var events = el.hcEvents = el.hcEvents || {};
 
 	function wrappedFn(e) {
 		e.target = e.srcElement || win; // #2820
@@ -1678,16 +1677,8 @@ H.addEvent = function (el, type, fn) {
 			el.hcEventsIE = {};
 		}
 
-		// unique function string (#6746)
-		if (!fn.hcGetKey) {
-			eventId = H.uniqueKey();
-			fn.hcGetKey = function () {
-				return eventId;
-			};
-		}
-
 		// Link wrapped fn with original fn, so we can get this in removeEvent
-		el.hcEventsIE[fn.hcGetKey()] = wrappedFn;
+		el.hcEventsIE[fn.toString()] = wrappedFn;
 
 		el.attachEvent('on' + type, wrappedFn);
 	}
@@ -1726,7 +1717,7 @@ H.removeEvent = function (el, type, fn) {
 		if (el.removeEventListener) {
 			el.removeEventListener(type, fn, false);
 		} else if (el.attachEvent) {
-			fn = el.hcEventsIE[fn.hcGetKey()];
+			fn = el.hcEventsIE[fn.toString()];
 			el.detachEvent('on' + type, fn);
 		}
 	}
