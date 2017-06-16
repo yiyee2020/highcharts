@@ -1256,9 +1256,14 @@ Navigator.prototype = {
 			});
 		}
 
-		// If user has defined data or explicitly defined navigator.series as an
-		// array, we create these series on top of any base series.
-		if (chartNavigatorSeriesOptions.data || isArray(chartNavigatorSeriesOptions)) {
+		// If user has defined data (and no base series) or explicitly defined 
+		// navigator.series as an array, we create these series on top of any 
+		// base series.
+		if (
+			chartNavigatorSeriesOptions.data &&
+			!(baseSeries && baseSeries.length) ||
+			isArray(chartNavigatorSeriesOptions)
+		) {
 			navigator.hasNavigatorData = false;
 			// Allow navigator.series to be an array
 			chartNavigatorSeriesOptions = H.splat(chartNavigatorSeriesOptions);
@@ -1320,22 +1325,22 @@ Navigator.prototype = {
 				}
 			});
 
-			// Respond to updated data in the base series.
-			// Abort if lazy-loading data from the server.
+			// Respond to updated data in the base series, unless explicitily 
+			// not adapting to data changes.
 			if (this.navigatorOptions.adaptToUpdatedData !== false) {
 				if (base.xAxis) {
 					addEvent(base, 'updatedData', this.updatedDataHandler);
 				}
-
-				// Handle series removal
-				addEvent(base, 'remove', function () {
-					if (this.navigatorSeries) {
-						erase(navigator.series, this.navigatorSeries);
-						this.navigatorSeries.remove(false);
-						delete this.navigatorSeries;
-					}
-				});
 			}
+
+			// Handle series removal
+			addEvent(base, 'remove', function () {
+				if (this.navigatorSeries) {
+					erase(navigator.series, this.navigatorSeries);
+					this.navigatorSeries.remove(false);
+					delete this.navigatorSeries;
+				}
+			});
 		}, this);
 	},
 
