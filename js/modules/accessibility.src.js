@@ -75,18 +75,199 @@ if (H.seriesTypes.pie) {
 }
 
 
-// Default a11y options
+/**
+ * Accessibility options
+ * @type {Object}
+ * @optionparent
+ */
 H.setOptions({
+
+	/**
+	 * Options for configuring accessibility for the chart. Requires the
+	 * [accessibility module](//code.highcharts.com/modules/accessibility.
+	 * js) to be loaded. For a description of the module and information
+	 * on its features, see [Highcharts Accessibility](http://www.highcharts.
+	 * com/docs/chart-concepts/accessibility).
+	 * 
+	 * @since 5.0.0
+	 * @product highcharts highstock highmaps
+	 */
 	accessibility: {
+
+		/**
+		 * Enable accessibility features for the chart.
+		 * 
+		 * @type {Boolean}
+		 * @default {all} true
+		 * @since 5.0.0
+		 * @product highcharts highstock highmaps
+		 */
 		enabled: true,
+
+		/**
+		 * When a series contains more points than this, we no longer expose
+		 * information about individual points to screen readers.
+		 * 
+		 * Set to `false` to disable.
+		 * 
+		 * @type {Number|Boolean}
+		 * @default {all} 30
+		 * @since 5.0.0
+		 * @product highcharts highstock highmaps
+		 */
 		pointDescriptionThreshold: 30, // set to false to disable
+
+		/**
+		 * Options for keyboard navigation.
+		 * 
+		 * @type {Object}
+		 * @since 5.0.0
+		 * @product highcharts highstock highmaps
+		 */
 		keyboardNavigation: {
+
+			/**
+			 * Enable keyboard navigation for the chart.
+			 * 
+			 * @type {Boolean}
+			 * @default {all} true
+			 * @since 5.0.0
+			 */
 			enabled: true
-		//	skipNullPoints: false
+			
+			/**
+			 * Skip null points when navigating through points with the
+			 * keyboard.
+			 * 
+			 * @type {Boolean}
+			 * @default {all} false
+			 * @since 5.0.0
+			 * @apioption accessibility.keyboardNavigation.skipNullPoints
+			 */
 		}
-		// describeSingleSeries: false
+
+		/**
+		 * Whether or not to add series descriptions to charts with a single
+		 * series.
+		 * 
+		 * @type {Boolean}
+		 * @default {all} false
+		 * @since 5.0.0
+		 * @product highcharts highstock highmaps
+		 * @apioption accessibility.describeSingleSeries
+		 */
+
+		/**
+		 * Function to run upon clicking the "View as Data Table" link in the
+		 * screen reader region.
+		 * 
+		 * By default Highcharts will insert and set focus to a data table
+		 * representation of the chart.
+		 * 
+		 * @type {Function}
+		 * @since 5.0.0
+		 * @apioption accessibility.onTableAnchorClick
+		 */
+		
+		/**
+		 * Date format to use for points on datetime axes when describing them
+		 * to screen reader users.
+		 * 
+		 * Defaults to the same format as in tooltip.
+		 * 
+		 * For an overview of the replacement codes, see [dateFormat](
+		 * #Highcharts.dateFormat).
+		 * 
+		 * @type {String}
+		 * @see [pointDateFormatter](#accessibility.pointDateFormatter)
+		 * @since 5.0.0
+		 * @apioption accessibility.pointDateFormat
+		 */
+		
+		/**
+		 * Formatter function to determine the date/time format used with points
+		 * on datetime axes when describing them to screen reader users. Receives
+		 * one argument, `point`, referring to the point to describe. Should
+		 * return a date format string compatible with [dateFormat](#Highcharts.
+		 * dateFormat).
+		 * 
+		 * @type {Function}
+		 * @see [pointDateFormat](#accessibility.pointDateFormat)
+		 * @since 5.0.0
+		 * @apioption accessibility.pointDateFormatter
+		 */
+		
+		/**
+		 * Formatter function to use instead of the default for point descriptions.
+		 * Receives one argument, `point`, referring to the point to describe.
+		 * Should return a String with the description of the point for a screen
+		 * reader user.
+		 * 
+		 * @type {Function}
+		 * @see [point.description](#series<line>.data.description)
+		 * @since 5.0.0
+		 * @apioption accessibility.pointDescriptionFormatter
+		 */
+		
+		/**
+		 * A formatter function to create the HTML contents of the hidden screen
+		 * reader information region. Receives one argument, `chart`, referring
+		 * to the chart object. Should return a String with the HTML content
+		 * of the region.
+		 * 
+		 * The link to view the chart as a data table will be added automatically
+		 * after the custom HTML content.
+		 * 
+		 * @type {Function}
+		 * @default {all} undefined
+		 * @since 5.0.0
+		 * @apioption accessibility.screenReaderSectionFormatter
+		 */
+		
+		/**
+		 * Formatter function to use instead of the default for series descriptions.
+		 * Receives one argument, `series`, referring to the series to describe.
+		 * Should return a String with the description of the series for a
+		 * screen reader user.
+		 * 
+		 * @type {Function}
+		 * @see [series.description](#plotOptions.series.description)
+		 * @since 5.0.0
+		 * @apioption accessibility.seriesDescriptionFormatter
+		 */
 	}
 });
+
+/**
+ * A text description of the chart.
+ * 
+ * If the Accessibility module is loaded, this is included by default
+ * as a long description of the chart and its contents in the hidden
+ * screen reader information region.
+ * 
+ * @type {String}
+ * @see [typeDescription](#chart.typeDescription)
+ * @default {all} undefined
+ * @since 5.0.0
+ * @apioption chart.description
+ */
+
+ /**
+ * A text description of the chart type.
+ * 
+ * If the Accessibility module is loaded, this will be included in the
+ * description of the chart in the screen reader information region.
+ * 
+ * 
+ * Highcharts will by default attempt to guess the chart type, but for
+ * more complex charts it is recommended to specify this property for
+ * clarity.
+ * 
+ * @type {String}
+ * @default {all} undefined
+ * @since 5.0.0
+ * @apioption chart.typeDescription
+ */
 
 /**
  * HTML encode some characters vulnerable for XSS.

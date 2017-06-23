@@ -23,9 +23,28 @@ H.extend(defaultOptions.lang, {
  * @constructor seriesTypes.ohlc
  * @augments seriesTypes.column
  */
-seriesType('ohlc', 'column', {
+seriesType('ohlc', 'column', 
+/**
+ * @extends {plotOptions.column}
+ * @optionparent plotOptions.ohlc
+ */
+	{
+
+	/**
+	 * The pixel width of the line/border. Defaults to `1`.
+	 * 
+	 * @type {Number}
+	 * @sample {highstock} stock/plotoptions/ohlc-linewidth/ A greater line width
+	 * @default {all} 1
+	 * @product highstock
+	 */
 	lineWidth: 1,
+
+	/**
+	 */
 	tooltip: {
+		/**
+		 */
 		pointFormatter: function () {
 			var spanTag,
 				point = this,
@@ -42,13 +61,36 @@ seriesType('ohlc', 'column', {
 				}).join('<br/>');
 		}
 	},
+
+	/**
+	 */
 	threshold: null,
 	/*= if (build.classic) { =*/
+
+	/**
+	 */
 	states: {
+
+		/**
+		 * @extends plotOptions.column.states.hover
+		 * @product highstock
+		 */
 		hover: {
+
+			/**
+			 * The pixel width of the line representing the OHLC point. Defaults
+			 * to `3`.
+			 * 
+			 * @type {Number}
+			 * @default {all} 3
+			 * @product highstock
+			 */
 			lineWidth: 3
 		}
 	},
+
+	/**
+	 */
 	stickyTracking: true
 	//upColor: undefined
 	/*= } =*/

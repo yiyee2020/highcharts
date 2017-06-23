@@ -36,7 +36,9 @@ Highcharts.Legend = function (chart, options) {
 Highcharts.Legend.prototype = {
 
 	/**
-	 * Initialize the legend
+	 * Initialize the legend.
+	 *
+	 * @private
 	 */
 	init: function (chart, options) {
 
@@ -98,9 +100,13 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Set the colors for the legend item
-	 * @param {Object} item A Series or Point instance
-	 * @param {Object} visible Dimmed or colored
+	 * Set the colors for the legend item.
+	 *
+	 * @private
+	 * @param  {Series|Point} item
+	 *         A Series or Point instance
+	 * @param  {Boolean} visible
+	 *         Dimmed or colored
 	 */
 	colorizeItem: function (item, visible) {
 		item.legendGroup[visible ? 'removeClass' : 'addClass'](
@@ -145,8 +151,11 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Position the legend item
-	 * @param {Object} item A Series or Point instance
+	 * Position the legend item.
+	 *
+	 * @private
+	 * @param {Series|Point} item
+	 *        The item to position
 	 */
 	positionItem: function (item) {
 		var legend = this,
@@ -175,8 +184,10 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Destroy a single legend item
-	 * @param {Object} item The series or point
+	 * Destroy a single legend item, used internally on removing series items.
+	 * 
+	 * @param {Series|Point} item
+	 *        The item to remove
 	 */
 	destroyItem: function (item) {
 		var checkbox = item.checkbox;
@@ -197,7 +208,8 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Destroys the legend.
+	 * Destroy the legend. Used internally. To reflow objects, `chart.redraw`
+	 * must be called after destruction.
 	 */
 	destroy: function () {
 		function destroyItems(key) {
@@ -229,7 +241,9 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Position the checkboxes after the width is determined
+	 * Position the checkboxes after the width is determined.
+	 *
+	 * @private
 	 */
 	positionCheckboxes: function (scrollOffset) {
 		var alignAttr = this.group && this.group.alignAttr,
@@ -259,7 +273,9 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Render the legend title on top of the legend
+	 * Render the legend title on top of the legend.
+	 *
+	 * @private
 	 */
 	renderTitle: function () {
 		var options = this.options,
@@ -296,7 +312,10 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Set the legend item text
+	 * Set the legend item text.
+	 *
+	 * @param  {Series|Point} item
+	 *         The item for which to update the text in the legend.
 	 */
 	setText: function (item) {
 		var options = this.options;
@@ -308,8 +327,12 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Render a single specific legend item
-	 * @param {Object} item A series or point
+	 * Render a single specific legend item. Called internally from the `render`
+	 * function.
+	 *
+	 * @private
+	 * @param {Series|Point} item
+	 *        The item to render.
 	 */
 	renderItem: function (item) {
 		var legend = this,
@@ -493,8 +516,11 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Get all items, which is one item per series for normal series and one
-	 * item per point for pie series.
+	 * Get all items, which is one item per series for most series and one
+	 * item per point for pie series and its derivatives.
+	 *
+	 * @return {Array.<Series|Point>}
+	 *         The current items in the legend.
 	 */
 	getAllItems: function () {
 		var allItems = [];
@@ -527,6 +553,8 @@ Highcharts.Legend.prototype = {
 	 * Adjust the chart margins by reserving space for the legend on only one
 	 * side of the chart. If the position is set to a corner, top or bottom is
 	 * reserved for horizontal legends and left or right for vertical ones.
+	 *
+	 * @private
 	 */
 	adjustMargins: function (margin, spacing) {
 		var chart = this.chart,
@@ -568,8 +596,9 @@ Highcharts.Legend.prototype = {
 
 	/**
 	 * Render the legend. This method can be called both before and after
-	 * chart.render. If called after, it will only rearrange items instead
-	 * of creating new ones.
+	 * `chart.render`. If called after, it will only rearrange items instead
+	 * of creating new ones. Called internally on initial render and after
+	 * redraws.
 	 */
 	render: function () {
 		var legend = this,
@@ -714,6 +743,8 @@ Highcharts.Legend.prototype = {
 	/**
 	 * Set up the overflow handling by adding navigation with up and down arrows
 	 * below the legend.
+	 *
+	 * @private
 	 */
 	handleOverflow: function (legendHeight) {
 		var legend = this,
@@ -867,9 +898,11 @@ Highcharts.Legend.prototype = {
 	},
 
 	/**
-	 * Scroll the legend by a number of pages
-	 * @param {Object} scrollBy
-	 * @param {Object} animation
+	 * Scroll the legend by a number of pages.
+	 * @param  {Number} scrollBy
+	 *         The number of pages to scroll.
+	 * @param  {AnimationOptions} animation
+	 *         Whether and how to apply animation.
 	 */
 	scroll: function (scrollBy, animation) {
 		var pages = this.pages,
