@@ -29,12 +29,11 @@ var addEvent = H.addEvent,
  * @constructor seriesTypes.flags
  * @augments seriesTypes.column
  */
-seriesType('flags', 'column', 
 /**
  * @extends {plotOptions.column}
  * @optionparent plotOptions.flags
  */
-{
+seriesType('flags', 'column', {
 
 	/**
 	 */
@@ -49,7 +48,7 @@ seriesType('flags', 'column',
 	 * @validvalue ["flag", "circlepin", "squarepin"]
 	 * @type {String}
 	 * @sample {highstock} stock/plotoptions/flags/ Different shapes
-	 * @default {all} flag
+	 * @default flag
 	 * @product highstock
 	 */
 	shape: 'flag',
@@ -60,7 +59,7 @@ seriesType('flags', 'column',
 	 * 
 	 * @type {Number}
 	 * @sample {highstock} stock/plotoptions/flags-stackdistance/ A greater stack distance
-	 * @default {all} 12
+	 * @default 12
 	 * @product highstock
 	 */
 	stackDistance: 12,
@@ -70,7 +69,7 @@ seriesType('flags', 'column',
 	 * 
 	 * @validvalue ["left", "center", "right"]
 	 * @type {String}
-	 * @default {all} center
+	 * @default center
 	 * @since 5.0.0
 	 * @product highstock
 	 */
@@ -104,7 +103,7 @@ seriesType('flags', 'column',
 	 * `-30`.
 	 * 
 	 * @type {Number}
-	 * @default {all} -30
+	 * @default -30
 	 * @product highstock
 	 */
 	y: -30,
@@ -119,7 +118,7 @@ seriesType('flags', 'column',
 	 * The pixel width of the candlestick line/border. Defaults to `1`.
 	 * 
 	 * @type {Number}
-	 * @default {all} 1
+	 * @default 1
 	 * @product highstock
 	 */
 	lineWidth: 1,
@@ -138,7 +137,7 @@ seriesType('flags', 'column',
 			 * The color of the line/border of the flag Defaults to `"black"`.
 			 * 
 			 * @type {String}
-			 * @default {all} "black"
+			 * @default "black"
 			 * @product highstock
 			 */
 			lineColor: '${palette.neutralColor100}',
@@ -147,7 +146,7 @@ seriesType('flags', 'column',
 			 * The fill or background color of the flag Defaults to `"#FCFFC5"`.
 			 * 
 			 * @type {String}
-			 * @default {all} "#FCFFC5"
+			 * @default "#FCFFC5"
 			 * @product highstock
 			 */
 			fillColor: '${palette.highlightColor20}'
@@ -162,7 +161,7 @@ seriesType('flags', 'column',
 	 * series .highcharts-point` rule.
 	 * 
 	 * @type {CSSObject}
-	 * @default {all} { "fontSize": "11px", "fontWeight": "bold" }
+	 * @default { "fontSize": "11px", "fontWeight": "bold" }
 	 * @product highstock
 	 */
 	style: {

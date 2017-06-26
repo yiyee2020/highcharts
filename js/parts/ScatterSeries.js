@@ -13,12 +13,12 @@ var Series = H.Series,
 /**
  * The scatter series type
  */
-seriesType('scatter', 'line', 
+
 /**
  * @extends {plotOptions.line}
  * @optionparent plotOptions.scatter
  */
-{
+seriesType('scatter', 'line', {
 
 	/**
 	 * The width of the line connecting the data points.
@@ -26,7 +26,7 @@ seriesType('scatter', 'line',
 	 * @type {Number}
 	 * @sample {highcharts} highcharts/plotoptions/scatter-linewidth-none/ 0 by default
 	 * @sample {highcharts} highcharts/plotoptions/scatter-linewidth-1/ 1px
-	 * @default {all} 0
+	 * @default 0
 	 * @product highcharts highstock
 	 */
 	lineWidth: 0,
@@ -50,11 +50,9 @@ seriesType('scatter', 'line',
 	 * Overridable properties are `headerFormat`, `pointFormat`, `yDecimals`,
 	 * `xDateFormat`, `yPrefix` and `ySuffix`. Unlike other series, in
 	 * a scatter plot the series.name by default shows in the headerFormat
-	 * and poin.x and point.y in the pointFormat.
+	 * and point.x and point.y in the pointFormat.
 	 * 
-	 * @type {Object}
-	 * @default {all} {}
-	 * @product highstock
+	 * @product highcharts highstock
 	 */
 	tooltip: {
 		/*= if (build.classic) { =*/

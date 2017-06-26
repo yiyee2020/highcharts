@@ -23,19 +23,18 @@ H.extend(defaultOptions.lang, {
  * @constructor seriesTypes.ohlc
  * @augments seriesTypes.column
  */
-seriesType('ohlc', 'column', 
 /**
  * @extends {plotOptions.column}
  * @optionparent plotOptions.ohlc
  */
-	{
+seriesType('ohlc', 'column', {
 
 	/**
 	 * The pixel width of the line/border. Defaults to `1`.
 	 * 
 	 * @type {Number}
 	 * @sample {highstock} stock/plotoptions/ohlc-linewidth/ A greater line width
-	 * @default {all} 1
+	 * @default 1
 	 * @product highstock
 	 */
 	lineWidth: 1,
@@ -82,7 +81,7 @@ seriesType('ohlc', 'column',
 			 * to `3`.
 			 * 
 			 * @type {Number}
-			 * @default {all} 3
+			 * @default 3
 			 * @product highstock
 			 */
 			lineWidth: 3

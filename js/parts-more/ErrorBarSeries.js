@@ -18,13 +18,11 @@ var each = H.each,
  * Start error bar series code                                                *
  *****************************************************************************/
 
-
-seriesType('errorbar', 'boxplot', 
 /**  
  * @extends {plotOptions.boxplot}
  * @optionparent plotOptions.errorbar
  */
-{
+seriesType('errorbar', 'boxplot', {
 	/*= if (build.classic) { =*/
 
 	/**
@@ -34,7 +32,7 @@ seriesType('errorbar', 'boxplot',
 	 * 
 	 * @type {Color}
 	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/ Error bar styling
-	 * @default {all} #000000
+	 * @default #000000
 	 * @since 3.0
 	 * @product highcharts
 	 */
@@ -50,7 +48,7 @@ seriesType('errorbar', 'boxplot',
 	 * the previous series. Otherwise, use the id of the parent series.
 	 * 
 	 * @type {String}
-	 * @default {all} :previous
+	 * @default :previous
 	 * @since 3.0
 	 * @product highcharts
 	 */
@@ -72,7 +70,7 @@ seriesType('errorbar', 'boxplot',
 	 * 
 	 * @type {Number}
 	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/ Error bar styling
-	 * @default {all} null
+	 * @default null
 	 * @since 3.0
 	 * @product highcharts
 	 */

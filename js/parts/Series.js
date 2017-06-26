@@ -87,14 +87,11 @@ var addEvent = H.addEvent,
  *
  */
 
-H.Series = H.seriesType('line', null, 
-
 /**
  * General options for all series types.
  * @optionparent plotOptions.series
- * @product highcharts highstock highmaps
  */
-{ // base series options
+H.Series = H.seriesType('line', null, { // base series options
 	/*= if (build.classic) { =*/
 	//cursor: 'default',
 	//dashStyle: null,
@@ -111,7 +108,7 @@ H.Series = H.seriesType('line', null,
 	 * `.highcharts-graph` class name.
 	 * @sample {highcharts} highcharts/plotoptions/series-linewidth-general/ On all series
 	 * @sample {highcharts} highcharts/plotoptions/series-linewidth-specific/ On one single series
-	 * @default {all} 2
+	 * @default 2
 	 * @product highcharts highstock
 	 */
 	lineWidth: 2,
@@ -130,7 +127,7 @@ H.Series = H.seriesType('line', null,
 	 * @sample {highcharts} highcharts/plotoptions/series-allowpointselect-pie/ Pie
 	 * @sample {highmaps} maps/plotoptions/series-allowpointselect/ Map area
 	 * @sample {highmaps} maps/plotoptions/mapbubble-allowpointselect/ Map bubble
-	 * @default {all} false
+	 * @default false
 	 * @since 1.2.0
 	 * @product highcharts highstock highmaps
 	 */
@@ -145,7 +142,7 @@ H.Series = H.seriesType('line', null,
 	 * 
 	 * @type {Boolean}
 	 * @sample {highcharts} highcharts/plotoptions/series-showcheckbox-true/ Show select box
-	 * @default {all} false
+	 * @default false
 	 * @since 1.2.0
 	 * @product highcharts highstock highmaps
 	 */
@@ -235,7 +232,7 @@ H.Series = H.seriesType('line', null,
 		 * 
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/series-marker-fillcolor/ 2px blue marker
-		 * @default {all} 0
+		 * @default 0
 		 * @product highcharts highstock
 		 */
 		lineWidth: 0,
@@ -247,7 +244,7 @@ H.Series = H.seriesType('line', null,
 		 * 
 		 * @type {Color}
 		 * @sample {highcharts} highcharts/plotoptions/series-marker-fillcolor/ Inherit from series color (null)
-		 * @default {all} #ffffff
+		 * @default #ffffff
 		 * @product highcharts highstock
 		 */
 		lineColor: '${palette.backgroundColor}',
@@ -262,7 +259,7 @@ H.Series = H.seriesType('line', null,
 		 * 
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/series-marker-radius/ Bigger markers
-		 * @default {all} 4
+		 * @default 4
 		 * @product highcharts highstock
 		 */
 		radius: 4,
@@ -299,7 +296,7 @@ H.Series = H.seriesType('line', null,
 				 * 
 				 * @type {Boolean}
 				 * @sample {highcharts} highcharts/plotoptions/series-marker-states-hover-enabled/ Disabled hover state
-				 * @default {all} true
+				 * @default true
 				 * @product highcharts highstock
 				 */
 				enabled: true,
@@ -312,7 +309,7 @@ H.Series = H.seriesType('line', null,
 				 * @type {Number}
 				 * @sample {highcharts} highcharts/plotoptions/series-states-hover-linewidthplus/ 5 pixels greater radius on hover
 				 * @sample {highstock} highcharts/plotoptions/series-states-hover-linewidthplus/ 5 pixels greater radius on hover
-				 * @default {all} 2
+				 * @default 2
 				 * @since 4.0.3
 				 * @product highcharts highstock
 				 */
@@ -327,7 +324,7 @@ H.Series = H.seriesType('line', null,
 				 * @type {Number}
 				 * @sample {highcharts} highcharts/plotoptions/series-states-hover-linewidthplus/ 2 pixels wider on hover
 				 * @sample {highstock} highcharts/plotoptions/series-states-hover-linewidthplus/ 2 pixels wider on hover
-				 * @default {all} 1
+				 * @default 1
 				 * @since 4.0.3
 				 * @product highcharts highstock
 				 */
@@ -354,7 +351,7 @@ H.Series = H.seriesType('line', null,
 				 * 
 				 * @type {Color}
 				 * @sample {highcharts} highcharts/plotoptions/series-marker-states-select-fillcolor/ Solid red discs for selected points
-				 * @default {all} null
+				 * @default null
 				 * @product highcharts highstock
 				 */
 				fillColor: '${palette.neutralColor20}',
@@ -367,7 +364,7 @@ H.Series = H.seriesType('line', null,
 				 * 
 				 * @type {Color}
 				 * @sample {highcharts} highcharts/plotoptions/series-marker-states-select-linecolor/ Red line color for selected points
-				 * @default {all} #000000
+				 * @default #000000
 				 * @product highcharts highstock
 				 */
 				lineColor: '${palette.neutralColor100}',
@@ -379,7 +376,7 @@ H.Series = H.seriesType('line', null,
 				 * 
 				 * @type {Number}
 				 * @sample {highcharts} highcharts/plotoptions/series-marker-states-select-linewidth/ 3px line width for selected points
-				 * @default {all} 0
+				 * @default 0
 				 * @product highcharts highstock
 				 */
 				lineWidth: 2
@@ -436,7 +433,7 @@ H.Series = H.seriesType('line', null,
 		 * @validvalue ["left", "center", "right"]
 		 * @type {String}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-align-left/ Left aligned
-		 * @default {all} center
+		 * @default center
 		 * @product highcharts highstock highmaps
 		 */
 		align: 'center',
@@ -534,7 +531,7 @@ H.Series = H.seriesType('line', null,
 		 * @type {CSSObject}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-style/ Bold labels
 		 * @sample {highmaps} maps/demo/color-axis/ Bold labels
-		 * @default {all} {"color": "contrast", "fontSize": "11px", "fontWeight": "bold", "textOutline": "1px contrast" }
+		 * @default {"color": "contrast", "fontSize": "11px", "fontWeight": "bold", "textOutline": "1px contrast" }
 		 * @since 4.1.0
 		 * @product highcharts highstock highmaps
 		 */
@@ -590,7 +587,7 @@ H.Series = H.seriesType('line', null,
 		 * 
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-rotation/ Vertical and positioned
-		 * @default {all} 0
+		 * @default 0
 		 * @product highcharts highstock highmaps
 		 */
 		x: 0,
@@ -601,7 +598,7 @@ H.Series = H.seriesType('line', null,
 		 * 
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-rotation/ Vertical and positioned
-		 * @default {all} -6
+		 * @default -6
 		 * @product highcharts highstock highmaps
 		 */
 		y: 0,
@@ -640,7 +637,7 @@ H.Series = H.seriesType('line', null,
 	 * points is to increase performance on large series.
 	 * 
 	 * @type {Number}
-	 * @default {all} 300
+	 * @default 300
 	 * @since 2.2
 	 * @product highcharts highstock
 	 */
@@ -655,7 +652,7 @@ H.Series = H.seriesType('line', null,
 	 * this option can be used to override the automatic value.
 	 * 
 	 * @type {Number}
-	 * @default {all} 0
+	 * @default 0
 	 * @product highstock
 	 */
 	pointRange: 0,
@@ -675,7 +672,7 @@ H.Series = H.seriesType('line', null,
 	 * option. If `softThreshold` is `true`, the Y axis starts at 0.
 	 * 
 	 * @type {Boolean}
-	 * @default {all} true
+	 * @default true
 	 * @since 4.1.9
 	 * @product highcharts highstock
 	 */
@@ -706,7 +703,7 @@ H.Series = H.seriesType('line', null,
 			 * Animation setting for hovering the graph in line-type series.
 			 * 
 			 * @type {Boolean|Object}
-			 * @default {all} { "duration": 50 }
+			 * @default { "duration": 50 }
 			 * @since 5.0.8
 			 * @product highcharts
 			 */
@@ -727,7 +724,7 @@ H.Series = H.seriesType('line', null,
 			 * @type {Number}
 			 * @sample {highcharts} highcharts/plotoptions/series-states-hover-linewidthplus/ 5 pixels wider
 			 * @sample {highstock} highcharts/plotoptions/series-states-hover-linewidthplus/ 5 pixels wider
-			 * @default {all} 1
+			 * @default 1
 			 * @since 4.0.3
 			 * @product highcharts highstock
 			 */
@@ -780,7 +777,7 @@ H.Series = H.seriesType('line', null,
 				 * halo outside the bubble.
 				 * 
 				 * @type {Number}
-				 * @default {all} 10
+				 * @default 10
 				 * @since 4.0
 				 * @product highcharts highstock
 				 */
@@ -795,7 +792,7 @@ H.Series = H.seriesType('line', null,
 				 * apply opacity to colors of hex or rgb(a) formats.
 				 * 
 				 * @type {Number}
-				 * @default {all} 0.25
+				 * @default 0.25
 				 * @since 4.0
 				 * @product highcharts highstock
 				 */
@@ -867,7 +864,7 @@ H.Series = H.seriesType('line', null,
 	 * data checking and indexing in long series. Set it to `0` disable.
 	 * 
 	 * @type {Number}
-	 * @default {all} 1000
+	 * @default 1000
 	 * @since 2.2
 	 * @product highcharts highstock
 	 */

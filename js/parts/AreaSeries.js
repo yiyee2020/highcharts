@@ -23,12 +23,11 @@ var color = H.color,
  * @constructor seriesTypes.area
  * @extends {Series}
  */
-seriesType('area', 'line', 
-	/**
-	 * @extends {plotOptions.line}
-	 * @optionparent plotOptions.area
-	 */
-	{
+/**
+ * @extends {plotOptions.line}
+ * @optionparent plotOptions.area
+ */
+seriesType('area', 'line', {
 
 	/**
 	 * When this is true, the series will not cause the Y axis to cross
@@ -40,7 +39,7 @@ seriesType('area', 'line',
 	 * option. If `softThreshold` is `true`, the Y axis starts at 0.
 	 * 
 	 * @type {Boolean}
-	 * @default {all} false
+	 * @default false
 	 * @since 4.1.9
 	 * @product highcharts highstock
 	 */
@@ -54,7 +53,7 @@ seriesType('area', 'line',
 	 * 
 	 * @type {Number}
 	 * @sample {highcharts} highcharts/plotoptions/area-threshold/ A threshold of 100
-	 * @default {all} 0
+	 * @default 0
 	 * @since 2.0
 	 * @product highcharts highstock
 	 */

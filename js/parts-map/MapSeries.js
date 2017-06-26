@@ -12,8 +12,7 @@ import '../parts/Legend.js';
 import '../parts/Point.js';
 import '../parts/Series.js';
 import '../parts/ScatterSeries.js';
-var color = H.color,
-	colorPointMixin = H.colorPointMixin,
+var colorPointMixin = H.colorPointMixin,
 	colorSeriesMixin = H.colorSeriesMixin,
 	doc = H.doc,
 	each = H.each,
@@ -36,19 +35,12 @@ var color = H.color,
 var supportsVectorEffect = doc.documentElement.style.vectorEffect !== undefined;
 
 
-/**
- * The MapAreaPoint object
- */
-/**
- * Add the map series type
- */
-seriesType('map', 'scatter', 
+// Add the map series type
 /**
  * @extends {plotOptions.scatter}
  * @optionparent plotOptions.map
  */
-
-{
+seriesType('map', 'scatter', {
 
 	/**
 	 */
@@ -68,7 +60,7 @@ seriesType('map', 'scatter',
 	 * 
 	 * @type {Color}
 	 * @sample {highmaps} maps/demo/all-areas-as-null/ Null color
-	 * @default {all} #f7f7f7
+	 * @default #f7f7f7
 	 * @product highmaps
 	 */
 	nullColor: '${palette.neutralColor3}',

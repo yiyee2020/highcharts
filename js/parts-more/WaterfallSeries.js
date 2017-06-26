@@ -20,28 +20,11 @@ var correctFloat = H.correctFloat,
 /* ****************************************************************************
  * Start Waterfall series code                                                *
  *****************************************************************************/
-
-
-seriesType('waterfall', 'column', 
 /**
  * @extends {plotOptions.column}
  * @optionparent plotOptions.waterfall
  */
-
-/**
- * The plotOptions is a wrapper object for config objects for each series
- * type. The config objects for each series can also be overridden for
- * each series item as given in the series array.
- * 
- * Configuration options for the series are given in three levels. Options
- * for all series in a chart are given in the [plotOptions.series](#plotOptions.
- * series) object. Then options for all series of a specific type are
- * given in the plotOptions of that type, for example plotOptions.line.
- * Next, options for one single series are given in [the series array](#series).
- * 
- * @product highcharts highstock highmaps
- */
-{
+seriesType('waterfall', 'column', {
 
 	/**
 	 */
@@ -57,7 +40,7 @@ seriesType('waterfall', 'column',
 	 * The width of the line connecting waterfall columns.
 	 * 
 	 * @type {Number}
-	 * @default {all} 1
+	 * @default 1
 	 * @product highcharts
 	 */
 	lineWidth: 1,
@@ -71,7 +54,7 @@ seriesType('waterfall', 'column',
 	 * graph` class.
 	 * 
 	 * @type {Color}
-	 * @default {all} #333333
+	 * @default #333333
 	 * @since 3.0
 	 * @product highcharts
 	 */
@@ -98,7 +81,7 @@ seriesType('waterfall', 'column',
 	 * highcharts-graph` class.
 	 * 
 	 * @type {String}
-	 * @default {all} Dot
+	 * @default Dot
 	 * @since 3.0
 	 * @product highcharts
 	 */
@@ -112,7 +95,7 @@ seriesType('waterfall', 'column',
 	 * point` class.
 	 * 
 	 * @type {Color}
-	 * @default {all} #333333
+	 * @default #333333
 	 * @since 3.0
 	 * @product highcharts
 	 */
