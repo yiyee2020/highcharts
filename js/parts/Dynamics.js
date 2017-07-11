@@ -11,6 +11,7 @@ import './Chart.js';
 import './Point.js';
 import './Series.js';
 var addEvent = H.addEvent,
+	removeEvent = H.removeEvent,
 	animate = H.animate,
 	Axis = H.Axis,
 	Chart = H.Chart,
@@ -293,6 +294,7 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 				title: 'setTitle',
 				subtitle: 'setSubtitle'
 			},
+			chartEvents = H.extend({}, chart.options.chart.events),
 			optionsChart = options.chart,
 			updateAllAxes,
 			updateAllSeries,
@@ -359,13 +361,19 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 		// options.navigator => chart.navigator
 		// options.scrollbar => chart.scrollbar
 		objectEach(options, function (val, key) {
+			console.log(val, key);
 			if (chart[key] && typeof chart[key].update === 'function') {
 				chart[key].update(val, false);
-				
 			// If a one-to-one object does not exist, look for an adder function
 			} else if (typeof chart[adders[key]] === 'function') {
 				chart[adders[key]](val);
+			} else if (key === 'chart' && val.events) {
+				objectEach(val.events, function(event, eventType) {
+					removeEvent(chart, eventType, chartEvents.click);
+					addEvent(chart, eventType, event);
+				});
 			}
+
 			
 			if (
 				key !== 'chart' &&

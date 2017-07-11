@@ -1,5 +1,6 @@
 /* eslint func-style:0 */
-
+var fireEvent = Highcharts.fireEvent,
+    pInt = parseInt;
 
 function getConfig() {
     return {
@@ -17,6 +18,10 @@ function getConfig() {
             name: 'Last'
         }]
     };
+}
+
+function assertEquals(assert, message, actual, expected) {
+    assert.equal(expected, actual, message);
 }
 
 QUnit.test('Credits update', function (assert) {
@@ -323,4 +328,26 @@ QUnit.test('Tooltip update', function (assert) {
         'Tooltip hidden'
     );
 
+});
+
+QUnit.test('Events update', function (assert) {
+    $('<div id="o2">0</div>').appendTo(document.body);
+    var o = document.getElementById('o2'),
+        f = function () {
+            o.innerHTML = pInt(o.innerHTML) + 1;
+        },
+        chart = Highcharts.chart($('<div>').appendTo('#container')[0], getConfig()),
+        clickTest = false;
+
+    chart.update({
+        chart: {
+            events: {
+                click: f
+            }
+        }
+    });
+
+    fireEvent(Highcharts.charts[0], 'click');
+
+    assertEquals(assert, 'custom now clicked', 1, pInt(o.innerHTML));
 });
