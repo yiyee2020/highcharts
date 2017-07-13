@@ -519,7 +519,7 @@
 
 /**
  * Additional chart options to be merged into an exported chart. For
- * example, a common use case is to add data labels to improve readaility
+ * example, a common use case is to add data labels to improve readability
  * of the exported chart, or to add a printer-friendly color scheme.
  * 
  * @type {Object}
@@ -2800,7 +2800,6 @@
  * true by default. However when allowDrillToNode is true, then it will
  * be false by default.
  * 
- * @validvalue false, true
  * @type {Boolean}
  * @sample {highcharts} highcharts/plotoptions/treemap-interactbyleaf-false/ False
  * @sample {highcharts} highcharts/plotoptions/treemap-interactbyleaf-true-and-allowdrilltonode/ InteractByLeaf and allowDrillToNode is true
@@ -3409,9 +3408,9 @@
  * of the point, and the `x` value is inferred.
  * 
  * <pre>data: [
- * [0, 9],
- * [1, 7],
- * [2, 6]
+ *     [0, 9],
+ *     [1, 7],
+ *     [2, 6]
  * ]</pre>
  * 
  * 3.  An array of objects with named values. The objects are point
@@ -3420,16 +3419,16 @@
  * this option is not available.
  * 
  * <pre>data: [{
- * x: 1,
- * y: 9,
- * name: "Point2",
- * color: "#00FF00"
+ *     x: 1,
+ *     y: 9,
+ *     name: "Point2",
+ *     color: "#00FF00"
  * }, {
- * x: 1,
- * y: 6,
- * name: "Point1",
- * color: "#FF00FF"
- *     }]</pre>
+ *     x: 1,
+ *     y: 6,
+ *     name: "Point1",
+ *     color: "#FF00FF"
+ * }]</pre>
  * 
  * @type {Array<Object|Array|Number>}
  * @extends series<line>.data
@@ -5539,7 +5538,6 @@
 /**
  * Wether to draw rounded edges on the gauge.
  * 
- * @validvalue true, false
  * @type {Boolean}
  * @sample {highcharts} highcharts/demo/gauge-activity/ Activity Gauge
  * @default false
@@ -8520,7 +8518,7 @@
  * The text to display on each flag. This can be defined on series level,
  *  or individually for each point. Defaults to `"A"`.
  * 
- * @type {Text}
+ * @type {String}
  * @default "A"
  * @product highstock
  * @apioption plotOptions.flags.title
@@ -9674,7 +9672,7 @@
 /**
  * Text styles for the crosshair label.
  * 
- * @type {CSS}
+ * @type {CSSObject}
  * @default { "color": "white", "fontWeight": "normal", "fontSize": "11px", "textAlign": "center" }
  * @since 2.1
  * @product highstock
