@@ -15,7 +15,6 @@ var addEvent = H.addEvent,
 	arrayMax = H.arrayMax,
 	arrayMin = H.arrayMin,
 	correctFloat = H.correctFloat,
-	Date = H.Date,
 	defaultOptions = H.defaultOptions,
 	defaultPlotOptions = H.defaultPlotOptions,
 	defined = H.defined,
@@ -1828,7 +1827,8 @@ H.Series = H.seriesType('line', null, { // base series options
 	 */
 	autoIncrement: function () {
 
-		var options = this.options,
+		var Date = this.chart.Date,
+			options = this.options,
 			xIncrement = this.xIncrement,
 			date,
 			pointInterval,

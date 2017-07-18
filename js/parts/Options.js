@@ -2302,81 +2302,6 @@ H.defaultOptions = {
 	}
 };
 
-
-
-/**
- * Sets the getTimezoneOffset function. If the timezone option is set, a default
- * getTimezoneOffset function with that timezone is returned. If not, the
- * specified getTimezoneOffset function is returned. If neither are specified,
- * undefined is returned.
- * @return {function} a getTimezoneOffset function or undefined
- */
-function getTimezoneOffsetOption() {
-	var globalOptions = H.defaultOptions.global,
-		moment = win.moment;
-
-	if (globalOptions.timezone) {
-		if (!moment) {
-			// getTimezoneOffset-function stays undefined because it depends on
-			// Moment.js
-			H.error(25);
-			
-		} else {
-			return function (timestamp) {
-				return -moment.tz(
-					timestamp,
-					globalOptions.timezone
-				).utcOffset();
-			};
-		}
-	}
-
-	// If not timezone is set, look for the getTimezoneOffset callback
-	return globalOptions.useUTC && globalOptions.getTimezoneOffset;
-}
-
-/**
- * Set the time methods globally based on the useUTC option. Time method can be
- *   either local time or UTC (default). It is called internally on initiating
- *   Highcharts and after running `Highcharts.setOptions`.
- *
- * @private
- */
-function setTimeMethods() {
-	var globalOptions = H.defaultOptions.global,
-		Date,
-		useUTC = globalOptions.useUTC,
-		GET = useUTC ? 'getUTC' : 'get',
-		SET = useUTC ? 'setUTC' : 'set';
-
-	H.Date = Date = globalOptions.Date || win.Date; // Allow using a different Date class
-	Date.hcTimezoneOffset = useUTC && globalOptions.timezoneOffset;
-	Date.hcGetTimezoneOffset = getTimezoneOffsetOption();
-	Date.hcMakeTime = function (year, month, date, hours, minutes, seconds) {
-		var d;
-		if (useUTC) {
-			d = Date.UTC.apply(0, arguments);
-			d += getTZOffset(d);
-		} else {
-			d = new Date(
-				year,
-				month,
-				pick(date, 1),
-				pick(hours, 0),
-				pick(minutes, 0),
-				pick(seconds, 0)
-			).getTime();
-		}
-		return d;
-	};
-	each(['Minutes', 'Hours', 'Day', 'Date', 'Month', 'FullYear'], function (s) {
-		Date['hcGet' + s] = GET + s;
-	});
-	each(['Milliseconds', 'Seconds', 'Minutes', 'Hours', 'Date', 'Month', 'FullYear'], function (s) {
-		Date['hcSet' + s] = SET + s;
-	});
-}
-
 /**
  * Merge the default options with custom options and return the new options
  * structure. Commonly used for defining reusable templates.
@@ -2393,9 +2318,6 @@ H.setOptions = function (options) {
 	// Copy in the default options
 	H.defaultOptions = merge(true, H.defaultOptions, options);
 	
-	// Apply UTC
-	setTimeMethods();
-
 	return H.defaultOptions;
 };
 
@@ -2411,5 +2333,3 @@ H.getOptions = function () {
 // Series defaults
 H.defaultPlotOptions = H.defaultOptions.plotOptions;
 
-// set the default time methods
-setTimeMethods();

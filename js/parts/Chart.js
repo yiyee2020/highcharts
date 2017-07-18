@@ -1958,6 +1958,8 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 			return;
 		}
 
+		chart.setTimeMethods();
+
 		// Create the container
 		chart.getContainer();
 
@@ -2038,6 +2040,121 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 
 		// Don't run again
 		this.onload = null;
+	},
+
+
+	/**
+	 * Sets the getTimezoneOffset function. If the timezone option is set, a default
+	 * getTimezoneOffset function with that timezone is returned. If not, the
+	 * specified getTimezoneOffset function is returned. If neither are specified,
+	 * undefined is returned.
+	 * @return {function} a getTimezoneOffset function or undefined
+	 */
+	getTimezoneOffsetOption: function () {
+		var globalOptions = this.options.global,
+			moment = win.moment;
+
+		if (globalOptions.timezone) {
+			if (!moment) {
+				// getTimezoneOffset-function stays undefined because it depends on
+				// Moment.js
+				H.error(25);
+				
+			} else {
+				return function (timestamp) {
+					return -moment.tz(
+						timestamp,
+						globalOptions.timezone
+					).utcOffset();
+				};
+			}
+		}
+
+		// If not timezone is set, look for the getTimezoneOffset callback
+		return globalOptions.useUTC && globalOptions.getTimezoneOffset;
+	},
+
+	
+	
+
+	/**
+	 * Set the time methods globally based on the useUTC option. Time method can be
+	 *   either local time or UTC (default). It is called internally on initiating
+	 *   Highcharts and after running `Highcharts.setOptions`.
+	 *
+	 * @private
+	 */
+	setTimeMethods: function () {
+		var chart = this,
+			globalOptions = this.options.global,
+			Date,
+			useUTC = globalOptions.useUTC,
+			GET = useUTC ? 'getUTC' : 'get',
+			SET = useUTC ? 'setUTC' : 'set';
+
+		// Allow using a different Date class
+		this.Date = Date = globalOptions.Date || win.Date;
+		Date.hcTimezoneOffset = useUTC && globalOptions.timezoneOffset;
+		Date.hcGetTimezoneOffset = this.getTimezoneOffsetOption();
+		Date.hcMakeTime = function (
+			year,
+			month,
+			date,
+			hours,
+			minutes,
+			seconds
+		) {
+			var d;
+			if (useUTC) {
+				d = Date.UTC.apply(0, arguments);
+				d += chart.getTZOffset(d);
+			} else {
+				d = new Date(
+					year,
+					month,
+					pick(date, 1),
+					pick(hours, 0),
+					pick(minutes, 0),
+					pick(seconds, 0)
+				).getTime();
+			}
+			return d;
+		};
+
+		/**
+		 * Get the time zone offset based on the current timezone information as set
+		 * in the global options.
+		 *
+		 * @function #getTZOffset
+		 * @param  {Number} timestamp - The JavaScript timestamp to inspect.
+		 * @return {Number} - The timezone offset in minutes compared to UTC.
+		 */
+		Date.getTZOffset = function (timestamp) {
+			return ((this.hcGetTimezoneOffset && this.hcGetTimezoneOffset(timestamp)) ||
+				this.hcTimezoneOffset || 0) * 60000;
+		};
+
+		each([
+			'Minutes',
+			'Hours',
+			'Day',
+			'Date',
+			'Month',
+			'FullYear'
+		], function (s) {
+			Date['hcGet' + s] = GET + s;
+		});
+		each([
+			'Milliseconds',
+			'Seconds',
+			'Minutes',
+			'Hours',
+			'Date',
+			'Month',
+			'FullYear'
+		], function (s) {
+			Date['hcSet' + s] = SET + s;
+		});
 	}
 
 }); // end Chart

@@ -7,14 +7,12 @@
 import H from './Globals.js';
 import './Utilities.js';
 var Axis = H.Axis,
-	Date = H.Date,
 	dateFormat = H.dateFormat,
 	defaultOptions = H.defaultOptions,
 	defined = H.defined,
 	each = H.each,
 	extend = H.extend,
 	getMagnitude = H.getMagnitude,
-	getTZOffset = H.getTZOffset,
 	normalizeTickInterval = H.normalizeTickInterval,
 	pick = H.pick,
 	timeUnits = H.timeUnits;
@@ -30,13 +28,15 @@ var Axis = H.Axis,
  * @param {Number} startOfWeek
  */
 Axis.prototype.getTimeTicks = function (normalizedInterval, min, max, startOfWeek) {
-	var tickPositions = [],
+	var chart = this.chart,
+		Date = chart.Date,
+		tickPositions = [],
 		i,
 		higherRanks = {},
 		useUTC = defaultOptions.global.useUTC,
 		minYear, // used in months and years as a basis for Date.UTC()
 		// When crossing DST, use the max. Resolves #6278.
-		minDate = new Date(min - Math.max(getTZOffset(min), getTZOffset(max))),
+		minDate = new Date(min - Math.max(Date.getTZOffset(min), Date.getTZOffset(max))),
 		makeTime = Date.hcMakeTime,
 		interval = normalizedInterval.unitRange,
 		count = normalizedInterval.count,
@@ -108,12 +108,12 @@ Axis.prototype.getTimeTicks = function (normalizedInterval, min, max, startOfWee
 					max - min > 4 * timeUnits.month ||
 					// Short range, check if min and max are in different time 
 					// zones.
-					getTZOffset(min) !== getTZOffset(max)
+					Date.getTZOffset(min) !== Date.getTZOffset(max)
 				);
 
 			// Adjust minDate to the offset date
 			minDate = minDate.getTime();
-			baseOffset = getTZOffset(minDate);
+			baseOffset = chart.getTZOffset(minDate);
 			minDate = new Date(minDate + baseOffset);
 		}
 		

@@ -856,21 +856,6 @@ H.wrap = function (obj, method, func) {
 };
 
 /**
- * Get the time zone offset based on the current timezone information as set in
- * the global options.
- *
- * @function #getTZOffset
- * @memberOf Highcharts
- * @param  {Number} timestamp - The JavaScript timestamp to inspect.
- * @return {Number} - The timezone offset in minutes compared to UTC.
- */
-H.getTZOffset = function (timestamp) {
-	var d = H.Date;
-	return ((d.hcGetTimezoneOffset && d.hcGetTimezoneOffset(timestamp)) ||
-		d.hcTimezoneOffset || 0) * 60000;
-};
-
-/**
  * Formats a JavaScript date timestamp (milliseconds since Jan 1st 1970) into a
  * human readable date string. The format is a subset of the formats for PHP's
  * [strftime]{@link
@@ -885,14 +870,14 @@ H.getTZOffset = function (timestamp) {
  * @param {Boolean} [capitalize=false] - Upper case first letter in the return.
  * @returns {String} The formatted date.
  */
-H.dateFormat = function (format, timestamp, capitalize) {
+H.dateFormat = function (format, timestamp, capitalize, hcDate) {
 	if (!H.defined(timestamp) || isNaN(timestamp)) {
 		return H.defaultOptions.lang.invalidDate || '';
 	}
 	format = H.pick(format, '%Y-%m-%d %H:%M:%S');
 
-	var D = H.Date,
-		date = new D(timestamp - H.getTZOffset(timestamp)),
+	var D = hcDate || Date,
+		date = new D(timestamp - D.getTZOffset(timestamp)),
 		// get the basic time values
 		hours = date[D.hcGetHours](),
 		day = date[D.hcGetDay](),
