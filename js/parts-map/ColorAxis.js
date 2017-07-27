@@ -289,29 +289,43 @@ extend(ColorAxis.prototype, {
 
 			dataClass = merge(dataClass);
 			dataClasses.push(dataClass);
-			if (!dataClass.color) {
-				if (options.dataClassColor === 'category') {
-					/*= if (build.classic) { =*/
-					colors = chart.options.colors;
-					colorCount = colors.length;
-					dataClass.color = colors[colorCounter];
-					/*= } =*/
-					dataClass.colorIndex = colorCounter;
 
-					// increase and loop back to zero
-					colorCounter++;
-					if (colorCounter === colorCount) {
-						colorCounter = 0;
-					}
-				} else {
-					dataClass.color = color(options.minColor).tweenTo(
-						color(options.maxColor),
-						len < 2 ? 0.5 : i / (len - 1) // #3219
-					);
+			/*= if (build.classic) { =*/
+			if (dataClass.color) {
+				return;
+			}
+			/*= } =*/
+			if (options.dataClassColor === 'category') {
+				/*= if (build.classic) { =*/
+				colors = chart.options.colors;
+				colorCount = colors.length;
+				dataClass.color = colors[colorCounter];
+				/*= } =*/
+				dataClass.colorIndex = colorCounter;
+
+				// increase and loop back to zero
+				colorCounter++;
+				if (colorCounter === colorCount) {
+					colorCounter = 0;
 				}
+			} else {
+				dataClass.color = color(options.minColor).tweenTo(
+					color(options.maxColor),
+					len < 2 ? 0.5 : i / (len - 1) // #3219
+				);
 			}
 		});
 	},
+
+	/**
+	 * Override so that ticks are not added in data class axes (#6914)
+	 */
+	setTickPositions: function () {
+		if (!this.dataClasses) {
+			return Axis.prototype.setTickPositions.call(this);
+		}
+	},
+	
 
 	initStops: function () {
 		this.stops = this.options.stops || [
@@ -393,7 +407,9 @@ extend(ColorAxis.prototype, {
 					(from === undefined || value >= from) &&
 					(to === undefined || value <= to)
 				) {
+					/*= if (build.classic) { =*/
 					color = dataClass.color;
+					/*= } =*/
 					if (point) {
 						point.dataClass = i;
 						point.colorIndex = dataClass.colorIndex;
@@ -769,6 +785,6 @@ wrap(Legend.prototype, 'update', function (proceed) {
 	proceed.apply(this, [].slice.call(arguments, 1));
 
 	if (this.chart.colorAxis[0]) {
-		this.chart.colorAxis[0].update({});
+		this.chart.colorAxis[0].update({}, arguments[2]);
 	}
 });

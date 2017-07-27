@@ -438,8 +438,11 @@ Highcharts.Legend.prototype = {
 		if (!itemStyle.width) {
 		/*= } =*/
 			li.css({
-				width: (options.itemWidth || chart.spacingBox.width) -
-					itemExtraWidth
+				width: (
+					options.itemWidth ||
+					options.width ||
+					chart.spacingBox.width
+				) -	itemExtraWidth
 			});
 		/*= if (build.classic) { =*/
 		}

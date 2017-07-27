@@ -12,7 +12,6 @@
  * @default transparent
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.back.color docs to actual source code
  * @apioption chart.options3d.frame.back.color
  */
 
@@ -23,7 +22,6 @@
  * @default 1
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.back.size docs to actual source code
  * @apioption chart.options3d.frame.back.size
  */
 
@@ -39,7 +37,6 @@
  * @default default
  * @since 5.0.12
  * @product highcharts
- * @todo Copy chart.options3d.frame.back.visible docs to actual source code
  * @apioption chart.options3d.frame.back.visible
  */
 
@@ -50,7 +47,6 @@
  * @default transparent
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.bottom.color docs to actual source code
  * @apioption chart.options3d.frame.bottom.color
  */
 
@@ -61,7 +57,6 @@
  * @default 1
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.bottom.size docs to actual source code
  * @apioption chart.options3d.frame.bottom.size
  */
 
@@ -77,7 +72,6 @@
  * @default default
  * @since 5.0.12
  * @product highcharts
- * @todo Copy chart.options3d.frame.bottom.visible docs to actual source code
  * @apioption chart.options3d.frame.bottom.visible
  */
 
@@ -89,7 +83,6 @@
  * 
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.side docs to actual source code
  * @apioption chart.options3d.frame.side
  */
 
@@ -100,7 +93,6 @@
  * @default transparent
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.side.color docs to actual source code
  * @apioption chart.options3d.frame.side.color
  */
 
@@ -111,7 +103,6 @@
  * @default 1
  * @since 4.0
  * @product highcharts
- * @todo Copy chart.options3d.frame.side.size docs to actual source code
  * @apioption chart.options3d.frame.side.size
  */
 
@@ -121,7 +112,6 @@
  * @type {Color}
  * @default transparent
  * @product highcharts
- * @todo Copy chart.options3d.frame.top.color docs to actual source code
  * @apioption chart.options3d.frame.top.color
  */
 
@@ -131,7 +121,6 @@
  * @type {Number}
  * @default 1
  * @product highcharts
- * @todo Copy chart.options3d.frame.top.size docs to actual source code
  * @apioption chart.options3d.frame.top.size
  */
 
@@ -2185,9 +2174,7 @@
 /**
  * Fires when the legend item belonging to the pie point (slice) is
  * clicked. The `this` keyword refers to the point itself. One parameter,
- * `event`, is passed to the function. This contains common event information
- * based on jQuery or MooTools depending on which library is used as
- * the base for Highcharts. The default action is to toggle the visibility
+ * `event`, is passed to the function, containing common event information. The default action is to toggle the visibility
  * of the point. This can be prevented by calling `event.preventDefault()`.
  * 
  * @type {Function}
@@ -2294,9 +2281,7 @@
 
 /**
  * Fires when the series is clicked. One parameter, `event`, is passed
- * to the function. This contains common event information based on
- * jQuery or MooTools depending on which library is used as the base
- * for Highcharts. Additionally, `event.point` holds a pointer to the
+ * to the function, containing common event information. Additionally, `event.point` holds a pointer to the
  * nearest point on the graph.
  * 
  * @type {Function}
@@ -2332,9 +2317,7 @@
 
 /**
  * Fires when the mouse leaves the graph. One parameter, `event`, is
- * passed to the function. This contains common event information based
- * on jQuery or MooTools depending on which library is used as the base
- * for Highcharts. If the [stickyTracking](#plotOptions.series) option
+ * passed to the function, containing common event information. If the [stickyTracking](#plotOptions.series) option
  * is true, `mouseOut` doesn't happen before the mouse enters another
  * graph or leaves the plot area.
  * 
@@ -2347,9 +2330,7 @@
 
 /**
  * Fires when the mouse enters the graph. One parameter, `event`, is
- * passed to the function. This contains common event information based
- * on jQuery or MooTools depending on which library is used as the base
- * for Highcharts.
+ * passed to the function, containing common event information.
  * 
  * @type {Function}
  * @context Series
@@ -2505,9 +2486,7 @@
 
 /**
  * Fires when a point is clicked. One parameter, `event`, is passed
- * to the function. This contains common event information based on
- * jQuery or MooTools depending on which library is used as the base
- * for Highcharts.
+ * to the function, containing common event information.
  * 
  * If the `series.allowPointSelect` option is true, the default action
  * for the point's click event is to toggle the point's select state.
@@ -2525,9 +2504,7 @@
 
 /**
  * Fires when the mouse leaves the area close to the point. One parameter,
- * `event`, is passed to the function. This contains common event information
- * based on jQuery or MooTools depending on which library is used as
- * the base for Highcharts.
+ * `event`, is passed to the function, containing common event information.
  * 
  * @type {Function}
  * @context Point
@@ -2537,9 +2514,7 @@
 
 /**
  * Fires when the mouse enters the area close to the point. One parameter,
- * `event`, is passed to the function. This contains common event information
- * based on jQuery or MooTools depending on which library is used as
- * the base for Highcharts.
+ * `event`, is passed to the function, containing common event information.
  * 
  * @type {Function}
  * @context Point
@@ -4065,7 +4040,6 @@
  * 
  * @type {Number}
  * @product highcharts
- * @todo Copy series.boxplot.data.q1 docs to actual source code
  * @apioption series.boxplot.data.q1
  */
 
@@ -4074,7 +4048,6 @@
  * 
  * @type {Number}
  * @product highcharts
- * @todo Copy series.boxplot.data.q3 docs to actual source code
  * @apioption series.boxplot.data.q3
  */
 
@@ -7144,9 +7117,7 @@
  * 
  * Fires when the minimum and maximum is set for the axis, either by
  * calling the `.setExtremes()` method or by selecting an area in the
- * chart. One parameter, `event`, is passed to the function. This contains
- * common event information based on jQuery or MooTools depending on
- * which library is used as the base for Highcharts.
+ * chart. One parameter, `event`, is passed to the function, containing common event information.
  * 
  * The new user set minimum and maximum values can be found by `event.
  * min` and `event.max`. These reflect the axis minimum and maximum
@@ -7183,9 +7154,7 @@
 /**
  * Fires when the minimum and maximum is set for the axis, either by
  * calling the `.setExtremes()` method or by selecting an area in the
- * chart. One parameter, `event`, is passed to the function. This contains
- * common event information based on jQuery or MooTools depending on
- * which library is used as the base for Highcharts.
+ * chart. One parameter, `event`, is passed to the function, containing common event information.
  * 
  * The new user set minimum and maximum values can be found by `event.
  * min` and `event.max`. These reflect the axis minimum and maximum
@@ -7911,6 +7880,16 @@
  * @sample {highstock} stock/xaxis/title-text/ Titles for both axes
  * @default null
  * @apioption xAxis.title.text
+ */
+
+/**
+ * Whether to [use HTML](http://www.highcharts.com/docs/chart-concepts/labels-
+ * and-string-formatting#html) to render the axis title.
+ * 
+ * @type {Boolean}
+ * @default false
+ * @product highcharts highstock
+ * @apioption xAxis.title.useHTML
  */
 
 /**
@@ -9968,7 +9947,10 @@
 
 /**
  * The color of each data class. If not set, the color is pulled from
- * the global or chart-specific [colors](#colors) array.
+ * the global or chart-specific [colors](#colors) array. In 
+ * [styled mode](http://www.highcharts.com/docs/chart-design-and-
+ * style/style-by-css), this option is ignored. Instead, use colors defined in
+ * CSS.
  * 
  * @type {Color}
  * @sample {highmaps} maps/demo/data-class-two-ranges/ Explicit colors

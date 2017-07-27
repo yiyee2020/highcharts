@@ -40,8 +40,8 @@ var addEvent = H.addEvent,
 
 /**
  * This is the base series prototype that all other series types inherit from.
- * A new series is initiated either through the {@link https://api.highcharts.com/highcharts/series|
- * series} option structure, or after the chart is initiated, through {@link
+ * A new series is initialized either through the {@link https://api.highcharts.com/highcharts/series|
+ * series} option structure, or after the chart is initialized, through {@link
  * Highcharts.Chart#addSeries}.
  *
  * The object can be accessed in a number of ways. All series and point event
@@ -394,7 +394,6 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * @sample {highmaps} highcharts/accessibility/art-grants/ Accessible data visualization
 	 * @default undefined
 	 * @since 5.0.12
-	 * @todo Copy plotOptions.series.exposeElementToA11y docs to actual source code
 	 * @apioption plotOptions.series.exposeElementToA11y
 	 */
 
