@@ -34,16 +34,8 @@ seriesType('scatter', 'line', {
 	 */
 	lineWidth: 0,
 
-	/**
-	 */
 	findNearestPointBy: 'xy',
-
-	/**
-	 */
 	marker: {
-
-		/**
-		 */
 		enabled: true // Overrides auto-enabling in line series (#3647)
 	},
 
@@ -79,15 +71,9 @@ seriesType('scatter', 'line', {
 			'<span style="font-size: 0.85em"> {series.name}</span><br/>',
 		/*= } else { =*/
 
-		/**
-		 */
-		headerFormat: 
-			'<span class="highcharts-color-{point.colorIndex}">\u25CF</span> ' +
-			'<span class="highcharts-header"> {series.name}</span><br/>',
+		headerFormat: '<span class="highcharts-color-{point.colorIndex}">\u25CF</span> <span class="highcharts-header"> {series.name}</span><br/>',
 		/*= } =*/
 
-		/**
-		 */
 		pointFormat: 'x: <b>{point.x}</b><br/>y: <b>{point.y}</b><br/>'
 	}
 
@@ -106,11 +92,11 @@ seriesType('scatter', 'line', {
 });
 
 /**
- * A `scatter` series. If the [type](#series<scatter>.type) option is
+ * A `scatter` series. If the [type](#series.scatter.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * scatter](#plotOptions.scatter).
  * 
@@ -131,37 +117,43 @@ seriesType('scatter', 'line', {
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 0],
- *     [1, 8],
- *     [2, 9]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 0],
+ *         [1, 8],
+ *         [2, 9]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<scatter>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.scatter.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 2,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 4,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 2,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 4,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y
  * @sample {highcharts} highcharts/series/data-array-of-arrays-datetime/ Arrays of datetime x and y

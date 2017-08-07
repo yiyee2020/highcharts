@@ -41,8 +41,8 @@ extend(defaultOptions, {
 	 * the chart, like 1 day, 1 week, 1 month etc. It also provides input
 	 * boxes where min and max dates can be manually input.
 	 *
-	 * @optionparent rangeSelector
 	 * @product highstock
+	 * @optionparent rangeSelector
 	 */
 	rangeSelector: {
 		// allButtonsEnabled: false,
@@ -60,8 +60,7 @@ extend(defaultOptions, {
 		 * 
 		 * CSS styles for the text label.
 		 * 
-		 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-		 * style/style-by-css), the buttons are styled by the `.highcharts-
+		 * In styled mode, the buttons are styled by the `.highcharts-
 		 * range-selector-buttons .highcharts-button` rule with its different
 		 * states.
 		 * 
@@ -70,25 +69,10 @@ extend(defaultOptions, {
 		 * @product highstock
 		 */
 		buttonTheme: {
-
-			/**
-			 */
 			'stroke-width': 0,
-
-			/**
-			 */
 			width: 28,
-
-			/**
-			 */
 			height: 18,
-
-			/**
-			 */
 			padding: 2,
-
-			/**
-			 */
 			zIndex: 7 // #484, #852
 		},
 
@@ -113,9 +97,6 @@ extend(defaultOptions, {
 		 * @product highstock
 		 */
 		inputPosition: {
-
-			/**
-			 */
 			align: 'right'
 		},
 		// inputDateFormat: '%b %e, %Y',
@@ -128,18 +109,13 @@ extend(defaultOptions, {
 		/**
 		 * CSS styles for the labels - the Zoom, From and To texts.
 		 * 
-		 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-		 * style/style-by-css), the labels are styled by the `.highcharts-
-		 * range-label` class.
+		 * In styled mode, the labels are styled by the `.highcharts-range-label` class.
 		 * 
 		 * @type {CSSObject}
 		 * @sample {highstock} stock/rangeselector/styling/ Styling the buttons and inputs
 		 * @product highstock
 		 */
 		labelStyle: {
-
-			/**
-			 */
 			color: '${palette.neutralColor60}'
 		}
 		/*= } =*/

@@ -24,40 +24,21 @@ var merge = H.merge,
  */
 seriesType('mappoint', 'scatter', {
 
-	/**
-	 */
 	dataLabels: {
-
-		/**
-		 */
 		enabled: true,
-
-		/**
-		 */
 		formatter: function () { // #2945
 			return this.point.name;
 		},
-
-		/**
-		 */
 		crop: false,
-
-		/**
-		 */
 		defer: false,
-
-		/**
-		 */
 		overflow: false,
-
-		/**
-		 */
 		style: {
-
-			/**
-			 */
 			color: '${palette.neutralColor100}'
 		}
+		/**
+		 * @default {point.name}
+		 * @apioption plotOptions.mappoint.dataLabels.format
+		 */
 	}
 
 // Prototype members
@@ -74,12 +55,12 @@ seriesType('mappoint', 'scatter', {
 });
 
 /**
- * A `mappoint` series. If the [type](#series<mappoint>.type) option
+ * A `mappoint` series. If the [type](#series.mappoint.type) option
  * is not specified, it is inherited from [chart.type](#chart.type).
  * 
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * mappoint](#plotOptions.mappoint).
  * 
@@ -100,37 +81,43 @@ seriesType('mappoint', 'scatter', {
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 1],
- *     [1, 8],
- *     [2, 7]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 1],
+ *         [1, 8],
+ *         [2, 7]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<mappoint>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.mappoint.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 7,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 4,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 7,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 4,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
- * @extends series<map>.data
+ * @extends series.map.data
  * @excluding labelrank,middleX,middleY,path,value
  * @product highmaps
  * @apioption series.mappoint.data

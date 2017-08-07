@@ -29,9 +29,11 @@ if (seriesTypes.bubble) {
 	 */
 	seriesType('mapbubble', 'bubble', {
 
-		/**
-		 */
 		animationLimit: 500,
+
+		tooltip: {
+			pointFormat: '{point.name}: {point.z}'
+		}
 
 		/**
 		 * The main color of the series. This color affects both the fill and
@@ -122,15 +124,6 @@ if (seriesTypes.bubble) {
 		 */
 
 		/**
-		 */
-		tooltip: {
-
-			/**
-			 */
-			pointFormat: '{point.name}: {point.z}'
-		}
-
-		/**
 		 * The minimum for the Z value range. Defaults to the highest Z value
 		 * in the data.
 		 * 
@@ -205,12 +198,12 @@ if (seriesTypes.bubble) {
 
 
 /**
- * A `mapbubble` series. If the [type](#series<mapbubble>.type) option
+ * A `mapbubble` series. If the [type](#series.mapbubble.type) option
  * is not specified, it is inherited from [chart.type](#chart.type).
  * 
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * mapbubble](#plotOptions.mapbubble).
  * 
@@ -228,25 +221,29 @@ if (seriesTypes.bubble) {
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `z` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<mapbubble>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.mapbubble.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     z: 9,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     z: 10,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         z: 9,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         z: 10,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Number>}
- * @extends series<mappoint>.data
+ * @extends series.mappoint.data
  * @excluding labelrank,middleX,middleY,path,value,x,y,lat,lon
  * @product highmaps
  * @apioption series.mapbubble.data

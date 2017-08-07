@@ -41,6 +41,11 @@ var addEvent = H.addEvent,
  * @sample highcharts/demo/pie-basic/ Pie chart
  * 
  * @extends {plotOptions.line}
+ * @excluding animationLimit,boostThreshold,connectEnds,connectNulls,
+ *          cropThreshold,dashStyle,findNearestPointBy,getExtremesFromAll,
+ *          lineWidth,marker,negativeColor,pointInterval,pointIntervalUnit,
+ *          pointPlacement,pointStart,softThreshold,stacking,step,threshold,
+ *          turboThreshold,zoneAxis,zones
  * @product highcharts
  * @optionparent plotOptions.pie
  */
@@ -61,12 +66,9 @@ seriesType('pie', 'line', {
 	 */
 	center: [null, null],
 
-	/**
-	 */
 	clip: false,
 
-	/**
-	 */
+	/** @ignore */
 	colorByPoint: true, // always true for pies
 
 	/**
@@ -90,9 +92,8 @@ seriesType('pie', 'line', {
 		 * The color of the line connecting the data label to the pie slice.
 		 * The default color is the same as the point's color.
 		 * 
-		 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-		 * style/style-by-css), the connector stroke is given in the `.highcharts-
-		 * data-label-connector` class.
+		 * In styled mode, the connector stroke is given in the
+		 * `.highcharts-data-label-connector` class.
 		 * 
 		 * @type {String}
 		 * @sample {highcharts} highcharts/plotoptions/pie-datalabels-connectorcolor/ Blue connectors
@@ -118,9 +119,8 @@ seriesType('pie', 'line', {
 		 * The width of the line connecting the data label to the pie slice.
 		 * 
 		 * 
-		 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-		 * style/style-by-css), the connector stroke width is given in the `.
-		 * highcharts-data-label-connector` class.
+		 * In styled mode, the connector stroke width is given in the
+		 * `.highcharts-data-label-connector` class.
 		 * 
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/pie-datalabels-connectorwidth-disabled/ Disable the connector
@@ -153,8 +153,6 @@ seriesType('pie', 'line', {
 		 */
 		enabled: true,
 
-		/**
-		 */
 		formatter: function () { // #2945
 			return this.point.isNull ? undefined : this.point.name;
 		},
@@ -171,8 +169,6 @@ seriesType('pie', 'line', {
 		 * @apioption plotOptions.pie.dataLabels.softConnector
 		 */
 
-		/**
-		 */
 		x: 0
 		// y: 0
 	},
@@ -224,12 +220,9 @@ seriesType('pie', 'line', {
 	 * @apioption plotOptions.pie.innerSize
 	 */
 
-	/**
-	 */
 	legendType: 'point',
 
-	/**
-	 */
+	/**	 @ignore */
 	marker: null, // point options are specified in the base options
 
 	/**
@@ -302,18 +295,11 @@ seriesType('pie', 'line', {
 	 * is false and `tooltip.shared` is false, the tooltip will be hidden
 	 * when moving the mouse between series.
 	 * 
-	 * @type {Boolean}
-	 * @default false
 	 * @product highcharts
 	 */
 	stickyTracking: false,
 
-	/**
-	 */
 	tooltip: {
-
-		/**
-		 */
 		followPointer: true
 	},
 	/*= if (build.classic) { =*/
@@ -324,9 +310,7 @@ seriesType('pie', 'line', {
 	 * together with a `borderWidth` to fill drawing gaps created by antialiazing
 	 * artefacts in borderless pies.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the border stroke is given in the `.highcharts-
-	 * point` class.
+	 * In styled mode, the border stroke is given in the `.highcharts-point` class.
 	 * 
 	 * @type {Color}
 	 * @sample {highcharts} highcharts/plotoptions/pie-bordercolor-black/ Black border
@@ -343,9 +327,7 @@ seriesType('pie', 'line', {
 	 * keep the border width at 0.5 or 1, but set the `borderColor` to
 	 * `null` instead.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the border stroke width is given in the `.highcharts-
-	 * point` class.
+	 * In styled mode, the border stroke width is given in the `.highcharts-point` class.
 	 * 
 	 * @type {Number}
 	 * @sample {highcharts} highcharts/plotoptions/pie-borderwidth/ 3px border
@@ -354,8 +336,6 @@ seriesType('pie', 'line', {
 	 */
 	borderWidth: 1,
 
-	/**
-	 */
 	states: {
 
 		/**
@@ -368,8 +348,7 @@ seriesType('pie', 'line', {
 			 * How much to brighten the point on interaction. Requires the main
 			 * color to be defined in hex or rgb(a) format.
 			 * 
-			 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-			 * style/style-by-css), the hover brightness is by default replaced
+			 * In styled mode, the hover brightness is by default replaced
 			 * by a fill-opacity given in the `.highcharts-point-hover` class.
 			 * 
 			 * @type {Number}
@@ -379,8 +358,6 @@ seriesType('pie', 'line', {
 			 */
 			brightness: 0.1,
 
-			/**
-			 */
 			shadow: false
 		}
 	}
@@ -834,11 +811,11 @@ seriesType('pie', 'line', {
 });
 
 /**
- * A `pie` series. If the [type](#series<pie>.type) option is not specified,
+ * A `pie` series. If the [type](#series.pie.type) option is not specified,
  * it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * pie](#plotOptions.pie).
  * 
@@ -856,14 +833,17 @@ seriesType('pie', 'line', {
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `y` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<pie>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.pie.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
+ *  ```js
+ *     data: [{
  *     y: 1,
  *     name: "Point2",
  *     color: "#00FF00"
@@ -874,7 +854,7 @@ seriesType('pie', 'line', {
  * }]</pre>
  * 
  * @type {Array<Object|Number>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker,x
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

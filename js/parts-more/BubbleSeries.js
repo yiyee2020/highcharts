@@ -39,22 +39,11 @@ var arrayMax = H.arrayMax,
  */
 seriesType('bubble', 'scatter', {
 
-	/**
-	 */
 	dataLabels: {
-
-		/**
-		 */
 		formatter: function () { // #2945
 			return this.point.z;
 		},
-
-		/**
-		 */
 		inside: true,
-
-		/**
-		 */
 		verticalAlign: 'middle'
 	},
 	
@@ -65,7 +54,8 @@ seriesType('bubble', 'scatter', {
 	 * bubble.negativeColor).
 	 * 
 	 * @type {Boolean}
-	 * @sample {highcharts} highcharts/plotoptions/bubble-negative/ Negative bubbles
+	 * @sample {highcharts} highcharts/plotoptions/bubble-negative/
+	 *         Negative bubbles
 	 * @default true
 	 * @since 3.0
 	 * @product highcharts
@@ -78,44 +68,32 @@ seriesType('bubble', 'scatter', {
 	 * of the markers. Other series types, like column series, don't have
 	 * markers, but have visual options on the series level instead.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the markers can be styled with the `.highcharts-
-	 * point`, `.highcharts-point-hover` and `.highcharts-point-select`
+	 * In styled mode, the markers can be styled with the `.highcharts-point`, `.highcharts-point-hover` and `.highcharts-point-select`
 	 * class names.
 	 * 
 	 * @type {Object}
 	 * @extends plotOptions.series.marker
-	 * @excluding radius
+	 * @excluding enabled,height,radius,width
 	 * @product highcharts
 	 */
 	marker: {
 		/*= if (build.classic) { =*/
-		// fillOpacity: 0.5,
-
-		/**
-		 */
 		lineColor: null, // inherit from series.color
-
-		/**
-		 */
 		lineWidth: 1,
-		/*= } =*/
-		// Avoid offset in Point.setState
-
 		/**
+		 * The fill opacity of the bubble markers.
+		 * @type {Number}
+		 * @default 0.5
+		 * @product highcharts
+		 */
+		/*= } =*/
+		/**
+		 * In bubble charts, the radius is overridden and determined based on 
+		 * the point's data value.
 		 */
 		radius: null,
-
-		/**
-		 */
 		states: {
-
-			/**
-			 */
 			hover: {
-
-				/**
-				 */
 				radiusPlus: 0
 			}
 		},
@@ -124,9 +102,9 @@ seriesType('bubble', 'scatter', {
 		 * A predefined shape or symbol for the marker. Possible values are
 		 * "circle", "square", "diamond", "triangle" and "triangle-down".
 		 * 
-		 * Additionally, the URL to a graphic can be given on the form `url(graphic.
-		 * png)`. Note that for the image to be applied to exported charts,
-		 * its URL needs to be accessible by the export server.
+		 * Additionally, the URL to a graphic can be given on the form
+		 * `url(graphic.png)`. Note that for the image to be applied to exported
+		 * charts, its URL needs to be accessible by the export server.
 		 * 
 		 * Custom callbacks for symbol path generation can also be added to
 		 * `Highcharts.SVGRenderer.prototype.symbols`. The callback is then
@@ -134,8 +112,10 @@ seriesType('bubble', 'scatter', {
 		 * 
 		 * @validvalue ["circle", "square", "diamond", "triangle", "triangle-down"]
 		 * @type {String}
-		 * @sample {highcharts} highcharts/plotoptions/bubble-symbol/ Bubble chart with various symbols
-		 * @sample {highcharts} highcharts/plotoptions/series-marker-symbol/ General chart with predefined, graphic and custom markers
+		 * @sample {highcharts} highcharts/plotoptions/bubble-symbol/
+		 *         Bubble chart with various symbols
+		 * @sample {highcharts} highcharts/plotoptions/series-marker-symbol/
+		 *         General chart with predefined, graphic and custom markers
 		 * @default circle
 		 * @since 5.0.11
 		 * @product highcharts
@@ -176,7 +156,8 @@ seriesType('bubble', 'scatter', {
 	 * zThreshold) setting, this color is used.
 	 * 
 	 * @type {Color}
-	 * @sample {highcharts} highcharts/plotoptions/bubble-negative/ Negative bubbles
+	 * @sample {highcharts} highcharts/plotoptions/bubble-negative/
+	 *         Negative bubbles
 	 * @default null
 	 * @since 3.0
 	 * @product highcharts
@@ -230,36 +211,18 @@ seriesType('bubble', 'scatter', {
 	 */
 	softThreshold: false,
 
-	/**
-	 */
 	states: {
-
-		/**
-		 */
 		hover: {
-
-			/**
-			 */
 			halo: {
-
-				/**
-				 */
 				size: 5
 			}
 		}
 	},
 
-	/**
-	 */
 	tooltip: {
-
-		/**
-		 */
 		pointFormat: '({point.x}, {point.y}), Size: {point.z}'
 	},
 
-	/**
-	 */
 	turboThreshold: 0,
 
 	/**
@@ -277,8 +240,6 @@ seriesType('bubble', 'scatter', {
 	 */
 	zThreshold: 0,
 
-	/**
-	 */
 	zoneAxis: 'z'
 
 	/**
@@ -580,11 +541,11 @@ Axis.prototype.beforePadding = function () {
 
 
 /**
- * A `bubble` series. If the [type](#series<bubble>.type) option is
+ * A `bubble` series. If the [type](#series.bubble.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * bubble](#plotOptions.bubble).
  * 
@@ -607,33 +568,37 @@ Axis.prototype.beforePadding = function () {
  * either starting at 0 and incremented by 1, or from `pointStart` and
  * `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 1, 2],
- *     [1, 5, 5],
- *     [2, 0, 2]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 1, 2],
+ *         [1, 5, 5],
+ *         [2, 0, 2]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<bubble>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.bubble.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 1,
- *     z: 1,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 5,
- *     z: 4,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 1,
+ *         z: 1,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 5,
+ *         z: 4,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

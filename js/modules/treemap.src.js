@@ -128,6 +128,7 @@ seriesType('treemap', 'scatter', {
 	showInLegend: false,
 
 	/**
+	 * @ignore
 	 */
 	marker: false,
 
@@ -137,97 +138,17 @@ seriesType('treemap', 'scatter', {
 	 * @product highcharts
 	 */
 	dataLabels: {
-
-		/**
-		 * Enable or disable the data labels.
-		 * 
-		 * @type {Boolean}
-		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-enabled/ Data labels enabled
-		 * @default true
-		 * @since 4.1.0
-		 * @product highcharts
-		 */
 		enabled: true,
-
-		/**
-		 * Whether to defer displaying the data labels until the initial series
-		 * animation has finished.
-		 * 
-		 * @type {Boolean}
-		 * @default false
-		 * @since 4.1.0
-		 * @product highcharts
-		 */
 		defer: false,
-
-		/**
-		 * The vertical alignment of a data label. Can be one of top, middle
-		 * or bottom. The default value depends on the data, for instance
-		 * in a column chart, the label is above positive values and below
-		 * negative values.
-		 * 
-		 * @type {String}
-		 * @default middle
-		 * @since 4.1.0
-		 * @product highcharts
-		 */
 		verticalAlign: 'middle',
-
-		/**
-		 */
 		formatter: function () { // #2945
 			return this.point.name || this.point.id;
 		},
-
-		/**
-		 * Whether to align the data label inside the box or to the actual
-		 * value point.
-		 * 
-		 * @type {Boolean}
-		 * @default true
-		 * @since 4.1.0
-		 * @product highcharts
-		 */
 		inside: true
 	},
 
-	/**
-	 * @extends plotOptions.heatmap.tooltip
-	 * @since 4.1.0
-	 * @product highcharts
-	 */
 	tooltip: {
-
-		/**
-		 * The HTML of the tooltip header line. Variables are enclosed by
-		 * curly brackets. Available variables are point.key, series.name,
-		 * series.color and other members from the point and series objects.
-		 * The point.key variable contains the category name, x value or
-		 * datetime string depending on the type of axis. For datetime axes,
-		 * the point.key date format can be set using tooltip.xDateFormat.
-		 * 
-		 * @type {String}
-		 * @sample {highcharts} highcharts/tooltip/footerformat/ A HTML table in the tooltip
-		 * @default ""
-		 * @since 4.1.0
-		 * @product highcharts
-		 */
 		headerFormat: '',
-
-		/**
-		 * The HTML of the point's line in the tooltip. Variables are enclosed
-		 * by curly brackets. Available variables are point.x, point.y, series.
-		 * name and series.color and other properties on the same form. Furthermore,
-		 * point.y can be extended by the tooltip.yPrefix and tooltip.ySuffix
-		 * variables. This can also be overridden for each series, which makes
-		 * it a good hook for displaying units.
-		 * 
-		 * @type {String}
-		 * @sample {highcharts} highcharts/tooltip/pointformat/ A different point format with value suffix
-		 * @default "&#60;b&#62;{point.name}&#60;/b&#62;: {point.value}&#60;/b&#62;&#60;br/&#62;"
-		 * @since 4.1.0
-		 * @product highcharts
-		 */
 		pointFormat: '<b>{point.name}</b>: {point.value}</b><br/>'
 	},
 
@@ -301,24 +222,40 @@ seriesType('treemap', 'scatter', {
 	levelIsConstant: true,
 
 	/**
+	 * Options for the button appearing when drilling down in a treemap.
 	 */
 	drillUpButton: {
 
 		/**
+		 * The position of the button.
 		 */
 		position: { 
 
 			/**
+			 * Horizontal alignment of the button.
+			 * @validvalues ["left", "center", "right"]
 			 */
 			align: 'right',
 
 			/**
+			 * Horizontal offset of the button.
+			 * @default -10
+			 * @type {Number}
 			 */
 			x: -10,
 
 			/**
+			 * Vertical offset of the button.
 			 */
 			y: 10
+
+			/**
+			 * Vertical alignment of the button.
+			 *
+			 * @default top
+			 * @validvalues ["top", "middle", "bottom"]
+			 * @apioption plotOptions.treemap.drillUpButton.position.verticalAlign
+			 */
 		}
 	},
 	/*= if (build.classic) { =*/
@@ -334,6 +271,7 @@ seriesType('treemap', 'scatter', {
 	borderColor: '${palette.neutralColor10}',
 
 	/**
+	 * The width of the border surrounding each tree map item.
 	 */
 	borderWidth: 1,
 
@@ -366,10 +304,16 @@ seriesType('treemap', 'scatter', {
 		hover: {
 
 			/**
+			 * The border color for the hovered state.
 			 */
 			borderColor: '${palette.neutralColor40}',
 
 			/**
+			 * Brightness for the hovered point. Defaults to 0 if the heatmap
+			 * series is loaded, otherwise 0.1.
+			 *
+			 * @default null
+			 * @type {Number}
 			 */
 			brightness: seriesTypes.heatmap ? 0 : 0.1,
 
@@ -385,6 +329,7 @@ seriesType('treemap', 'scatter', {
 			opacity: 0.75,
 
 			/**
+			 * The shadow option for hovered state.
 			 */
 			shadow: false
 		}
@@ -497,7 +442,14 @@ seriesType('treemap', 'scatter', {
 	getSymbol: noop,
 	parallelArrays: ['x', 'y', 'value', 'colorValue'],
 	colorKey: 'colorValue', // Point color option key
-	translateColors: seriesTypes.heatmap && seriesTypes.heatmap.prototype.translateColors,
+	translateColors: (
+		seriesTypes.heatmap &&
+		seriesTypes.heatmap.prototype.translateColors
+	),
+	colorAttribs: (
+		seriesTypes.heatmap &&
+		seriesTypes.heatmap.prototype.colorAttribs
+	),
 	trackerGroups: ['group', 'dataLabelsGroup'],
 	/**
 	 * Creates an object map from parent id to childrens index.
@@ -1126,6 +1078,17 @@ seriesType('treemap', 'scatter', {
 		// Call standard drawPoints
 		seriesTypes.column.prototype.drawPoints.call(this);
 
+		/*= if (!build.classic) { =*/
+		// In styled mode apply point.color. Use CSS, otherwise the fill
+		// used in the style sheet will take precedence over the fill
+		// attribute.
+		if (this.colorAttribs) { // Heatmap is loaded
+			each(this.points, function (point) {
+				point.graphic.css(this.colorAttribs(point));
+			}, this);
+		}
+		/*= } =*/
+
 		// If drillToNode is allowed, set a point cursor on clickables & add drillId to point 
 		if (series.options.allowDrillToNode) {
 			each(points, function (point) {
@@ -1312,11 +1275,11 @@ seriesType('treemap', 'scatter', {
 
 
 /**
- * A `treemap` series. If the [type](#series<treemap>.type) option is
+ * A `treemap` series. If the [type](#series.treemap.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * treemap](#plotOptions.treemap).
  * 
@@ -1334,25 +1297,29 @@ seriesType('treemap', 'scatter', {
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `value` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<treemap>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.treemap.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     value: 7,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     value: 2,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         value: 9,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         value: 6,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Number>}
- * @extends series<heatmap>.data
+ * @extends series.heatmap.data
  * @excluding x,y
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

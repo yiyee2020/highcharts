@@ -28,6 +28,7 @@ seriesType('funnel', 'pie',
  *
  * @sample highcharts/demo/funnel/ Funnel demo
  * @extends {plotOptions.pie}
+ * @excluding size
  * @product highcharts
  * @optionparent plotOptions.funnel
  */
@@ -107,42 +108,29 @@ seriesType('funnel', 'pie',
 	 */
 	reversed: false,
 
-	/**
-	 */
+	/** @ignore */
 	size: true, // to avoid adapting to data label size in Pie.drawDataLabels
 
 	/*= if (build.classic) { =*/
 	// Presentational
 
-	/**
-	 */
 	dataLabels: {
-		//position: 'right',
-
-		/**
-		 */
 		connectorWidth: 1
-		//connectorColor: null
 	},
 
 	/**
+	 * Options for the series states.
+	 *
+	 * @optionparent plotOptions.funnel.states
 	 */
 	states: {
 
 		/**
+		 * Options for a selected funnel item.
 		 */
 		select: {
-
-			/**
-			 */
 			color: '${palette.neutralColor20}',
-
-			/**
-			 */
 			borderColor: '${palette.neutralColor100}',
-
-			/**
-			 */
 			shadow: false
 		}
 	}
@@ -381,11 +369,11 @@ seriesType('funnel', 'pie',
 
 
 /**
- * A `funnel` series. If the [type](#series<funnel>.type) option is
+ * A `funnel` series. If the [type](#series.funnel.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * funnel](#plotOptions.funnel).
  * 
@@ -403,25 +391,29 @@ seriesType('funnel', 'pie',
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `y` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<funnel>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.funnel.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     y: 3,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     y: 1,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         y: 3,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         y: 1,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Number>}
- * @extends series<pie>.data
+ * @extends series.pie.data
  * @excluding sliced
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y
@@ -483,11 +475,11 @@ seriesType('pyramid', 'funnel',
 });
 
 /**
- * A `pyramid` series. If the [type](#series<pyramid>.type) option is
+ * A `pyramid` series. If the [type](#series.pyramid.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * pyramid](#plotOptions.pyramid).
  * 
@@ -505,25 +497,29 @@ seriesType('pyramid', 'funnel',
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `y` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<pyramid>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.pyramid.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     y: 6,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     y: 7,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         y: 9,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         y: 6,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Number>}
- * @extends series<pie>.data
+ * @extends series.pie.data
  * @excluding sliced
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

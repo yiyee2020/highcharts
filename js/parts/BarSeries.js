@@ -28,11 +28,11 @@ seriesType('bar', 'column', null, {
 
 
 /**
- * A `bar` series. If the [type](#series<bar>.type) option is not specified,
+ * A `bar` series. If the [type](#series.bar.type) option is not specified,
  * it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * bar](#plotOptions.bar).
  * 
@@ -53,37 +53,43 @@ seriesType('bar', 'column', null, {
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 5],
- *     [1, 10],
- *     [2, 3]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 5],
+ *         [1, 10],
+ *         [2, 3]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<bar>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.bar.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 1,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 10,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 1,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 10,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
- * @extends series<column>.data
+ * @extends series.column.data
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y
  * @sample {highcharts} highcharts/series/data-array-of-arrays-datetime/ Arrays of datetime x and y

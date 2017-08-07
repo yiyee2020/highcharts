@@ -49,8 +49,6 @@ var candlestickOptions = {
 	 * @apioption plotOptions.candlestick.dataGrouping.approximation
 	 */
 
-	/**
-	 */
 	states: {
 
 		/**
@@ -71,24 +69,23 @@ var candlestickOptions = {
 	},
 
 	/**
+	 * @extends {plotOptions.ohlc.tooltip}
 	 */
 	tooltip: defaultPlotOptions.ohlc.tooltip,
 
-	/**
-	 */
 	threshold: null,
 	/*= if (build.classic) { =*/
 
 	/**
 	 * The color of the line/border of the candlestick.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the line stroke can be set with the `.highcharts-
+	 * In styled mode, the line stroke can be set with the `.highcharts-
 	 * candlestick-series .highcahrts-point` rule.
 	 * 
 	 * @type {Color}
 	 * @see [upLineColor](#plotOptions.candlestick.upLineColor)
-	 * @sample {highstock} stock/plotoptions/candlestick-linecolor/ Candlestick line colors
+	 * @sample {highstock} stock/plotoptions/candlestick-linecolor/
+	 *         Candlestick line colors
 	 * @default #000000
 	 * @product highstock
 	 */
@@ -98,8 +95,7 @@ var candlestickOptions = {
 	 * The pixel width of the candlestick line/border. Defaults to `1`.
 	 * 
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the line stroke width can be set with the `.
+	 * In styled mode, the line stroke width can be set with the `.
 	 * highcharts-candlestick-series .highcahrts-point` rule.
 	 * 
 	 * @type {Number}
@@ -111,8 +107,7 @@ var candlestickOptions = {
 	/**
 	 * The fill color of the candlestick when values are rising.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the up color can be set with the `.highcharts-
+	 * In styled mode, the up color can be set with the `.highcharts-
 	 * candlestick-series .highcharts-point-up` rule.
 	 * 
 	 * @type {Color}
@@ -123,8 +118,6 @@ var candlestickOptions = {
 	 */
 	upColor: '${palette.backgroundColor}',
 
-	/**
-	 */
 	stickyTracking: true
 	
 	/**
@@ -268,12 +261,12 @@ seriesType('candlestick', 'ohlc', merge(
 });
 
 /**
- * A `candlestick` series. If the [type](#series<candlestick>.type)
+ * A `candlestick` series. If the [type](#series.candlestick.type)
  * option is not specified, it is inherited from [chart.type](#chart.
  * type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * candlestick](#plotOptions.candlestick).
  * 
@@ -296,37 +289,41 @@ seriesType('candlestick', 'ohlc', merge(
  * either starting at 0 and incremented by 1, or from `pointStart`
  * and `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 7, 2, 0, 4],
- *     [1, 1, 4, 2, 8],
- *     [2, 3, 3, 9, 3]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 7, 2, 0, 4],
+ *         [1, 1, 4, 2, 8],
+ *         [2, 3, 3, 9, 3]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<candlestick>.
+ * points exceeds the series' [turboThreshold](#series.candlestick.
  * turboThreshold), this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     open: 9,
- *     high: 2,
- *     low: 4,
- *     close: 6,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     open: 1,
- *     high: 4,
- *     low: 7,
- *     close: 7,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         open: 9,
+ *         high: 2,
+ *         low: 4,
+ *         close: 6,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         open: 1,
+ *         high: 4,
+ *         low: 7,
+ *         close: 7,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<ohlc>.data
+ * @extends series.ohlc.data
  * @excluding y
  * @product highstock
  * @apioption series.candlestick.data

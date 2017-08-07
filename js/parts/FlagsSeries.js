@@ -66,10 +66,7 @@ seriesType('flags', 'column', {
 	 * @apioption plotOptions.flags.onSeries
 	 */
 
-	/**
-	 */
 	pointRange: 0, // #673
-	//radius: 2,
 
 	/**
 	 * The shape of the marker. Can be one of "flag", "circlepin", "squarepin",
@@ -118,14 +115,9 @@ seriesType('flags', 'column', {
 	 * @product highstock
 	 */
 	tooltip: {
-
-		/**
-		 */
 		pointFormat: '{point.text}<br/>'
 	},
 
-	/**
-	 */
 	threshold: null,
 
 	/**
@@ -165,14 +157,14 @@ seriesType('flags', 'column', {
 	/*= if (build.classic) { =*/
 
 	/**
+	 * The fill color for the flags.
 	 */
 	fillColor: '${palette.backgroundColor}',
 	
 	/**
 	 * The color of the line/border of the flag.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the stroke is set in the `.highcharts-flag-series
+	 * In styled mode, the stroke is set in the `.highcharts-flag-series
 	 * .highcharts-point` rule.
 	 * 
 	 * @type {Color}
@@ -182,7 +174,7 @@ seriesType('flags', 'column', {
 	 */
 
 	/**
-	 * The pixel width of the candlestick line/border.
+	 * The pixel width of the flag's line/border.
 	 * 
 	 * @type {Number}
 	 * @default 1
@@ -190,8 +182,6 @@ seriesType('flags', 'column', {
 	 */
 	lineWidth: 1,
 
-	/**
-	 */
 	states: {
 
 		/**
@@ -223,8 +213,7 @@ seriesType('flags', 'column', {
 	/**
 	 * The text styles of the flag.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the styles are set in the `.highcharts-flag-
+	 * In styled mode, the styles are set in the `.highcharts-flag-
 	 * series .highcharts-point` rule.
 	 * 
 	 * @type {CSSObject}
@@ -232,13 +221,7 @@ seriesType('flags', 'column', {
 	 * @product highstock
 	 */
 	style: {
-
-		/**
-		 */
 		fontSize: '11px',
-
-		/**
-		 */
 		fontWeight: 'bold'
 	}
 	/*= } =*/
@@ -594,11 +577,11 @@ if (Renderer === VMLRenderer) {
 /*= } =*/
 
 /**
- * A `flags` series. If the [type](#series<flags>.type) option is not
+ * A `flags` series. If the [type](#series.flags.type) option is not
  * specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * flags](#plotOptions.flags).
  * 
@@ -615,10 +598,11 @@ if (Renderer === VMLRenderer) {
  * 
  * 1.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<flags>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.flags.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
+ *  ```js
+ *     data: [{
  *     x: 1,
  *     title: "A",
  *     text: "First event"
@@ -629,7 +613,7 @@ if (Renderer === VMLRenderer) {
  * }]</pre>
  * 
  * @type {Array<Object>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding y,dataLabels,marker,name
  * @product highstock
  * @apioption series.flags.data

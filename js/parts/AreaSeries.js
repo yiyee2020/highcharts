@@ -40,9 +40,7 @@ seriesType('area', 'line', {
 	 * is used with the series' `fillOpacity`.
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the fill color can be set with the `.highcharts-
-	 * area` class name.
+	 * @see In styled mode, the fill color can be set with the `.highcharts-area` class name.
 	 * @sample {highcharts} highcharts/plotoptions/area-fillcolor-default/ Null by default
 	 * @sample {highcharts} highcharts/plotoptions/area-fillcolor-gradient/ Gradient
 	 * @default null
@@ -58,9 +56,7 @@ seriesType('area', 'line', {
 	 * of the `color` setting.
 	 * 
 	 * @type {Number}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the fill opacity can be set with the `.highcharts-
-	 * area` class name.
+	 * @see In styled mode, the fill opacity can be set with the `.highcharts-area` class name.
 	 * @sample {highcharts} highcharts/plotoptions/area-fillopacity/ Automatic fill color and fill opacity of 0.1
 	 * @default {highcharts} 0.75
 	 * @default {highstock} .75
@@ -74,9 +70,7 @@ seriesType('area', 'line', {
 	 * separate color for the line without altering the `fillColor`.
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the line stroke can be set with the `.highcharts-
-	 * graph` class name.
+	 * @see In styled mode, the line stroke can be set with the `.highcharts-graph` class name.
 	 * @sample {highcharts} highcharts/plotoptions/area-linecolor/ Dark gray line
 	 * @default null
 	 * @product highcharts highstock
@@ -87,8 +81,7 @@ seriesType('area', 'line', {
 	 * A separate color for the negative part of the area.
 	 * 
 	 * @type {Color}
-	 * @see [negativeColor](#plotOptions.area.negativeColor). In [styled mode](http://www.
-	 * highcharts.com/docs/chart-design-and-style/style-by-css), a negative
+	 * @see [negativeColor](#plotOptions.area.negativeColor). In styled mode, a negative
 	 * color is set with the `.highcharts-negative` class name ([view live
 	 * demo](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/series-
 	 * negative-color/)).
@@ -443,11 +436,11 @@ seriesType('area', 'line', {
 });
 
 /**
- * A `area` series. If the [type](#series<area>.type) option is not
+ * A `area` series. If the [type](#series.area.type) option is not
  * specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * area](#plotOptions.area).
  * 
@@ -468,37 +461,43 @@ seriesType('area', 'line', {
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 9],
- *     [1, 7],
- *     [2, 6]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 9],
+ *         [1, 7],
+ *         [2, 6]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<area>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.area.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 9,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 6,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 9,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 6,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y
  * @sample {highcharts} highcharts/series/data-array-of-arrays-datetime/ Arrays of datetime x and y

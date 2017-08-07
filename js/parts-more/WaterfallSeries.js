@@ -28,12 +28,7 @@ var correctFloat = H.correctFloat,
  */
 seriesType('waterfall', 'column', {
 
-	/**
-	 */
 	dataLabels: {
-
-		/**
-		 */
 		inside: true
 	},
 	/*= if (build.classic) { =*/
@@ -51,9 +46,7 @@ seriesType('waterfall', 'column', {
 	 * The color of the line that connects columns in a waterfall series.
 	 * 
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the stroke can be set with the `.highcharts-
-	 * graph` class.
+	 * In styled mode, the stroke can be set with the `.highcharts-graph` class.
 	 * 
 	 * @type {Color}
 	 * @default #333333
@@ -78,8 +71,7 @@ seriesType('waterfall', 'column', {
 	 * *   LongDashDot
 	 * *   LongDashDotDot
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the stroke dash-array can be set with the `.
+	 * In styled mode, the stroke dash-array can be set with the `.
 	 * highcharts-graph` class.
 	 * 
 	 * @type {String}
@@ -92,9 +84,7 @@ seriesType('waterfall', 'column', {
 	/**
 	 * The color of the border of each waterfall column.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the border stroke can be set with the `.highcharts-
-	 * point` class.
+	 * In styled mode, the border stroke can be set with the `.highcharts-point` class.
 	 * 
 	 * @type {Color}
 	 * @default #333333
@@ -103,16 +93,8 @@ seriesType('waterfall', 'column', {
 	 */
 	borderColor: '${palette.neutralColor80}',
 
-	/**
-	 */
 	states: {
-
-		/**
-		 */
 		hover: {
-
-			/**
-			 */
 			lineWidthPlus: 0 // #3126
 		}
 	}
@@ -122,8 +104,7 @@ seriesType('waterfall', 'column', {
 	 * The color used specifically for positive point columns. When not
 	 * specified, the general series color is used.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the waterfall colors can be set with the
+	 * In styled mode, the waterfall colors can be set with the
 	 * `.highcharts-point-negative`, `.highcharts-sum` and
 	 * `.highcharts-intermediate-sum` classes.
 	 * 
@@ -454,12 +435,12 @@ seriesType('waterfall', 'column', {
 });
 
 /**
- * A `waterfall` series. If the [type](#series<waterfall>.type) option
+ * A `waterfall` series. If the [type](#series.waterfall.type) option
  * is not specified, it is inherited from [chart.type](#chart.type).
  * 
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * waterfall](#plotOptions.waterfall).
  * 
@@ -480,37 +461,43 @@ seriesType('waterfall', 'column', {
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 7],
- *     [1, 8],
- *     [2, 3]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 7],
+ *         [1, 8],
+ *         [2, 3]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<waterfall>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.waterfall.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 8,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 8,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 8,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 8,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

@@ -27,14 +27,12 @@ var addEvent = H.addEvent,
 
 /**
  * 
- * The scrollbar is a means of panning over the X axis of a chart.
+ * The scrollbar is a means of panning over the X axis of a stock chart.
  * 
- * In [styled mode](http://www.highcharts.com/docs/chart-design-
- * and-style/style-by-css), all the presentational options for the
- * scrollbar are replaced by the classes `.highcharts-scrollbar-
- * thumb`, `.highcharts-scrollbar-arrow`, `.highcharts-scrollbar-
- * button`, `.highcharts-scrollbar-rifles` and `.highcharts-scrollbar-
- * track`.
+ * In styled mode, all the presentational options for the
+ * scrollbar are replaced by the classes `.highcharts-scrollbar-thumb`,
+ * `.highcharts-scrollbar-arrow`, `.highcharts-scrollbar-button`,
+ * `.highcharts-scrollbar-rifles` and `.highcharts-scrollbar-track`.
  * 
  * @product highstock
  * @optionparent scrollbar
@@ -86,6 +84,8 @@ var defaultScrollbarOptions =  {
 	liveRedraw: svg && !isTouchDevice,
 
 	/**
+	 * The margin between the scrollbar and its axis when the scrollbar is
+	 * applied directly to an axis.
 	 */
 	margin: 10,
 
@@ -101,11 +101,10 @@ var defaultScrollbarOptions =  {
 	//showFull: true,
 	//size: null,
 
-	/**
-	 */
 	step: 0.2,
 
 	/**
+	 * The z index of the scrollbar group.
 	 */
 	zIndex: 3,
 	/*= if (build.classic) { =*/

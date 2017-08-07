@@ -90,7 +90,6 @@ H.setOptions({
 	 * com/docs/chart-concepts/accessibility).
 	 * 
 	 * @since 5.0.0
-	 * @product highcharts highstock highmaps
 	 */
 	accessibility: {
 
@@ -100,7 +99,6 @@ H.setOptions({
 		 * @type {Boolean}
 		 * @default true
 		 * @since 5.0.0
-		 * @product highcharts highstock highmaps
 		 */
 		enabled: true,
 
@@ -113,7 +111,6 @@ H.setOptions({
 		 * @type {Number|Boolean}
 		 * @default 30
 		 * @since 5.0.0
-		 * @product highcharts highstock highmaps
 		 */
 		pointDescriptionThreshold: 30, // set to false to disable
 
@@ -122,7 +119,6 @@ H.setOptions({
 		 * 
 		 * @type {Object}
 		 * @since 5.0.0
-		 * @product highcharts highstock highmaps
 		 */
 		keyboardNavigation: {
 
@@ -163,7 +159,6 @@ H.setOptions({
 		 * @type {Boolean}
 		 * @default false
 		 * @since 5.0.0
-		 * @product highcharts highstock highmaps
 		 * @apioption accessibility.describeSingleSeries
 		 */
 
@@ -214,7 +209,7 @@ H.setOptions({
 		 * reader user.
 		 * 
 		 * @type {Function}
-		 * @see [point.description](#series<line>.data.description)
+		 * @see [point.description](#series.line.data.description)
 		 * @since 5.0.0
 		 * @apioption accessibility.pointDescriptionFormatter
 		 */
@@ -277,6 +272,24 @@ H.setOptions({
  * @default undefined
  * @since 5.0.0
  * @apioption chart.typeDescription
+ */
+
+/**
+ * Keyboard navigation for the legend. Requires the Accessibility module.
+ * @since 5.0.14
+ * @apioption legend.keyboardNavigation
+ */
+
+/**
+ * Enable/disable keyboard navigation for the legend. Requires the Accessibility
+ * module.
+ * 
+ * @type {Boolean}
+ * @see [accessibility.keyboardNavigation](#accessibility.keyboardNavigation.
+ * enabled)
+ * @default true
+ * @since 5.0.13
+ * @apioption legend.keyboardNavigation.enabled
  */
 
 /**

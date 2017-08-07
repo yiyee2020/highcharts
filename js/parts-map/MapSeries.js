@@ -41,6 +41,7 @@ var supportsVectorEffect = doc.documentElement.style.vectorEffect !== undefined;
  *
  * @sample maps/demo/base/ Choropleth map
  * @extends {plotOptions.scatter}
+ * @excluding marker
  * @product highmaps
  * @optionparent plotOptions.map
  */
@@ -59,17 +60,13 @@ seriesType('map', 'scatter', {
 	 */
 	allAreas: true,
 
-
-	/**
-	 */
 	animation: false, // makes the complex shapes slow
 
 	/**
 	 * The color to apply to null points.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the null point fill is set in the `.highcharts-
-	 * null-point` class.
+	 * In styled mode, the null point fill is set in the
+	 * `.highcharts-null-point` class.
 	 * 
 	 * @type {Color}
 	 * @sample {highmaps} maps/demo/all-areas-as-null/ Null color
@@ -92,9 +89,7 @@ seriesType('map', 'scatter', {
 	/**
 	 * The border color of the map areas.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the border stroke is given in the `.highcharts-
-	 * point` class.
+	 * In styled mode, the border stroke is given in the `.highcharts-point` class.
 	 * 
 	 * @type {Color}
 	 * @sample {highmaps} maps/plotoptions/series-border/ Borders demo
@@ -107,9 +102,7 @@ seriesType('map', 'scatter', {
 	/**
 	 * The border width of each map area.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the border stroke width is given in the `.highcharts-
-	 * point` class.
+	 * In styled mode, the border stroke width is given in the `.highcharts-point` class.
 	 * 
 	 * @type {Number}
 	 * @sample {highmaps} maps/plotoptions/series-border/ Borders demo
@@ -130,12 +123,9 @@ seriesType('map', 'scatter', {
 	 * @apioption plotOptions.series.colorAxis
 	 */
 	
-	/**
-	 */
+	/** @ignore */
 	marker: null,
 
-	/**
-	 */
 	stickyTracking: false,
 
 	/**
@@ -163,56 +153,25 @@ seriesType('map', 'scatter', {
 	 */
 	joinBy: 'hc-key',
 
-	/**
-	 */
 	dataLabels: {
-
-		/**
-		 */
 		formatter: function () { // #2945
 			return this.point.value;
 		},
-
-		/**
-		 */
 		inside: true, // for the color
-
-		/**
-		 */
 		verticalAlign: 'middle',
-
-		/**
-		 */
 		crop: false,
-
-		/**
-		 */
 		overflow: false,
-
-		/**
-		 */
 		padding: 0
 	},
 
-	/**
-	 */
+	/** @ignore */
 	turboThreshold: 0,
 
-	/**
-	 */
 	tooltip: {
-
-		/**
-		 */
 		followPointer: true,
-
-		/**
-		 */
 		pointFormat: '{point.name}: {point.value}<br/>'
 	},
 
-	/**
-	 */
 	states: {
 
 		/**
@@ -240,9 +199,9 @@ seriesType('map', 'scatter', {
 			animation: true
 		},
 
-		/**
-		 */
 		hover: {
+
+			halo: null,
 
 			/**
 			 * The border color of the point in this state.
@@ -269,7 +228,7 @@ seriesType('map', 'scatter', {
 			 * @product highmaps
 			 * @apioption plotOptions.series.states.hover.brightness
 			 */
-			brightness: 0.2,
+			brightness: 0.2
 
 			/**
 			 * The color of the shape in this state
@@ -280,17 +239,9 @@ seriesType('map', 'scatter', {
 			 * @apioption plotOptions.series.states.hover.color
 			 */
 
-			/**
-			 */
-			halo: null
 		},
 
-		/**
-		 */
 		select: {
-
-			/**
-			 */
 			color: '${palette.neutralColor20}'
 		}
 	}
@@ -1055,11 +1006,11 @@ seriesType('map', 'scatter', {
  */
 
 /**
- * A `map` series. If the [type](#series<map>.type) option is not specified,
+ * A `map` series. If the [type](#series.map.type) option is not specified,
  * it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * map](#plotOptions.map).
  * 
@@ -1077,32 +1028,38 @@ seriesType('map', 'scatter', {
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `value` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `[hc-key, value]`. Example:
  * 
- * <pre>data: [
- *     ['us-ny', 0],
- *     ['us-mi', 5],
- *     ['us-tx', 3],
- *     ['us-ak', 5]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         ['us-ny', 0],
+ *         ['us-mi', 5],
+ *         ['us-tx', 3],
+ *         ['us-ak', 5]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<map>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.map.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     value: 6,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     value: 6,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         value: 6,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         value: 6,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object>}
  * @product highmaps

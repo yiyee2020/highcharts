@@ -112,8 +112,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * Pixel with of the graph line.
 	 * 
 	 * @type {Number}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the line stroke-width can be set with the
+	 * @see In styled mode, the line stroke-width can be set with the
 	 * `.highcharts-graph` class name.
 	 * @sample {highcharts} highcharts/plotoptions/series-linewidth-general/ On all series
 	 * @sample {highcharts} highcharts/plotoptions/series-linewidth-specific/ On one single series
@@ -154,7 +153,6 @@ H.Series = H.seriesType('line', null, { // base series options
 	 *         Map bubble
 	 * @default false
 	 * @since 1.2.0
-	 * @product highcharts highstock highmaps
 	 */
 	allowPointSelect: false,
 
@@ -224,10 +222,6 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * @default {highmaps} false
 	 */
 	animation: {
-
-
-		/**
-		 */
 		duration: 1000
 	},
 
@@ -245,8 +239,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * series it applies to the bars unless a color is specified per point.
 	 * The default value is pulled from the `options.colors` array.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the color can be defined by the [colorIndex](#plotOptions.
+	 * In styled mode, the color can be defined by the [colorIndex](#plotOptions.
 	 * series.colorIndex) option. Also, the series color can be set with
 	 * the `.highcharts-series`, `.highcharts-color-{n}`, `.highcharts-{type}-
 	 * series` or `.highcharts-series-{n}` class, or individual classes
@@ -270,8 +263,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 */
 	
 	/**
-	 * [Styled mode](http://www.highcharts.com/docs/chart-design-and-style/style-
-	 * by-css) only. A specific color index to use for the series, so its
+	 * Styled mode only. A specific color index to use for the series, so its
 	 * graphic representations are given the class name `highcharts-color-
 	 * {n}`.
 	 * 
@@ -302,8 +294,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * 
 	 * @validvalue [null, "default", "none", "help", "pointer", "crosshair"]
 	 * @type {String}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the series cursor can be set with the same classes
+	 * @see In styled mode, the series cursor can be set with the same classes
 	 * as listed under [series.color](#plotOptions.series.color).
 	 * @sample {highcharts} highcharts/plotoptions/series-cursor-line/
 	 *         On line graph
@@ -341,8 +332,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 *             "ShortDashDotDot", "Dot", "Dash" ,"LongDash", "DashDot",
 	 *             "LongDashDot", "LongDashDotDot"]
 	 * @type {String}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the [stroke dash-array](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/series-
+	 * @see In styled mode, the [stroke dash-array](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/series-
 	 * dashstyle/) can be set with the same classes as listed under [series.
 	 * color](#plotOptions.series.color).
 	 * @sample {highcharts} highcharts/plotoptions/series-dashstyle-all/
@@ -446,7 +436,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * from different sources.
 	 * 
 	 * @type {Array<String>}
-	 * @see [series.data](#series<line>.data)
+	 * @see [series.data](#series.line.data)
 	 * @sample {highcharts} highcharts/series/data-keys/ An extended data array with keys
 	 * @sample {highstock} highcharts/series/data-keys/ An extended data array with keys
 	 * @since 4.1.6
@@ -503,8 +493,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * [threshold](#plotOptions.series.threshold).
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), a negative color is applied by setting this
+	 * @see In styled mode, a negative color is applied by setting this
 	 * option to `true` combined with the `.highcharts-negative` class name
 	 * ([view live demo](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/series-
 	 * negative-color/)).
@@ -533,7 +522,8 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * If no x values are given for the points in a series, `pointInterval`
 	 * defines the interval of the x values. For example, if a series contains
 	 * one value every decade starting from year 0, set `pointInterval` to
-	 * 10. In true `datetime` axes, the `pointInterval` is set in milliseconds.
+	 * `10`. In true `datetime` axes, the `pointInterval` is set in
+	 * milliseconds.
 	 * 
 	 * It can be also be combined with `pointIntervalUnit` to draw irregular
 	 * time intervals.
@@ -785,7 +775,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * Defines the Axis on which the zones are applied.
 	 * 
 	 * @type {String}
-	 * @see [zones](#plotOption.series.zones)
+	 * @see [zones](#plotOptions.series.zones)
 	 * @sample {highcharts} highcharts/series/color-zones-zoneaxis-x/ Zones on the X-Axis
 	 * @sample {highstock} highcharts/series/color-zones-zoneaxis-x/ Zones on the X-Axis
 	 * @default y
@@ -811,7 +801,9 @@ H.Series = H.seriesType('line', null, { // base series options
 	 */
 
 	/**
-	 * @product highcharts highstock highmaps
+	 * General event handlers for the series items. These event hooks can also
+	 * be attached to the series at run time using the `Highcharts.addEvent`
+	 * function.
 	 */
 	events: {
 
@@ -937,9 +929,8 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * of the markers. Other series types, like column series, don't have
 	 * markers, but have visual options on the series level instead.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the markers can be styled with the `.highcharts-
-	 * point`, `.highcharts-point-hover` and `.highcharts-point-select`
+	 * In styled mode, the markers can be styled with the `.highcharts-point`,
+	 * `.highcharts-point-hover` and `.highcharts-point-select`
 	 * class names.
 	 * 
 	 * @product highcharts highstock
@@ -964,8 +955,8 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * or point's color is used.
 		 * 
 		 * @type {Color}
-		 * @sample {highcharts} highcharts/plotoptions/series-marker-fillcolor/ Inherit from series color (null)
-		 * @default #ffffff
+		 * @sample {highcharts} highcharts/plotoptions/series-marker-fillcolor/
+		 *         Inherit from series color (null)
 		 * @product highcharts highstock
 		 */
 		lineColor: '${palette.backgroundColor}',
@@ -1066,30 +1057,22 @@ H.Series = H.seriesType('line', null, { // base series options
 
 
 		/**
+		 * States for a single point marker.
 		 * @product highcharts highstock
 		 */
-		states: { // states for a single point
-
-
-
+		states: {
 			/**
+			 * The hover state for a single point marker.
 			 * @product highcharts highstock
 			 */
 			hover: {
 
-
-
 				/**
+				 * Animation when hovering over the marker.
 				 */
 				animation: {
-
-
-					/**
-					 */
 					duration: 50
 				},
-
-
 
 				/**
 				 * Enable or disable the point marker.
@@ -1358,9 +1341,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * Options for the series data labels, appearing next to each data
 	 * point.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the data labels can be styled wtih the `.highcharts-
-	 * data-label-box` and `.highcharts-data-label` class names ([see example](http://jsfiddle.
+	 * In styled mode, the data labels can be styled wtih the `.highcharts-data-label-box` and `.highcharts-data-label` class names ([see example](http://jsfiddle.
 	 * net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/series-
 	 * datalabels)).
 	 */
@@ -1423,8 +1404,7 @@ H.Series = H.seriesType('line', null, { // base series options
 		 */
 		
 		/**
-		 * A class name for the data label. Particularly in [styled mode](http://www.
-		 * highcharts.com/docs/chart-design-and-style/style-by-css), this can
+		 * A class name for the data label. Particularly in styled mode, this can
 		 * be used to give each series' or point's data label unique styling.
 		 * In addition to this option, a default color class name is added
 		 * so that we can give the labels a [contrast text shadow](http://jsfiddle.
@@ -1570,7 +1550,6 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * 
 		 * @type {Function}
 		 * @sample {highmaps} maps/plotoptions/series-datalabels-format/ Formatted value
-		 * @product highcharts highstock highmaps
 		 */
 		formatter: function () {
 			return this.y === null ? '' : H.numberFormat(this.y, -1);
@@ -1684,7 +1663,6 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * @validvalue ["top", "middle", "bottom"]
 		 * @type {String}
 		 * @since 2.3.3
-		 * @product highcharts highstock highmaps
 		 */
 		verticalAlign: 'bottom', // above singular point
 
@@ -1695,7 +1673,6 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-rotation/ Vertical and positioned
 		 * @default 0
-		 * @product highcharts highstock highmaps
 		 */
 		x: 0,
 
@@ -1706,7 +1683,6 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * @type {Number}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-rotation/ Vertical and positioned
 		 * @default -6
-		 * @product highcharts highstock highmaps
 		 */
 		y: 0,
 
@@ -1723,7 +1699,6 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * @default {highstock} 5
 		 * @default {highmaps} 0
 		 * @since 2.2.1
-		 * @product highcharts highstock highmaps
 		 */
 		padding: 5
 
@@ -1813,15 +1788,14 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * A wrapper object for all the series options in specific states.
 	 * 
 	 * @type {plotOptions.series.states}
-	 * @product highcharts highstock highmaps
 	 */
-	states: { // states for the entire series
+	states: {
 
 
 		/**
-		 * Options for the hovered series
-		 * 
-		 * @product highcharts highstock highmaps
+		 * Options for the hovered series. These settings override the normal
+		 * state options when a series is moused over or touched.
+		 *
 		 */
 		hover: {
 
@@ -1848,10 +1822,10 @@ H.Series = H.seriesType('line', null, { // base series options
 			 * @product highcharts
 			 */
 			animation: {
-
-
-
 				/**
+				 * The duration of the hover animation in milliseconds. By
+				 * default the hover state animates quickly in, and slowly back
+				 * to normal.
 				 */
 				duration: 50
 			},
@@ -1910,9 +1884,7 @@ H.Series = H.seriesType('line', null, { // base series options
 			 * color with an opacity of 0.25\. The halo can be disabled by setting
 			 * the `halo` option to `false`.
 			 * 
-			 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-			 * style/style-by-css), the halo is styled with the `.highcharts-
-			 * halo` class, with colors inherited from `.highcharts-color-{n}`.
+			 * In styled mode, the halo is styled with the `.highcharts-halo` class, with colors inherited from `.highcharts-color-{n}`.
 			 * 
 			 * @type {Object}
 			 * @sample {highcharts} highcharts/plotoptions/halo/ Halo options
@@ -1973,15 +1945,11 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * @type {Object}
 		 * @extends plotOptions.series.states.hover
 		 * @excluding brightness
-		 * @sample {highmaps} maps/plotoptions/series-allowpointselect/ Allow point select demo
+		 * @sample {highmaps} maps/plotoptions/series-allowpointselect/
+		 *         Allow point select demo
 		 * @product highmaps
 		 */
 		select: {
-
-
-
-			/**
-			 */
 			marker: {}
 		}
 	},
@@ -2007,7 +1975,6 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * @default {highstock} true
 	 * @default {highmaps} false
 	 * @since 2.0
-	 * @product highcharts highstock highmaps
 	 */
 	stickyTracking: true,
 
@@ -2042,14 +2009,13 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * the X axis, Y axis or Z axis for bubbles, according to the `zoneAxis`
 	 * option.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the color zones are styled with the `.highcharts-
+	 * In styled mode, the color zones are styled with the `.highcharts-
 	 * zone-{n}` class, or custom classed from the `className` option ([view
 	 * live demo](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/color-
 	 * zones/)).
 	 * 
 	 * @type {Array}
-	 * @see [zoneAxis](#plotOption.series.zoneAxis)
+	 * @see [zoneAxis](#plotOptions.series.zoneAxis)
 	 * @sample {highcharts} highcharts/series/color-zones-simple/ Color zones
 	 * @sample {highstock} highcharts/series/color-zones-simple/ Color zones
 	 * @since 4.1.0
@@ -2058,8 +2024,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 */
 
 	/**
-	 * [Styled mode](http://www.highcharts.com/docs/chart-design-and-style/style-
-	 * by-css) only. A custom class name for the zone.
+	 * Styled mode only. A custom class name for the zone.
 	 * 
 	 * @type {String}
 	 * @sample {highcharts} highcharts/css/color-zones/ Zones styled by class name
@@ -2073,7 +2038,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * Defines the color of the series.
 	 * 
 	 * @type {Color}
-	 * @see [series color](#plotOption.series.color)
+	 * @see [series color](#plotOptions.series.color)
 	 * @since 4.1.0
 	 * @product highcharts highstock
 	 * @apioption plotOptions.series.zones.color
@@ -2083,7 +2048,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * A name for the dash style to use for the graph.
 	 * 
 	 * @type {String}
-	 * @see [series.dashStyle](#plotOption.series.dashStyle)
+	 * @see [series.dashStyle](#plotOptions.series.dashStyle)
 	 * @sample {highcharts} highcharts/series/color-zones-dashstyle-dot/
 	 *         Dashed line indicates prognosis
 	 * @sample {highstock} highcharts/series/color-zones-dashstyle-dot/
@@ -2097,7 +2062,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * Defines the fill color for the series (in area type series)
 	 * 
 	 * @type {Color}
-	 * @see [fillColor](#plotOption.area.fillColor)
+	 * @see [fillColor](#plotOptions.area.fillColor)
 	 * @since 4.1.0
 	 * @product highcharts highstock
 	 * @apioption plotOptions.series.zones.fillColor
@@ -2135,7 +2100,6 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * @sample {highmaps} highcharts/series/findnearestpointby/
 	 *         Different hover behaviors
 	 * @since 5.0.10
-	 * @product highcharts highstock highmaps
 	 */
 	findNearestPointBy: 'x'
 
@@ -2641,7 +2605,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 *
 	 * @param  {SeriesDataOptions} data
 	 *         Takes an array of data in the same format as described under
-	 *         `series<type>data` for the given series type.
+	 *         `series.typedata` for the given series type.
 	 * @param  {Boolean} [redraw=true]
 	 *         Whether to redraw the chart after the series is altered. If doing
 	 *         more operations on the chart, it is a good idea to set redraw to
@@ -4530,11 +4494,11 @@ H.Series = H.seriesType('line', null, { // base series options
  */
 
 /**
- * A `line` series. If the [type](#series<line>.type) option is not
+ * A `line` series. If the [type](#series.line.type) option is not
  * specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * line](#plotOptions.line).
  * 
@@ -4555,34 +4519,40 @@ H.Series = H.seriesType('line', null, { // base series options
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 1],
- *     [1, 2],
- *     [2, 8]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 1],
+ *         [1, 2],
+ *         [2, 8]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<line>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.line.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 10,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 6,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 9,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 6,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
@@ -4615,8 +4585,7 @@ H.Series = H.seriesType('line', null, { // base series options
  */
 
 /**
- * [Styled mode](http://www.highcharts.com/docs/chart-design-and-style/style-
- * by-css) only. A specific color index to use for the point, so its
+ * Styled mode only. A specific color index to use for the point, so its
  * graphic representations are given the class name `highcharts-color-
  * {n}`.
  * 

@@ -32,16 +32,19 @@ var colorPointMixin = H.colorPointMixin,
  * @sample highcharts/demo/heatmap-canvas/
  *         Heavy heatmap
  * @extends {plotOptions.scatter}
+ * @excluding marker,pointRange
  * @product highcharts highmaps
  * @optionparent plotOptions.heatmap
  */
 seriesType('heatmap', 'scatter', {
 
 	/**
+	 * Animation is disabled by default on the heatmap series.
 	 */
 	animation: false,
 
 	/**
+	 * The border width for each heat map item.
 	 */
 	borderWidth: 0,
 
@@ -74,49 +77,47 @@ seriesType('heatmap', 'scatter', {
 	/*= if (build.classic) { =*/
 
 	/**
+	 * The color applied to null points. In styled mode, a general CSS class is
+	 * applied instead.
+	 *
+	 * @type {Color}
 	 */
 	nullColor: '${palette.neutralColor3}',
 	/*= } =*/
 
-	/**
-	 */
 	dataLabels: {
 
-		/**
-		 */
 		formatter: function () { // #2945
 			return this.point.value;
 		},
-
-		/**
-		 */
 		inside: true,
-
-		/**
-		 */
 		verticalAlign: 'middle',
-
-		/**
-		 */
 		crop: false,
-
-		/**
-		 */
 		overflow: false,
-
-		/**
-		 */
 		padding: 0 // #3837
 	},
 
-	/**
-	 */
+	/** @ignore */
 	marker: null,
 
-	/**
-	 */
+	/**	@ignore */
 	pointRange: null, // dynamically set to colsize by default
 
+	tooltip: {
+		pointFormat: '{point.x}, {point.y}: {point.value}<br/>'
+	},
+
+	states: {
+
+		normal: {
+			animation: true
+		},
+
+		hover: {
+			halo: false,  // #3406, halo is not required on heatmaps
+			brightness: 0.2
+		}
+	}
 	/**
 	 * The row size - how many Y axis units each heatmap row should span.
 	 * 
@@ -129,41 +130,6 @@ seriesType('heatmap', 'scatter', {
 	 * @apioption plotOptions.heatmap.rowsize
 	 */
 
-	/**
-	 */
-	tooltip: {
-
-		/**
-		 */
-		pointFormat: '{point.x}, {point.y}: {point.value}<br/>'
-	},
-
-	/**
-	 */
-	states: {
-
-		/**
-		 */
-		normal: {
-
-			/**
-			 */
-			animation: true
-		},
-
-		/**
-		 */
-		hover: {
-
-			/**
-			 */
-			halo: false,  // #3406, halo is not required on heatmaps
-
-			/**
-			 */
-			brightness: 0.2
-		}
-	}
 }, merge(colorSeriesMixin, {
 	pointArrayMap: ['y', 'value'],
 	hasPointSpecificOptions: true,
@@ -263,11 +229,11 @@ seriesType('heatmap', 'scatter', {
 
 }), colorPointMixin);
 /**
- * A `heatmap` series. If the [type](#series<heatmap>.type) option is
+ * A `heatmap` series. If the [type](#series.heatmap.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * heatmap](#plotOptions.heatmap).
  * 
@@ -290,33 +256,37 @@ seriesType('heatmap', 'scatter', {
  * either starting at 0 and incremented by 1, or from `pointStart`
  * and `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 9, 7],
- *     [1, 10, 4],
- *     [2, 6, 3]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 9, 7],
+ *         [1, 10, 4],
+ *         [2, 6, 3]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<heatmap>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.heatmap.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 3,
- *     value: 10,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 7,
- *     value: 10,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 3,
+ *         value: 10,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 7,
+ *         value: 10,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

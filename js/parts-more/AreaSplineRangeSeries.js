@@ -30,12 +30,12 @@ seriesType('areasplinerange', 'arearange', null, {
 });
 
 /**
- * A `areasplinerange` series. If the [type](#series<areasplinerange>.
+ * A `areasplinerange` series. If the [type](#series.areasplinerange.
  * type) option is not specified, it is inherited from [chart.type](#chart.
  * type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * areasplinerange](#plotOptions.areasplinerange).
  * 
@@ -58,33 +58,37 @@ seriesType('areasplinerange', 'arearange', null, {
  * either starting at 0 and incremented by 1, or from `pointStart`
  * and `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 0, 5],
- *     [1, 9, 1],
- *     [2, 5, 2]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 0, 5],
+ *         [1, 9, 1],
+ *         [2, 5, 2]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<areasplinerange>.
+ * points exceeds the series' [turboThreshold](#series.areasplinerange.
  * turboThreshold), this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     low: 5,
- *     high: 0,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     low: 4,
- *     high: 1,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         low: 5,
+ *         high: 0,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         low: 4,
+ *         high: 1,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<arearange>.data
+ * @extends series.arearange.data
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y
  * @sample {highcharts} highcharts/series/data-array-of-arrays-datetime/ Arrays of datetime x and y

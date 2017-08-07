@@ -55,9 +55,7 @@ seriesType('column', 'line', {
 	/**
 	 * The width of the border surrounding each column or bar.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the stroke width can be set with the `.highcharts-
-	 * point` rule.
+	 * In styled mode, the stroke width can be set with the `.highcharts-point` rule.
 	 * 
 	 * @type {Number}
 	 * @sample {highcharts} highcharts/plotoptions/column-borderwidth/ 2px black border
@@ -227,8 +225,6 @@ seriesType('column', 'line', {
 	 */
 	pointRange: null,
 
-	/**
-	 */
 	states: {
 
 		/**
@@ -263,8 +259,7 @@ seriesType('column', 'line', {
 			 * How much to brighten the point on interaction. Requires the main
 			 * color to be defined in hex or rgb(a) format.
 			 * 
-			 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-			 * style/style-by-css), the hover brightening is by default replaced
+			 * In styled mode, the hover brightening is by default replaced
 			 * with a fill-opacity set in the `.highcharts-point:hover` rule.
 			 * 
 			 * @type {Number}
@@ -274,46 +269,22 @@ seriesType('column', 'line', {
 			 */
 			brightness: 0.1,
 
-			/**
-			 */
 			shadow: false
 			/*= } =*/
 		},
 		/*= if (build.classic) { =*/
 
-		/**
-		 */
 		select: {
-
-			/**
-			 */
 			color: '${palette.neutralColor20}',
-
-			/**
-			 */
 			borderColor: '${palette.neutralColor100}',
-
-			/**
-			 */
 			shadow: false
 		}
 		/*= } =*/
 	},
 
-	/**
-	 */
 	dataLabels: {
-
-		/**
-		 */
 		align: null, // auto
-
-		/**
-		 */
 		verticalAlign: null, // auto
-
-		/**
-		 */
 		y: null
 	},
 
@@ -334,20 +305,12 @@ seriesType('column', 'line', {
 	 */
 	softThreshold: false,
 
-	/**
-	 */
+	/**	@ignore */
 	startFromThreshold: true, // false doesn't work well: http://jsfiddle.net/highcharts/hz8fopan/14/
 
-	/**
-	 */
 	stickyTracking: false,
 
-	/**
-	 */
 	tooltip: {
-
-		/**
-		 */
 		distance: 6
 	},
 
@@ -367,9 +330,7 @@ seriesType('column', 'line', {
 	/**
 	 * The color of the border surrounding each column or bar.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the border stroke can be set with the `.highcharts-
-	 * point` rule.
+	 * In styled mode, the border stroke can be set with the `.highcharts-point` rule.
 	 * 
 	 * @type {Color}
 	 * @sample {highcharts} highcharts/plotoptions/column-bordercolor/ Dark gray border
@@ -797,11 +758,11 @@ seriesType('column', 'line', {
 
 
 /**
- * A `column` series. If the [type](#series<column>.type) option is
+ * A `column` series. If the [type](#series.column.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * column](#plotOptions.column).
  * 
@@ -822,37 +783,43 @@ seriesType('column', 'line', {
  * and `pointInterval` given in the series options. If the axis has
  * categories, these will be used. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of arrays with 2 values. In this case, the values correspond
  * to `x,y`. If the first value is a string, it is applied as the name
  * of the point, and the `x` value is inferred.
  * 
- * <pre>data: [
- *     [0, 6],
- *     [1, 2],
- *     [2, 6]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 6],
+ *         [1, 2],
+ *         [2, 6]
+ *     ]
+ *  ```
  * 
  * 3.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<column>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.column.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     y: 5,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     y: 9,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         y: 9,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         y: 6,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array|Number>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

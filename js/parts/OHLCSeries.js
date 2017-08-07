@@ -60,8 +60,6 @@ seriesType('ohlc', 'column', {
 	 */
 	lineWidth: 1,
 
-	/**
-	 */
 	tooltip: {
 		/**
 		 */
@@ -82,13 +80,9 @@ seriesType('ohlc', 'column', {
 		}
 	},
 
-	/**
-	 */
 	threshold: null,
 	/*= if (build.classic) { =*/
 
-	/**
-	 */
 	states: {
 
 		/**
@@ -98,8 +92,7 @@ seriesType('ohlc', 'column', {
 		hover: {
 
 			/**
-			 * The pixel width of the line representing the OHLC point. Defaults
-			 * to `3`.
+			 * The pixel width of the line representing the OHLC point.
 			 * 
 			 * @type {Number}
 			 * @default 3
@@ -120,9 +113,6 @@ seriesType('ohlc', 'column', {
 	
 	/*= } =*/
 
-
-	/**
-	 */
 	stickyTracking: true
 
 }, /** @lends seriesTypes.ohlc */ {
@@ -289,11 +279,11 @@ seriesType('ohlc', 'column', {
 });
 
 /**
- * A `ohlc` series. If the [type](#series<ohlc>.type) option is not
+ * A `ohlc` series. If the [type](#series.ohlc.type) option is not
  * specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * ohlc](#plotOptions.ohlc).
  * 
@@ -316,37 +306,41 @@ seriesType('ohlc', 'column', {
  * either starting at 0 and incremented by 1, or from `pointStart`
  * and `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 6, 5, 6, 7],
- *     [1, 9, 4, 8, 2],
- *     [2, 6, 3, 4, 10]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 6, 5, 6, 7],
+ *         [1, 9, 4, 8, 2],
+ *         [2, 6, 3, 4, 10]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<ohlc>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.ohlc.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     open: 3,
- *     high: 4,
- *     low: 5,
- *     close: 2,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     open: 4,
- *     high: 3,
- *     low: 6,
- *     close: 7,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         open: 3,
+ *         high: 4,
+ *         low: 5,
+ *         close: 2,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         open: 4,
+ *         high: 3,
+ *         low: 6,
+ *         close: 7,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<arearange>.data
+ * @extends series.arearange.data
  * @excluding y,marker
  * @product highstock
  * @apioption series.ohlc.data

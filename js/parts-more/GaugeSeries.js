@@ -27,6 +27,7 @@ var each = H.each,
  *
  * @sample highcharts/demo/gauge-speedometer/ Gauge chart
  * @extends {plotOptions.line}
+ * @excluding animationLimit,boostThreshold,connectEnds,connectNulls,cropThreshold,dashStyle,findNearestPointBy,getExtremesFromAll,marker,pointPlacement,softThreshold,stacking,step,threshold,turboThreshold,zoneAxis,zones
  * @product highcharts
  * @optionparent plotOptions.gauge
  */
@@ -52,8 +53,6 @@ seriesType('gauge', 'line', {
 		 */
 		enabled: true,
 
-		/**
-		 */
 		defer: false,
 
 		/**
@@ -77,8 +76,6 @@ seriesType('gauge', 'line', {
 		 */
 		borderRadius: 3,
 
-		/**
-		 */
 		crop: false,
 
 		/**
@@ -128,8 +125,7 @@ seriesType('gauge', 'line', {
 	/**
 	 * Options for the dial or arrow pointer of the gauge.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the dial is styled with the `.highcharts-gauge-
+	 * In styled mode, the dial is styled with the `.highcharts-gauge-
 	 * series .highcharts-dial` rule.
 	 * 
 	 * @type {Object}
@@ -261,8 +257,7 @@ seriesType('gauge', 'line', {
 	/**
 	 * Options for the pivot or the center point of the gauge.
 	 * 
-	 * In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the pivot is styled with the `.highcharts-gauge-
+	 * In styled mode, the pivot is styled with the `.highcharts-gauge-
 	 * series .highcharts-pivot` rule.
 	 * 
 	 * @type {Object}
@@ -322,12 +317,7 @@ seriesType('gauge', 'line', {
 		/*= } =*/
 	},
 
-	/**
-	 */
 	tooltip: {
-
-		/**
-		 */
 		headerFormat: ''
 	},
 
@@ -563,11 +553,11 @@ seriesType('gauge', 'line', {
 });
 
 /**
- * A `gauge` series. If the [type](#series<gauge>.type) option is not
+ * A `gauge` series. If the [type](#series.gauge.type) option is not
  * specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * gauge](#plotOptions.gauge).
  * 
@@ -585,14 +575,17 @@ seriesType('gauge', 'line', {
  * 1.  An array of numerical values. In this case, the numerical values
  * will be interpreted as `y` options. Example:
  * 
- * <pre>data: [0, 5, 3, 5]</pre>
+ *  ```js
+ *  data: [0, 5, 3, 5]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<gauge>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.gauge.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
+ *  ```js
+ *     data: [{
  *     y: 6,
  *     name: "Point2",
  *     color: "#00FF00"
@@ -605,7 +598,7 @@ seriesType('gauge', 'line', {
  * The typical gauge only contains a single data value.
  * 
  * @type {Array<Object|Number>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding drilldown,marker,x
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

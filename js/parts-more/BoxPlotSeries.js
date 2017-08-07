@@ -33,12 +33,8 @@ var each = H.each,
  */
 seriesType('boxplot', 'column', {
 
-	/**
-	 */
 	threshold: null,
 
-	/**
-	 */
 	tooltip: {
 		/*= if (!build.classic) { =*/
 		pointFormat: '<span class="highcharts-color-{point.colorIndex}">\u25CF</span> <b> {series.name}</b><br/>' +
@@ -49,8 +45,6 @@ seriesType('boxplot', 'column', {
 			'Minimum: {point.low}<br/>',
 		/*= } else { =*/
 
-		/**
-		 */
 		pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b><br/>' + // eslint-disable-line no-dupe-keys
 			'Maximum: {point.high}<br/>' +
 			'Upper quartile: {point.q3}<br/>' +
@@ -79,9 +73,8 @@ seriesType('boxplot', 'column', {
 	 * The fill color of the box.
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the fill color can be set with the `.highcharts-
-	 * boxplot-box` class.
+	 * @see In styled mode, the fill color can be set with the
+	 * `.highcharts-boxplot-box` class.
 	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
 	 *         Box plot styling
 	 * @default #ffffff
@@ -112,12 +105,13 @@ seriesType('boxplot', 'column', {
 	 * applies.
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the median stroke width can be set with the
-	 * `.highcharts-boxplot-median` class ([view live demo](http://jsfiddle.
-	 * net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/boxplot/)).
+	 * @see In styled mode, the median stroke width can be set with the
+	 * `.highcharts-boxplot-median` class.
+	 * 
 	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
 	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
 	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/
 	 *         Error bar styling
 	 * @default null
@@ -131,28 +125,20 @@ seriesType('boxplot', 'column', {
 	 * boxplot.lineWidth) is used.
 	 * 
 	 * @type {Number}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the median stroke width can be set with the
-	 * `.highcharts-boxplot-median` class ([view live demo](http://jsfiddle.
-	 * net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/boxplot/)).
+	 * @see In styled mode, the median stroke width can be set with the
+	 * `.highcharts-boxplot-median` class.
 	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
 	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
 	 * @default 2
 	 * @since 3.0
 	 * @product highcharts
 	 */
 	medianWidth: 2,
 
-	/**
-	 */
 	states: {
-
-		/**
-		 */
 		hover: {
-
-			/**
-			 */
 			brightness: -0.3
 		}
 	},
@@ -161,11 +147,13 @@ seriesType('boxplot', 'column', {
 	 * the whiskers. If `null`, the series color is used.
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the stem stroke can be set with the `.highcharts-
-	 * boxplot-stem` class ([view live demo](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/boxplot/)).
-	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/ Box plot styling
-	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/ Error bar styling
+	 * @see In styled mode, the stem stroke can be set with the `.highcharts-boxplot-stem` class.
+	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
+	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
+	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/
+	 *         Error bar styling
 	 * @default null
 	 * @since 3.0
 	 * @product highcharts
@@ -176,10 +164,16 @@ seriesType('boxplot', 'column', {
 	 * The dash style of the stem, the vertical line extending from the
 	 * box to the whiskers.
 	 * 
-	 * @validvalue ["Solid", "ShortDash", "ShortDot", "ShortDashDot", "ShortDashDotDot", "Dot", "Dash" ,"LongDash", "DashDot", "LongDashDot", "LongDashDotDot"]
+	 * @validvalue ["Solid", "ShortDash", "ShortDot", "ShortDashDot",
+	 *         "ShortDashDotDot", "Dot", "Dash" ,"LongDash", "DashDot",
+	 *         "LongDashDot", "LongDashDotDot"]
 	 * @type {String}
-	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/ Box plot styling
-	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/ Error bar styling
+	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
+	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
+	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/
+	 *         Error bar styling
 	 * @default Solid
 	 * @since 3.0
 	 * @product highcharts
@@ -192,12 +186,14 @@ seriesType('boxplot', 'column', {
 	 * boxplot.lineWidth) option.
 	 * 
 	 * @type {Number}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the stem stroke width can be set with the `.
-	 * highcharts-boxplot-stem` class ([view live demo](http://jsfiddle.
-	 * net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/boxplot/)).
-	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/ Box plot styling
-	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/ Error bar styling
+	 * @see In styled mode, the stem stroke width can be set with the `.
+	 * highcharts-boxplot-stem` class.
+	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
+	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
+	 * @sample {highcharts} highcharts/plotoptions/error-bar-styling/
+	 *         Error bar styling
 	 * @default null
 	 * @since 3.0
 	 * @product highcharts
@@ -209,10 +205,11 @@ seriesType('boxplot', 'column', {
 	 * values. When `null`, the general series color is used.
 	 * 
 	 * @type {Color}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the whisker stroke can be set with the `.highcharts-
-	 * boxplot-whisker` class ([view live demo](http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/boxplot/)).
-	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/ Box plot styling
+	 * @see In styled mode, the whisker stroke can be set with the `.highcharts-boxplot-whisker` class .
+	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
+	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
 	 * @default null
 	 * @since 3.0
 	 * @product highcharts
@@ -225,12 +222,13 @@ seriesType('boxplot', 'column', {
 	 * boxplot.lineWidth) applies.
 	 * 
 	 * @type {Number}
-	 * @see In [styled mode](http://www.highcharts.com/docs/chart-design-and-
-	 * style/style-by-css), the whisker stroke width can be set with the
-	 * `.highcharts-boxplot-whisker` class ([view live demo](http://jsfiddle.
-	 * net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/css/boxplot/)).
-	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/ Box plot styling
-	 * @default 2
+	 * @see In styled mode, the whisker stroke width can be set with the
+	 * `.highcharts-boxplot-whisker` class.
+	 * 
+	 * @sample {highcharts} highcharts/plotoptions/box-plot-styling/
+	 *         Box plot styling
+	 * @sample {highcharts} highcharts/css/boxplot/
+	 *         Box plot in styled mode
 	 * @since 3.0
 	 * @product highcharts
 	 */
@@ -481,11 +479,11 @@ seriesType('boxplot', 'column', {
 });
 
 /**
- * A `boxplot` series. If the [type](#series<boxplot>.type) option is
+ * A `boxplot` series. If the [type](#series.boxplot.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * boxplot](#plotOptions.boxplot).
  * 
@@ -508,39 +506,43 @@ seriesType('boxplot', 'column', {
  * calculated, either starting at 0 and incremented by 1, or from `pointStart`
  * and `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 3, 0, 10, 3, 5],
- *     [1, 7, 8, 7, 2, 9],
- *     [2, 6, 9, 5, 1, 3]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 3, 0, 10, 3, 5],
+ *         [1, 7, 8, 7, 2, 9],
+ *         [2, 6, 9, 5, 1, 3]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<boxplot>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.boxplot.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     low: 4,
- *     q1: 9,
- *     median: 9,
- *     q3: 1,
- *     high: 10,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     low: 5,
- *     q1: 7,
- *     median: 3,
- *     q3: 6,
- *     high: 2,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         low: 4,
+ *         q1: 9,
+ *         median: 9,
+ *         q3: 1,
+ *         high: 10,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         low: 5,
+ *         q1: 7,
+ *         median: 3,
+ *         q3: 6,
+ *         high: 2,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y

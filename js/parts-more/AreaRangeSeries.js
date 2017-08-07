@@ -44,18 +44,15 @@ seriesType('arearange', 'area', {
 	/*= } =*/
 
 	/**
+	 * @default null
 	 */
 	threshold: null,
 
-	/**
-	 */
 	tooltip: {
 		/*= if (!build.classic) { =*/
 		pointFormat: '<span class="highcharts-color-{series.colorIndex}">\u25CF</span> {series.name}: <b>{point.low}</b> - <b>{point.high}</b><br/>',
 		/*= } else { =*/
 
-		/**
-		 */
 		pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.low}</b> - <b>{point.high}</b><br/>' // eslint-disable-line no-dupe-keys
 		/*= } =*/
 	},
@@ -85,12 +82,7 @@ seriesType('arearange', 'area', {
 	 */
 	dataLabels: {
 
-		/**
-		 */
 		align: null,
-
-		/**
-		 */
 		verticalAlign: null,
 
 		/**
@@ -552,12 +544,12 @@ seriesType('arearange', 'area', {
 
 
 /**
- * A `arearange` series. If the [type](#series<arearange>.type) option
+ * A `arearange` series. If the [type](#series.arearange.type) option
  * is not specified, it is inherited from [chart.type](#chart.type).
  * 
  * 
  * For options that apply to multiple series, it is recommended to add
- * them to the [pointOptions.series](#pointOptions.series) options structure.
+ * them to the [plotOptions.series](#plotOptions.series) options structure.
  * To apply to all series of this specific type, apply it to [plotOptions.
  * arearange](#plotOptions.arearange).
  * 
@@ -580,33 +572,37 @@ seriesType('arearange', 'area', {
  * either starting at 0 and incremented by 1, or from `pointStart`
  * and `pointInterval` given in the series options.
  * 
- * <pre>data: [
- *     [0, 8, 3],
- *     [1, 1, 1],
- *     [2, 6, 8]
- * ]</pre>
+ *  ```js
+ *     data: [
+ *         [0, 8, 3],
+ *         [1, 1, 1],
+ *         [2, 6, 8]
+ *     ]
+ *  ```
  * 
  * 2.  An array of objects with named values. The objects are point
  * configuration objects as seen below. If the total number of data
- * points exceeds the series' [turboThreshold](#series<arearange>.turboThreshold),
+ * points exceeds the series' [turboThreshold](#series.arearange.turboThreshold),
  * this option is not available.
  * 
- * <pre>data: [{
- *     x: 1,
- *     low: 9,
- *     high: 0,
- *     name: "Point2",
- *     color: "#00FF00"
- * }, {
- *     x: 1,
- *     low: 3,
- *     high: 4,
- *     name: "Point1",
- *     color: "#FF00FF"
- * }]</pre>
+ *  ```js
+ *     data: [{
+ *         x: 1,
+ *         low: 9,
+ *         high: 0,
+ *         name: "Point2",
+ *         color: "#00FF00"
+ *     }, {
+ *         x: 1,
+ *         low: 3,
+ *         high: 4,
+ *         name: "Point1",
+ *         color: "#FF00FF"
+ *     }]
+ *  ```
  * 
  * @type {Array<Object|Array>}
- * @extends series<line>.data
+ * @extends series.line.data
  * @excluding marker,y
  * @sample {highcharts} highcharts/chart/reflow-true/ Numerical values
  * @sample {highcharts} highcharts/series/data-array-of-arrays/ Arrays of numeric x and y
