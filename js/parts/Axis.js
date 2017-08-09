@@ -2768,7 +2768,7 @@ H.extend(Axis.prototype, /** @lends Highcharts.Axis.prototype */{
 		) || (
 			!horiz && (
 				// #7028
-				(labelOptions.style && parseInt(labelOptions.style.width)) ||
+				(labelOptions.style && H.pInt(labelOptions.style.width)) ||
 				(marginLeft && (marginLeft - chart.spacing[3])) ||
 				chart.chartWidth * 0.33
 			)
