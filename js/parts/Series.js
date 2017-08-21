@@ -3100,7 +3100,7 @@ H.Series = H.seriesType('line', null, { // base series options
 			y = yData[i];
 
 			// For points within the visible range, including the first point
-			// outside the visible range, consider y extremes
+			// outside the visible range (#7061), consider y extremes.
 			validValue =
 				(isNumber(y, true) || isArray(y)) &&
 				(!yAxis.positiveValuesOnly || (y.length || y > 0));
@@ -3108,7 +3108,7 @@ H.Series = H.seriesType('line', null, { // base series options
 				this.getExtremesFromAll ||
 				this.options.getExtremesFromAll ||
 				this.cropped ||
-				((xData[i] || x) >= xMin &&	(xData[i] || x) <= xMax);
+				((xData[i + 1] || x) >= xMin &&	(xData[i - 1] || x) <= xMax);
 
 			if (validValue && withinRange) {
 
@@ -3361,9 +3361,12 @@ H.Series = H.seriesType('line', null, { // base series options
 			// When animation is set, prepare the initial positions
 			if (animation) {
 				clipBox.width = 0;
+				if (inverted) {
+					clipBox.x = chart.plotSizeX;
+				}
 
 				chart[sharedClipKey + 'm'] = markerClipRect = renderer.clipRect(
-					-99, // include the width of the first marker
+					inverted ? chart.plotSizeX + 99 : -99, // include the width of the first marker
 					inverted ? -chart.plotLeft : -chart.plotTop,
 					99,
 					inverted ? chart.chartWidth : chart.chartHeight
@@ -3433,12 +3436,14 @@ H.Series = H.seriesType('line', null, { // base series options
 			clipRect = chart[sharedClipKey];
 			if (clipRect) {
 				clipRect.animate({
-					width: chart.plotSizeX
+					width: chart.plotSizeX,
+					x: 0
 				}, animation);
 			}
 			if (chart[sharedClipKey + 'm']) {
 				chart[sharedClipKey + 'm'].animate({
-					width: chart.plotSizeX + 99
+					width: chart.plotSizeX + 99,
+					x: 0
 				}, animation);
 			}
 
