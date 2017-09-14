@@ -93,9 +93,6 @@ var addEvent = H.addEvent,
  */
 H.Series = H.seriesType('line', null, { // base series options
 	/*= if (build.classic) { =*/
-	//cursor: 'default',
-	//dashStyle: null,
-	
 	/**
 	 * The SVG value used for the `stroke-linecap` and `stroke-linejoin`
 	 * of a line graph. Round means that lines are rounded in the ends and
@@ -120,7 +117,6 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * @product highcharts highstock
 	 */
 	lineWidth: 2,
-	//shadow: false,
 	/*= } =*/
 
 	/**
@@ -1561,13 +1557,17 @@ H.Series = H.seriesType('line', null, { // base series options
 		 * Styles for the label. The default `color` setting is `"contrast"`,
 		 * which is a pseudo color that Highcharts picks up and applies the
 		 * maximum contrast to the underlying point item, for example the
-		 * bar in a bar chart. The `textOutline` is a pseudo property that
+		 * bar in a bar chart.
+		 * 
+		 * The `textOutline` is a pseudo property that
 		 * applies an outline of the given width with the given color, which
 		 * by default is the maximum contrast to the text. So a bright text
 		 * color will result in a black text outline for maximum readability
 		 * on a mixed background. In some cases, especially with grayscale
 		 * text, the text outline doesn't work well, in which cases it can
-		 * be disabled by setting it to `"none"`.
+		 * be disabled by setting it to `"none"`. When `useHTML` is true, the
+		 * `textOutline` will not be picked up. In this, case, the same effect
+		 * can be acheived through the `text-shadow` CSS property.
 		 * 
 		 * @type {CSSObject}
 		 * @sample {highcharts} highcharts/plotoptions/series-datalabels-style/
@@ -1760,12 +1760,7 @@ H.Series = H.seriesType('line', null, { // base series options
 	 * @product highstock
 	 */
 	pointRange: 0,
-	//pointStart: 0,
-	//pointInterval: 1,
-	//showInLegend: null, // auto = false for linked series
-
-
-
+	
 	/**
 	 * When this is true, the series will not cause the Y axis to cross
 	 * the zero plane (or [threshold](#plotOptions.series.threshold) option)
@@ -3945,7 +3940,6 @@ H.Series = H.seriesType('line', null, { // base series options
 			// Helpers for animation
 			if (graph) {
 				graph.startX = graphPath.xMap;
-				//graph.shiftUnit = options.step ? 2 : 1;
 				graph.isArea = graphPath.isArea; // For arearange animation
 			}
 		});
@@ -4030,7 +4024,7 @@ H.Series = H.seriesType('line', null, { // base series options
 				}
 
 				/*= if (build.classic) { =*/
-				/// VML SUPPPORT
+				// VML SUPPPORT
 				if (inverted && renderer.isVML) {
 					if (axis.isXAxis) {
 						clipAttr = {
@@ -4048,7 +4042,7 @@ H.Series = H.seriesType('line', null, { // base series options
 						};
 					}
 				}
-				/// END OF VML SUPPORT
+				// END OF VML SUPPORT
 				/*= } =*/
 
 				if (clips[i]) {
@@ -4145,8 +4139,13 @@ H.Series = H.seriesType('line', null, { // base series options
 				'highcharts-' + name +
 				' highcharts-series-' + this.index +
 				' highcharts-' + this.type + '-series ' +
-				'highcharts-color-' + this.colorIndex + ' ' +
-				(this.options.className || '')
+				(
+					defined(this.colorIndex) ?
+						'highcharts-color-' + this.colorIndex + ' ' :
+						''
+				) +
+				(this.options.className || '') +
+				(group.hasClass('highcharts-tracker') ? ' highcharts-tracker' : '')
 			),
 			true
 		);

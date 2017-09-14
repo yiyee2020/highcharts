@@ -326,6 +326,39 @@ QUnit.test("Categories on Y axis", function (assert) {
     );
 });
 
+QUnit.test('Datetime Y axis', function (assert) {
+    var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container'
+        },
+        yAxis: {
+            type: 'datetime'
+        },
+        series: [{
+            data: [
+                Date.UTC(2017, 0, 1),
+                Date.UTC(2018, 0, 1)
+            ]
+        }]
+    });
+    var rows = chart.getDataRows();
+    assert.equal(
+        rows.length,
+        3,
+        "All points are added"
+    );
+    assert.equal(
+        rows[1].join(','),
+        '0,2017-01-01 00:00:00',
+        "First row"
+    );
+    assert.equal(
+        rows[2].join(','),
+        '1,2018-01-01 00:00:00',
+        "Second row"
+    );
+});
+
 
 QUnit.test("X axis title as column header", function (assert) {
     var chart = new Highcharts.Chart({
@@ -440,5 +473,38 @@ QUnit.test('Stock chart', function (assert) {
         chart.getCSV(),
         '\"DateTime\",\"Series 1\"\n\"2013-01-01\",1\n\"2013-01-02\",3\n\"2013-01-03\",2\n\"2013-01-04\",4',
         'Stock chart'
+    );
+});
+
+
+QUnit.test('Combined column and scatter', function (assert) {
+    var chart = new Highcharts.Chart({
+
+        chart: {
+            renderTo: 'container'
+        },
+
+        plotOptions: {
+            series: {
+                pointStart: 0,
+                pointInterval: 10
+            }
+        },
+
+        series: [{
+            data: [1, 2, 3, 4],
+            type: 'column'
+        }, {
+            data: [2, 4, 6, 8],
+            name: 'Total',
+            type: 'scatter'
+        }]
+
+    });
+
+    assert.equal(
+        chart.getCSV(),
+        '"Category","Series 1","Total"\n0,1,2\n10,2,4\n20,3,6\n30,4,8',
+        'Combination chart'
     );
 });
