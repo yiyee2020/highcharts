@@ -448,6 +448,7 @@ var sunburstSeries = {
 			innerR = positions[3] / 2,
 			renderer = series.chart.renderer,
 			animateLabels,
+			animateLabelsCalled = false,
 			addedHack = false,
 			hackDataLabelAnimation = !!(
 				animation &&
@@ -460,6 +461,7 @@ var sunburstSeries = {
 			series.dataLabelsGroup.attr({ opacity: 0 });
 			animateLabels = function () {
 				var s = series;
+				animateLabelsCalled = true;
 				if (s.dataLabelsGroup) {
 					s.dataLabelsGroup.animate({ opacity: 1, visibility: 'visible' });
 				}
@@ -530,6 +532,11 @@ var sunburstSeries = {
 			series.options.dataLabels.defer = true;
 			Series.prototype.drawDataLabels.call(series);
 			series.hasRendered = true;
+			// If animateLabels is called before labels were hidden, then call
+			// it again.
+			if (animateLabelsCalled) {
+				animateLabels();
+			}
 		} else {
 			Series.prototype.drawDataLabels.call(series);
 		}
