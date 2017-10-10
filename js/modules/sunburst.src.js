@@ -128,13 +128,7 @@ var getDlOptions = function getDlOptions(params) {
 };
 
 var getAnimation = function getAnimation(shape, params) {
-	var to = {
-			end: shape.end,
-			start: shape.start,
-			innerR: shape.innerR,
-			r: shape.r
-		},
-		from = {},
+	var center = params.center,
 		point = params.point,
 		radians = params.radians,
 		innerR = params.innerR,
@@ -143,7 +137,16 @@ var getAnimation = function getAnimation(shape, params) {
 		shapeExisting = params.shapeExisting,
 		shapeRoot = params.shapeRoot,
 		shapePreviousRoot = params.shapePreviousRoot,
-		visible = params.visible;
+		visible = params.visible,
+		from = {},
+		to = {
+			end: shape.end,
+			start: shape.start,
+			innerR: shape.innerR,
+			r: shape.r,
+			x: center.x,
+			y: center.y
+		};
 	if (visible) {
 		// Animate points in
 		if (!point.graphic && shapePreviousRoot) {
@@ -445,6 +448,10 @@ var sunburstSeries = {
 				true
 			),
 			positions = series.center,
+			center = {
+				x: positions[0],
+				y: positions[1]
+			},
 			innerR = positions[3] / 2,
 			renderer = series.chart.renderer,
 			animateLabels,
@@ -478,6 +485,7 @@ var sunburstSeries = {
 				visible = !!(node.visible && node.shapeArgs);
 			if (hasRendered && animation) {
 				animationInfo = getAnimation(shape, {
+					center: center,
 					point: point,
 					radians: radians,
 					innerR: innerR,
