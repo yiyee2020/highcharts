@@ -210,7 +210,6 @@ seriesType('treemap', 'scatter', {
 	 * to be level one. Otherwise the level will be the same as the tree
 	 * structure.
 	 * 
-	 * @validvalue [true, false]
 	 * @type {Boolean}
 	 * @default true
 	 * @since 4.1.0
