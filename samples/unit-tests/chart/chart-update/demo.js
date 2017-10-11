@@ -101,9 +101,9 @@ QUnit.test('Title update', function (assert) {
     });
 
     assert.strictEqual(
-        chart.title,
-        null,
-        'Removed title'
+        chart.title.element.textContent,
+        '',
+        'Empty title (#6934)'
     );
 
     chart.update({
