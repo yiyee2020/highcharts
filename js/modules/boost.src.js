@@ -2718,7 +2718,25 @@ function pointDrawHandler(proceed) {
 	}
 
 	if (!enabled || !isSeriesBoosting(this)) {
-		return proceed.call(this);
+
+		if (seriesTypes.heatmap) {
+			seriesTypes.heatmap.prototype.directTouch = true;
+		}
+
+		if (seriesTypes.treemap) {
+			seriesTypes.treemap.prototype.directTouch = true;
+		}
+
+		return proceed.apply(this, arguments);
+	}
+
+
+	if (seriesTypes.treemap) {
+		seriesTypes.treemap.prototype.directTouch = false; // Use k-d tree
+	}
+
+	if (seriesTypes.heatmap) {
+		seriesTypes.heatmap.prototype.directTouch = false; // Use k-d tree
 	}
 
 	this.chart.isBoosting = true;
@@ -3046,7 +3064,6 @@ if (!hasWebGLSupport()) {
 		function (t) {
 			if (seriesTypes[t]) {
 				wrap(seriesTypes[t].prototype, 'drawPoints', pointDrawHandler);
-				seriesTypes[t].prototype.directTouch = false; // Use k-d-tree
 			}
 		}
 	);
