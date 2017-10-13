@@ -14,7 +14,7 @@ QUnit.test('Floating enabled.', function (assert) {
             data: [1, 2, 10, 10]
         }]
     });
-    
+
     assert.strictEqual(
         (chart.rangeSelector.group.translateX === 10) &&
         (chart.rangeSelector.group.translateY === 100) &&

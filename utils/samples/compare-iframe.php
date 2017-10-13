@@ -3,6 +3,10 @@ ini_set('display_errors', 'on');
 session_start();
 require_once('../settings.php');
 
+// When emulating karma, load all Highcharts files
+$emulateKarma = false;
+
+
 // Server variables
 $httpHost = $_SERVER['HTTP_HOST'];
 $httpHost = explode('.', $httpHost);
@@ -108,12 +112,37 @@ function getJS() {
 }
 
 function getHTML($which) {
-	global $path, $leftPath, $rightPath, $rightExporting, $leftExporting, $isUnitTest, $githubServer;
+	global $path, $leftPath, $rightPath, $rightExporting, $leftExporting,
+		$isUnitTest, $githubServer, $topDomain, $emulateKarma;
 	$bogus = md5('bogus');
 
+	
 	// No idea why file_get_contents doesn't work here...
 	ob_start();
-	if (is_file("$path/demo.html")) {
+
+	if ($emulateKarma && $isUnitTest) {
+		$files = json_decode(
+			file_get_contents(__DIR__ . '/../../test/karma-files.json')
+		);
+		$scripttags = '';
+
+		foreach ($files as $file) {
+			$file = preg_replace('/^code\//', "http://code.highcharts.$topDomain/", $file);
+			$scripttags .= "<script src='$file'></script>\n";
+		}
+
+		echo '<html>
+	<head>
+		' . $scripttags . '
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+
+		<div id="container" style="width: 600px; margin: 0 auto"></div>
+	</body>
+</html>';
+	} elseif (is_file("$path/demo.html")) {
 		include("$path/demo.html");
 
 	} elseif ($which === 'right') {
@@ -152,7 +181,7 @@ function getHTML($which) {
 		throw window.demoError;
 		</script>";
 	}
-	if (strstr($s, '.src.js')) {
+	if (strstr($s, '.src.js') && !$emulateKarma) {
 		$s .= "
 		<script>
 		window.demoError = 'Do not use src.js files in demos. Use .js compiled files, and add rewrite in .htaccess ($path)';

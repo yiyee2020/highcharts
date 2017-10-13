@@ -1,21 +1,28 @@
 QUnit.test('Tooltip positioned correctly through the getPosition function.', function (assert) {
 
     var chart = Highcharts.chart('container', {
+
+        chart: {
+            width: 400,
+            height: 400
+        },
+
         xAxis: {
             type: 'category'
         },
         tooltip: {
-            pointFormat: '' + 'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' +
-                'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' +
-                'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' +
-                'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' +
-                'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' +
-                'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' +
-                'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' +
-                'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' +
-                'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' +
-                'aaa ' + 'aaa ' + 'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' +
-                'aaa ' + 'aaa<br/> ' + 'aaa ' + 'aaa ' + 'aaa ' + 'aaa ',
+            animation: false,
+            pointFormat: 'aaa aaa aaa aaa<br/> ' +
+                'aaa aaa aaa aaa<br/> aaa aaa ' +
+                'aaa aaa<br/> aaa aaa aaa aaa<br/> ' +
+                'aaa aaa aaa aaa<br/> aaa aaa ' +
+                'aaa aaa<br/> aaa aaa aaa aaa<br/> ' +
+                'aaa aaa aaa aaa<br/> aaa aaa ' +
+                'aaa aaa<br/> aaa aaa aaa aaa<br/> ' +
+                'aaa aaa aaa aaa<br/> aaa aaa ' +
+                'aaa aaa<br/> aaa aaa aaa aaa<br/> ' +
+                'aaa aaa aaa aaa<br/> aaa aaa ' +
+                'aaa aaa<br/> aaa aaa aaa aaa '
         },
         series: [{
             type: 'column',
