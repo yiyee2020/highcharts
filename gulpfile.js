@@ -276,7 +276,7 @@ gulp.task('ftp-watch', function () {
 /**
  * Run the test suite.
  */
-gulp.task('test', function () {
+gulp.task('test', done => {
     /*
     const spawn = require('child_process').spawn;
     spawn('phantomjs', ['phantomtest.js'].concat(process.argv.slice(3)), {
@@ -284,10 +284,19 @@ gulp.task('test', function () {
         stdio: 'inherit'
     });
     */
-    var Server = require('karma').Server;
+    const Server = require('karma').Server;
+    const gutils = require('gulp-util');
     new Server({
         configFile: __dirname + '/test/karma-conf.js',
         singleRun: true
+    }, err => {
+        if (err === 0) {
+            done();
+        } else {
+            done(new gutils.PluginError('karma', {
+                message: 'Tests failed'
+            }));
+        }
     }).start();
 });
 

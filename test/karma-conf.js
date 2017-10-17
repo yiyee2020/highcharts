@@ -1,11 +1,11 @@
 /* eslint-env node, es6 */
-/* eslint no-console: 0 */
+/* eslint no-console: 0, camelcase: 0 */
 
 /**
  * Take an URL and translate to a local file path.
  * @param  {String} path The global URL
  * @returns {String} The local path
- */
+ * /
 function fileNameToLocal(path) {
 
     path = path
@@ -41,17 +41,17 @@ function fileNameToLocal(path) {
         );
     return path;
 }
-
+*/
 /**
  * Get the resources from demo.html files
  * @returns {Array.<String>} The file names
- */
+ * /
 function getFiles() { // eslint-disable-line no-unused-vars
     const fs = require('fs');
     const glob = require('glob-fs')({ gitignore: true });
     require('colors');
 
-    const files = glob.readdirSync('samples/unit-tests/**/**/demo.html');
+    const files = glob.readdirSync('samples/unit-tests/** / * * /demo.html');
     const exclude = [
         /^https:\/\/code\.highcharts\.com\/js/,
         /^https:\/\/code\.highcharts\.com\/maps\/js/,
@@ -91,48 +91,84 @@ function getFiles() { // eslint-disable-line no-unused-vars
         i++;
     });
     // console.log(('Found ' + dependencies.length + ' dependencies').green);
-    /*
-    console.log(dependencies.map(src => {
-        src = src
-            .replace(/^code/, 'http://code.highcharts.local')
-            .replace(/\.src\.js$/, '.js');
-        return `<script src="${src}"></script>`;
-    }).join('\n'));
-    // */
+
     return dependencies;
 }
+*/
 
+/**
+ * Get browserstack credentials from the properties file.
+ * @returns {Object} The properties
+ */
+function getProperties() {
+    let fs = require('fs');
+    let properties = {};
+    try {
+        let lines = fs.readFileSync(
+            './git-ignore-me.properties', 'utf8'
+        );
+        lines.split('\n').forEach(function (line) {
+            line = line.split('=');
+            if (line[0]) {
+                properties[line[0]] = line[1];
+            }
+        });
+
+        if (!properties['browserstack.username']) {
+            throw 'No username';
+        }
+    } catch (e) {
+        throw 'BrowserStack credentials not given. Add username and ' +
+            'accesskey to the git-ignore-me.properties file';
+    }
+    return properties;
+}
 
 module.exports = function (config) {
 
-    /*
-    let files = [
-        // External
-        'vendor/jquery-1.9.1.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js',
+    console.log(
+`_______________________________________________________________________________
 
-        // Highcharts
-        'code/highcharts.src.js',
-        'code/highcharts-more.src.js',
-        'code/highcharts-3d.src.js',
-        'code/modules/stock.src.js',
-        'code/modules/map.src.js',
-        'code/modules/annotations.src.js',
-        // 'code/modules/boost.src.js',
-        'code/modules/data.src.js',
-        'code/modules/drilldown.src.js',
-        'code/modules/exporting.src.js',
-        'code/modules/exporting-data.src.js',
-        'code/indicators/indicators.src.js',
-        'code/indicators/*.src.js'
+HIGHCHARTS TEST RUNNER
+
+Available arguments for 'gulp test':
+
+--browsers
+    Comma separated list of browsers to test. Available browsers are
+    'ChromeHeadless, Chrome, Firefox, Safari, Edge, IE' depending on what is
+    installed on the local system. Defaults to ChromeHeadless.
+
+    In addition, virtual browsers from Browserstack are supported. They are
+    prefixed by the operating system. Available Browserstack browsers are
+    'Mac.Safari, Win.Edge, Win.IE'.
+
+--tests
+    Comma separated list of tests to run. Defaults to '*.*' that runs all tests
+    in the 'samples/unit-tests' directory.
+    Example: 'gulp test --tests chart/*' runs all tests in the chart directory.
+________________________________________________________________________________
+
+`.green);
+
+    // The tests to run by default
+    const defaultTests = [
+        '*/*'
     ];
-    */
+
+    const argv = require('yargs').argv;
+
+    // Browsers
+    const browsers = argv.browsers ?
+        argv.browsers.split(',') :
+        ['ChromeHeadless'];
+
+    const tests = (argv.tests ? argv.tests.split(',') : defaultTests)
+        .map(path => `samples/unit-tests/${path}/demo.js`);
 
     // let files = getFiles();
     let files = require('./karma-files.json');
 
-    config.set({
+    let options = {
         basePath: '../', // Root relative to this file
         frameworks: ['qunit'],
         files: files.concat([
@@ -145,33 +181,14 @@ module.exports = function (config) {
 
             // Set up
             'utils/samples/test-controller.js',
-            'test/karma-setup.js',
-
-            // Tests
-            'samples/unit-tests/*/*/demo.js'
-        ]),
+            'test/karma-setup.js'
+        ], tests),
 
         // These ones fail
         exclude: [
-            // Difference between Highcharts and Highstock
-            'samples/unit-tests/axis/plotlines-and-plotbands/demo.js',
-            // Unknown problem with assert.async(), investigate more
-            'samples/unit-tests/chart/events-load/demo.js',
-            // Passes in Chrome, fails in Headless
-            'samples/unit-tests/chart/setsize/demo.js',
-            // Fails when data labels tests are included, in the collectAndHide
-            // function.
-            'samples/unit-tests/legend/legend-height/demo.js',
-            // Seems to fail because the container is fixed in the top in the
-            // original test runner, not so with karma.
-            'samples/unit-tests/series/findnearestpointby/demo.js',
             // The configuration currently loads classic mode only. Styled mode
             // needs to be a separate instance.
             'samples/unit-tests/series-pie/styled-mode/demo.js',
-            // Fails when the /series group is added, but
-            // succeeds when alone. Check if some global animation is set in any
-            // of the series tests.
-            'samples/unit-tests/svgrenderer/animate/demo.js',
             // Themes alter the whole default options structure. Set up a
             // separate test suite? Or perhaps somehow decouple the options so
             // they are not mutated for later tests?
@@ -186,9 +203,56 @@ module.exports = function (config) {
         port: 9876,  // karma web server port
         colors: true,
         logLevel: config.LOG_WARN,
-        browsers: ['ChromeHeadless'],
+        browsers: browsers,
         autoWatch: false,
         singleRun: true, // Karma captures browsers, runs the tests and exits
         concurrency: Infinity
-    });
+    };
+
+
+    if (browsers.some(browser => /^(Mac|Win)\./.test(browser))) {
+
+        console.log((
+            'BrowserStack initialized. Please wait while tests are ' +
+            'uploaded and VMs prepared...'
+        ).yellow);
+
+        let properties = getProperties();
+
+        options.browserStack = {
+            username: properties['browserstack.username'],
+            accessKey: properties['browserstack.accesskey']
+        };
+        options.customLaunchers = {
+            'Mac.Safari': {
+                base: 'BrowserStack',
+                browser: 'safari',
+                browser_version: '10.1',
+                os: 'OS X',
+                os_version: 'Sierra'
+            },
+            'Win.Edge': {
+                base: 'BrowserStack',
+                browser: 'edge',
+                browser_version: '15.0',
+                os: 'Windows',
+                os_version: '10'
+            },
+            'Win.IE': {
+                base: 'BrowserStack',
+                browser: 'ie',
+                browser_version: '11.0',
+                os: 'Windows',
+                os_version: '10'
+            }
+        };
+
+        // to avoid DISCONNECTED messages when connecting to BrowserStack
+        options.browserDisconnectTimeout = 10000; // default 2000
+        options.browserDisconnectTolerance = 1; // default 0
+        options.browserNoActivityTimeout = 4 * 60 * 1000; // default 10000
+        options.captureTimeout = 4 * 60 * 1000; // default 60000
+    }
+
+    config.set(options);
 };
