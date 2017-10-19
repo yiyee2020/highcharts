@@ -18,7 +18,7 @@ import H from './Globals.js';
  * @namespace Highcharts
  */
 
-var timers = H.timers = [];
+H.timers = [];
 
 var charts = H.charts,
 	doc = H.doc,
@@ -164,14 +164,11 @@ H.Fx.prototype = {
 					setTimeout(step, 13);
 				},
 			step = function () {
-				var i;
-				for (i = 0; i < timers.length; i++) {
-					if (!timers[i]()) {
-						timers.splice(i--, 1);
-					}
-				}
+				H.timers = H.grep(H.timers, function (timer) {
+					return timer();
+				});
 
-				if (timers.length) {
+				if (H.timers.length) {
 					requestAnimationFrame(step);
 				}
 			};
@@ -192,7 +189,7 @@ H.Fx.prototype = {
 			timer.elem = this.elem;
 			timer.prop = this.prop;
 
-			if (timer() && timers.push(timer) === 1) {
+			if (timer() && H.timers.push(timer) === 1) {
 				requestAnimationFrame(step);
 			}
 		}
@@ -1670,12 +1667,12 @@ H.offset = function (el) {
  */
 H.stop = function (el, prop) {
 
-	var i = timers.length;
+	var i = H.timers.length;
 
 	// Remove timers related to this element (#4519)
 	while (i--) {
-		if (timers[i].elem === el && (!prop || prop === timers[i].prop)) {
-			timers[i].stopped = true; // #4667
+		if (H.timers[i].elem === el && (!prop || prop === H.timers[i].prop)) {
+			H.timers[i].stopped = true; // #4667
 		}
 	}
 };
