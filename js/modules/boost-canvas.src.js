@@ -129,7 +129,7 @@ H.initCanvasBoost = function () {
 					chart.plotLeft,
 					chart.plotTop,
 					chart.plotWidth,
-					chart.plotHeight
+					chart.chartHeight
 				);
 
 				target.renderTarget.clip(target.boostClipRect);
@@ -159,7 +159,7 @@ H.initCanvasBoost = function () {
 				x: chart.plotLeft,
 				y: chart.plotTop,
 				width: chart.plotWidth,
-				height: chart.plotHeight
+				height: chart.chartHeight
 			});
 
 			return ctx;
