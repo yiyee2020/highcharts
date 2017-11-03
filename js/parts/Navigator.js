@@ -1774,14 +1774,14 @@ Navigator.prototype = {
 
 		each(baseSeries, function (base) {
 			// Link base series show/hide to navigator series visibility
-			addEvent(base, 'show', function (e) {
+			addEvent(base, 'show', function () {
 				if (this.navigatorSeries) {
-					this.navigatorSeries.setVisible(true, e.redraw);
+					this.navigatorSeries.setVisible(true, false);
 				}
 			});
-			addEvent(base, 'hide', function (e) {
+			addEvent(base, 'hide', function () {
 				if (this.navigatorSeries) {
-					this.navigatorSeries.setVisible(false, e.redraw);
+					this.navigatorSeries.setVisible(false, false);
 				}
 			});
 
@@ -2017,8 +2017,11 @@ wrap(Axis.prototype, 'zoom', function (proceed, newMin, newMax) {
 			ret = false;
 
 		// For xy zooming, record the state of the zoom before zoom selection,
-		// then when the reset button is pressed, revert to this state
-		} else if (zoomType === 'xy') {
+		// then when the reset button is pressed, revert to this state. This
+		// should apply only if the chart is initialized with a range (#6612),
+		// otherwise zoom all the way out.
+		} else if (zoomType === 'xy' && this.options.range) {
+
 			previousZoom = this.previousZoom;
 			if (defined(newMin)) {
 				this.previousZoom = [this.min, this.max];

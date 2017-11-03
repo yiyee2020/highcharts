@@ -28,3 +28,31 @@ QUnit.test('Ticks for a single point.', function (assert) {
         'single tick and increased extremes for a single point'
     );
 });
+
+QUnit.test(
+    'Tick positions with small magnitude intervals (#6183)',
+    function (assert) {
+        var chart = Highcharts.chart('container', {
+            chart: {
+                width: 500,
+                height: 400
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                endOnTick: false,
+                startOnTick: false
+            },
+            series: [{
+                data: [700540999999.9757, 700541000000]
+            }]
+
+        });
+
+        assert.ok(
+            chart.yAxis[0].tickPositions.length >= 3,
+            'Multiple ticks'
+        );
+    }
+);

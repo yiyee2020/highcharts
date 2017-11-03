@@ -1510,7 +1510,14 @@ H.extend(Axis.prototype, /** @lends Highcharts.Axis.prototype */{
 				correctFloat(Math.floor(min / tickInterval) * tickInterval),
 			roundedMax =
 				correctFloat(Math.ceil(max / tickInterval) * tickInterval),
-			tickPositions = [];
+			tickPositions = [],
+			precision;
+		
+		// When the precision is higher than what we filter out in
+		// correctFloat, skip it (#6183).			
+		if (correctFloat(roundedMin + tickInterval) === roundedMin) {
+			precision = 20;
+		}
 
 		// For single points, add a tick regardless of the relative position
 		// (#2662, #6274)
@@ -1526,7 +1533,10 @@ H.extend(Axis.prototype, /** @lends Highcharts.Axis.prototype */{
 			tickPositions.push(pos);
 
 			// Always add the raw tickInterval, not the corrected one.
-			pos = correctFloat(pos + tickInterval);
+			pos = correctFloat(
+				pos + tickInterval,
+				precision
+			);
 
 			// If the interval is not big enough in the current min - max range
 			// to actually increase the loop variable, we need to break out to
@@ -3297,8 +3307,16 @@ H.extend(Axis.prototype, /** @lends Highcharts.Axis.prototype */{
 		labelOffsetPadded = Math.abs(labelOffset) + titleMargin;
 		if (labelOffset) {
 			labelOffsetPadded -= lineHeightCorrection;
-			labelOffsetPadded += directionFactor * (horiz ? pick(labelOptions.y, axis.tickRotCorr.y + directionFactor * 8) : labelOptions.x);
+			labelOffsetPadded += directionFactor * (
+				horiz ?
+					pick(
+						labelOptions.y,
+						axis.tickRotCorr.y + directionFactor * 8
+					) :
+					labelOptions.x
+			);
 		}
+
 		axis.axisTitleMargin = pick(titleOffsetOption, labelOffsetPadded);
 
 		axisOffset[side] = Math.max(
