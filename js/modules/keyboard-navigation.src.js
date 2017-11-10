@@ -877,13 +877,9 @@ H.Chart.prototype.addKeyboardNavigationModules = function () {
 			[[37, 39, 38, 40], function (keyCode) {
 				var direction = (keyCode === 37 || keyCode === 38) ? -1 : 1;
 				// Try to highlight next/prev legend item
-				if (
-					!chart.highlightLegendItem(
-						chart.highlightedLegendItemIx + direction
-					)
-				) {
-					return this.move(direction);
-				}
+				chart.highlightLegendItem(
+					chart.highlightedLegendItemIx + direction
+				);
 			}],
 			// Enter/Spacebar
 			[[13, 32], function () {
