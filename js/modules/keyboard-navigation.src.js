@@ -31,6 +31,16 @@ each(['column', 'pie'], function (type) {
 	}
 });
 
+/**
+ * Strip HTML tags away from a string. Used for aria-label attributes, painting
+ * on a canvas will fail if the text contains tags.
+ * @param  {String} s The input string
+ * @return {String}   The filtered string
+ */
+function stripTags(s) {
+	return typeof s === 'string' ? s.replace(/<\/?[^>]+(>|$)/g, '') : s;
+}
+
 
 H.setOptions({
 	accessibility: {
@@ -737,7 +747,7 @@ H.Chart.prototype.addKeyboardNavigationModules = function () {
 					button.element.setAttribute('role', 'button');
 					button.element.setAttribute(
 						'aria-label',
-						'Zoom ' + (i ? 'out' : '') + 'chart'
+						'Zoom ' + (i ? 'out ' : '') + 'chart'
 					);
 				});
 
@@ -885,7 +895,7 @@ H.Chart.prototype.addKeyboardNavigationModules = function () {
 					item.legendGroup.element.setAttribute('role', 'button');
 					item.legendGroup.element.setAttribute(
 						'aria-label',
-						'Toggle visibility of series ' + item.name
+						stripTags('Toggle visibility of series ' + item.name)
 					);
 				});
 				// Focus first/last item

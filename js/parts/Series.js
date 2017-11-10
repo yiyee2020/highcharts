@@ -2917,6 +2917,7 @@ H.Series = H.seriesType('line', null, { // base series options
 			xExtremes,
 			val2lin = xAxis && xAxis.val2lin,
 			isLog = xAxis && xAxis.isLog,
+			throwOnUnsorted = series.requireSorting,
 			min,
 			max;
 
@@ -2993,8 +2994,9 @@ H.Series = H.seriesType('line', null, { // base series options
 			// Unsorted data is not supported by the line tooltip, as well as
 			// data grouping and navigation in Stock charts (#725) and width
 			// calculation of columns (#1900)
-			} else if (distance < 0 && series.requireSorting) {
+			} else if (distance < 0 && throwOnUnsorted) {
 				H.error(15);
+				throwOnUnsorted = false; // Only once
 			}
 		}
 
@@ -3591,7 +3593,6 @@ H.Series = H.seriesType('line', null, { // base series options
 		var series = this,
 			points = series.points,
 			chart = series.chart,
-			plotY,
 			i,
 			point,
 			symbol,
@@ -3616,7 +3617,6 @@ H.Series = H.seriesType('line', null, { // base series options
 
 			for (i = 0; i < points.length; i++) {
 				point = points[i];
-				plotY = point.plotY;
 				graphic = point.graphic;
 				pointMarkerOptions = point.marker || {};
 				hasPointMarker = !!point.marker;
@@ -3624,7 +3624,7 @@ H.Series = H.seriesType('line', null, { // base series options
 				isInside = point.isInside;
 
 				// only draw the point if y is defined
-				if (enabled && isNumber(plotY) && point.y !== null) {
+				if (enabled && !point.isNull) {
 
 					// Shortcuts
 					symbol = pick(pointMarkerOptions.symbol, series.symbol);
