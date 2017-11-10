@@ -526,15 +526,16 @@ H.Chart.prototype.highlightRangeSelectorButton = function (ix) {
 
 // Highlight legend item by index
 H.Chart.prototype.highlightLegendItem = function (ix) {
-	var items = this.legend.allItems;
-	if (items[this.highlightedLegendItemIx]) {
-		fireEvent(
-			items[this.highlightedLegendItemIx].legendGroup.element,
-			'mouseout'
-		);
-	}
-	this.highlightedLegendItemIx = ix;
+	var items = this.legend.allItems,
+		oldIx = this.highlightedLegendItemIx;
 	if (items[ix]) {
+		if (items[oldIx]) {
+			fireEvent(
+				items[oldIx].legendGroup.element,
+				'mouseout'
+			);
+		}
+		this.highlightedLegendItemIx = ix;
 		if (items[ix].legendGroup.element.focus) {
 			items[ix].legendGroup.element.focus();
 		}
