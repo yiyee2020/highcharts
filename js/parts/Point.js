@@ -354,7 +354,8 @@ Highcharts.Point.prototype = {
 			valueSuffix = seriesTooltipOptions.valueSuffix || '';
 
 		// Loop over the point array map and replace unformatted values with sprintf formatting markup
-		each(series.pointArrayMap || ['y'], function (key) {
+		// also for x (#7401)
+		each((series.pointArrayMap || ['y']).concat(['x']), function (key) {
 			key = '{point.' + key; // without the closing bracket
 			if (valuePrefix || valueSuffix) {
 				pointFormat = pointFormat.replace(key + '}', valuePrefix + key + '}' + valueSuffix);
