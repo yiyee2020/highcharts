@@ -1268,10 +1268,10 @@ gulp.task('dist', () => {
 
 gulp.task('scripts-new', () => {
     const {
-      join,
-      relative,
-      resolve
-    } = require('path');
+        join,
+        relative,
+        resolve
+    } = require('path').posix;
     const {
       getOrderedDependencies
     } = require('highcharts-assembler/src/dependencies.js');
@@ -1332,7 +1332,7 @@ gulp.task('scripts-new', () => {
                   options.exclude :
                   false
                 );
-                const pathFile = join(pathSource, 'masters', filename).split('\\').join('/');
+                const pathFile = join(pathSource, 'masters', filename);
                 const list = getOrderedDependencies(pathFile)
                     .filter((pathModule) => {
                         let result = true;
