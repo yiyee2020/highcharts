@@ -529,7 +529,7 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
     } = require('path');
     const {
         createDirectory
-    } = require('highcharts-assembler/utilities.js');
+    } = require('highcharts-assembler/src/utilities.js');
     const directory = dirname(target);
     createDirectory(directory);
     let read = fs.createReadStream(source);
@@ -637,10 +637,10 @@ const copyToDist = () => {
 const getBuildProperties = () => {
     const {
         getFile
-    } = require('highcharts-assembler/utilities.js');
+    } = require('highcharts-assembler/src/utilities.js');
     const {
         regexGetCapture
-    } = require('highcharts-assembler/dependencies.js');
+    } = require('highcharts-assembler/src/dependencies.js');
     const buildProperties = getFile('./build.properties');
     // @todo Get rid of build.properties and perhaps use package.json in stead.
     return {
