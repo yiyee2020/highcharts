@@ -1,0 +1,681 @@
+@import 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css';
+
+#main-content {
+    background: #fff;
+    color: #4e4f4d;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 9pt;
+    margin: 0px;
+}
+
+#demo .right {
+    float: right;
+}
+
+#demo #chart-details {
+    width: 400px;
+    height: 250px;
+    top: 175px;
+    left: 100px;
+    position: absolute;
+    z-index: 500;
+    -webkit-box-shadow: 0px 0px 4px 0px #7d7d7d;
+    box-shadow: 0px 0px 4px 0px #7d7d7d;
+    -moz-box-shadow: 0px 0px 4px 0px #7d7d7d;
+}
+
+#demo #chart-details .highcharts-title {
+    left: 0px !important;
+    cursor: move;
+}
+
+#demo #highcharts-save {
+    margin-right: 7px;
+}
+
+#demo #highcharts-edit-annotation {
+    position: absolute;
+    z-index: 50;
+    float: left;
+    display: none;
+    width: 150px;
+    /*height: 100px;*/
+    padding-bottom: 10px;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 4px 0px #7d7d7d;
+    box-shadow: 0px 0px 4px 0px #7d7d7d;
+    -moz-box-shadow: 0px 0px 4px 0px #7d7d7d;
+}
+
+#demo #highcharts-change-annotation {
+    float: right;
+}
+
+#demo #highcharts-remove-annotation {
+    float: left;
+    margin-left: 10px;
+    margin-top: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#demo .highcharts-annotation {
+    cursor: move;
+}
+
+#demo .highchart-edit-annotation-row {
+    float: left;
+    width: 100%;
+}
+
+#demo .highchart-edit-annotation-row.with-title .highcharts-title-edit-box,
+#demo .highchart-edit-annotation-row.without-title span {
+    background-color: #f2f2f2;
+    width: 100%;
+    float: left;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px 0px;
+}
+
+#demo .highchart-edit-annotation-row.without-title label {
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 130px;
+}
+
+#demo .highchart-edit-annotation-row input.menu-btn {
+    border-right: 1px solid #cccccc;
+    float: left;
+    margin-left: 10px;
+    width: 72%;
+    margin-top: 10px;
+    cursor: text;
+}
+
+#demo .highchart-edit-annotation-row .menu-btn {
+    border: 1px solid #cccccc;
+    float: left;
+    margin-top: 8px;
+}
+
+#demo .highchart-edit-annotation-row .label-colorPicker {
+    width: 95px !important;
+}
+
+#demo .highchart-edit-annotation-row input.menu-btn:hover {
+    border: 1px solid #6688aa;
+}
+
+#demo #highcharts-change-fill {
+    background-color: #e7f0f9
+}
+
+#demo #highcharts-change-border {
+    background-color: #6688aa;
+}
+
+#demo input.menu-btn:hover {
+    background-color: #fff;
+}
+
+#demo .highchart-edit-annotation-row button {
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
+    border-color: #6688aa;
+    background-color: #e7f0f9;
+}
+
+#demo .highchart-edit-annotation-row button:hover {
+    background-color: #6688aa;
+    border-color: #325b83;
+}
+
+
+/*** HELLO MESSAGE: ***/
+
+#demo #hello-msg {
+    display: block;
+}
+
+
+/*** TOOLTIP CSS: ***/
+
+#demo #tooltip,
+#demo #hello-msg-box {
+    position: absolute;
+    display: none;
+    width: 200px;
+    /*height: 150px;*/
+    background-color: #333333;
+    color: #dcdcdc;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    border: 1px solid rgba(0, 0, 0, .2);
+    font-size: 12px;
+}
+
+#demo #hello-msg-box {
+    display: block;
+    width: 310px;
+    top: 45%;
+    left: 50%;
+    margin-left: -155px;
+}
+
+#demo #tooltip .diamond {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    background-color: #333333;
+    transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+#demo #tooltip .tooltip-content,
+#demo #hello-msg-box .tooltip-content {
+    padding: 5px;
+}
+
+#demo #tooltip .tooltip-title,
+#demo #hello-msg-box .tooltip-title {
+    padding: 5px;
+    font-size: 16px;
+    color: #00b4ff;
+}
+
+#demo #tooltip .tooltip-subcontent,
+#demo #hello-msg-box .tooltip-subcontent {
+    padding: 5px;
+}
+
+#demo #tooltip .tooltip-paginator,
+#demo #hello-msg-box .tooltip-paginator {
+    width: 100%;
+    text-align: center;
+    padding: 5px 0px;
+    background-color: #454545;
+    float: left;
+}
+
+#demo #tooltip .tooltip-paginator .info {
+    float: left;
+    margin-left: 10px;
+    line-height: 2em;
+}
+
+#demo #hello-msg-box .tooltip-paginator {
+    width: 100%;
+}
+
+#demo #tooltip .tooltip-prev,
+#demo #tooltip .tooltip-next {
+    cursor: pointer;
+}
+
+#demo #tooltip .tooltip-close,
+#demo #hello-msg-box .tooltip-close,
+#demo .cancel {
+    background: url('../images/cancel-ico.png') no-repeat 0% 0%;
+    float: right;
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#demo .cancel {
+    position: absolute;
+    right: 0;
+    top: -2px;
+}
+
+#demo .tooltip-mask {
+    background-color: rgba(0, 0, 0, 0.25);
+    opacity: 1;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    display: none;
+}
+
+#demo #tooltip-mask-top {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#demo #tooltip-mask-center {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    display: none;
+    /*box-shadow: 0 5px 15px rgba(0,0,0,.5);*/
+    box-shadow: inset 0px 7px 12px -6px rgba(0, 0, 0, .5);
+    box-shadow: inset 0px 6px 12px -4px rgba(0, 0, 0, .7);
+    /*border: 1px solid rgba(0,0,0,.2);*/
+}
+
+#demo #indicators-container ul {
+    display: none;
+    padding: 3px;
+    width: 130px;
+    background-color: #ffffff;
+}
+
+#demo #analyze-container ul {
+    display: none;
+    padding: 3px;
+    width: 62px;
+    background-color: #ffffff;
+}
+
+#demo #analyze-dropdown {
+    width: 90px;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+#demo #indicators-container li,
+#demo #analyze-container li {
+    list-style: none;
+}
+
+#demo #indicators-container a {
+    display: block;
+    text-decoration: none;
+}
+
+#demo #analyze-container a {
+    display: block;
+    text-decoration: none;
+    line-height: 18px;
+}
+
+#demo #indicators-container span {
+    display: inline-block;
+    width: 110px;
+}
+
+#demo #indicators-dropdown {
+    width: 100px;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+#demo .blue-btn {
+    color: #fff;
+    cursor: pointer;
+    background-color: #00a1e4;
+    border: none;
+    padding: 5px 10px;
+}
+
+#demo .menu-btn {
+    color: #000;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    padding: 4px 10px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+#demo .menu-btn:hover {
+    background-color: #99bbdd;
+    border-color: #6688aa;
+}
+
+#demo .blue-btn:hover {
+    background-color: #008fca;
+}
+
+#demo .right {
+    float: right;
+    margin-right: 10px;
+}
+
+#demo .select {
+    width: 99px;
+    overflow: hidden;
+}
+
+#demo .select label {}
+
+#demo .select-dropdown::after {
+    content: '▽';
+    float: right;
+    margin: 0 0 0 10px;
+    -moz-transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+}
+
+#demo .select-dropdown.dropdown-active::after {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    text-shadow: 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+#demo select {
+    -webkit-appearance: button;
+    -webkit-border-radius: 0px;
+    -webkit-user-select: none;
+    background: url('../images/arrow-down.png') no-repeat 62% -5px #fff;
+    border: 1px solid #ccc;
+    color: #555;
+    overflow: hidden;
+    padding: 4px 20px 4px 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 140px;
+    float: left;
+}
+
+#demo select:hover {
+    background-position: 62% -36px;
+    background-color: #99bbdd;
+    border-color: #6688aa;
+}
+
+#demo #menu-nav {
+    position: absolute;
+    z-index: 50;
+    width: 500px;
+}
+
+#demo #menu-nav label {
+    float: left;
+    line-height: 2em;
+}
+
+#demo #menu-nav div {
+    float: left;
+    margin-left: 12px;
+}
+
+#demo input.menu-btn {
+    border-right: 0px;
+    padding: 4px 1px;
+}
+
+#demo input.menu-btn:hover {
+    color: #000;
+}
+
+
+/* COLOR PICKER CUSTOM */
+
+#demo .colorpicker {
+    z-index: 100 !important;
+    width: 216px !important;
+    -webkit-box-shadow: 0px 0px 4px 0px #7d7d7d;
+    box-shadow: 0px 0px 4px 0px #7d7d7d;
+    -moz-box-shadow: 0px 0px 4px 0px #7d7d7d;
+}
+
+#demo .colorPicker {
+    width: 10px;
+    height: 10px;
+}
+
+#demo .colorpicker_field,
+#demo .colorpicker_hex,
+#demo .colorpicker_submit,
+#demo .colorpicker_new_color,
+#demo .colorpicker_current_color {
+    display: none !important;
+}
+
+
+/* ==== BUTTONS ==== */
+
+#demo #menu-side {
+    left: 10px;
+    position: absolute;
+    top: 50px;
+    z-index: 100;
+}
+
+#demo button,
+#demo #submenu li {
+    border: none;
+    background-color: #707070;
+    clear: both;
+    cursor: pointer;
+    color: #707070;
+    display: block;
+    margin-bottom: 10px;
+    height: 30px;
+    width: 30px;
+}
+
+#demo button.active,
+#demo #submenu li.active {
+    background-color: #29ABE2;
+}
+
+#demo button:hover,
+#demo #submenu li:hover {
+    background-color: #333333;
+}
+
+#demo button#annotation-line {
+    -webkit-mask-image: url(../images/icons/line.svg);
+    mask-image: url(../images/icons/line.svg);
+}
+
+#demo button#annotation-rect {
+    -webkit-mask-image: url(../images/icons/rect.svg);
+    mask-image: url(../images/icons/rect.svg);
+}
+
+#demo button#annotation-circle {
+    -webkit-mask-image: url(../images/icons/circle.svg);
+    mask-image: url(../images/icons/circle.svg);
+}
+
+#demo button#annotation-arrow {
+    -webkit-mask-image: url(../images/icons/arrow.svg);
+    mask-image: url(../images/icons/arrow.svg);
+}
+
+#demo button#annotation-tunnel {
+    -webkit-mask-image: url(../images/icons/tunnel.svg);
+    mask-image: url(../images/icons/tunnel.svg);
+}
+
+#demo button#annotation-text {
+    -webkit-mask-image: url(../images/icons/text.svg);
+    mask-image: url(../images/icons/text.svg);
+}
+
+#demo button#annotation-fibonacci {
+    -webkit-mask-image: url(../images/icons/fibonacci.svg);
+    mask-image: url(../images/icons/fibonacci.svg);
+}
+
+#demo button#annotation-flag {
+    border: 1px solid red;
+    position: relative;
+    -webkit-mask-image: url(../images/icons/flag.svg);
+    mask-image: url(../images/icons/flag.svg);
+}
+
+#demo button#annotation-feature {
+    -webkit-mask-image: url(../images/icons/feature.svg);
+    mask-image: url(../images/icons/feature.svg);
+}
+
+#demo #highcharts-manage-chart {
+    float: right;
+    position: absolute;
+    right: 10px;
+    top: 9px;
+    z-index: 100;
+}
+
+#demo #highcharts-manage-chart button {
+    shape-rendering: optimizeSpeed;
+    clear: none;
+    float: left;
+    height: 23px;
+    width: 23px;
+}
+
+#demo #highcharts-save {
+    -webkit-mask-image: url(../images/icons/save.svg);
+    mask-image: url(../images/icons/save.svg);
+}
+
+#demo #highcharts-reset {
+    -webkit-mask-image: url(../images/icons/reset.svg);
+    mask-image: url(../images/icons/reset.svg);
+}
+
+#demo .dropdown-menu,
+#demo #indicators-container ul.dropdown-menu,
+#demo #analyze-container ul.dropdown-menu {
+    border: 1px solid #cccccc;
+    margin-top: -1px;
+    padding: 10px;
+}
+
+#demo .dropdown-menu a,
+#demo #indicators-container ul.dropdown-menu a,
+#demo #analyze-container ul.dropdown-menu a {
+    color: #707070;
+    outline: none;
+}
+
+#demo .dropdown-menu a,
+#demo #indicators-container ul.dropdown-menu a:hover,
+#demo #analyze-container ul.dropdown-menu a:hover {
+    color: #333333;
+}
+
+#demo #annotation-text-form {
+    color: #707070;
+    display: none;
+}
+
+
+#demo #annotation-text-form fieldset {
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 10px;
+}
+
+#demo .ui-dialog div.ui-dialog-titlebar.ui-widget-header {
+    background: none;
+    border: none;
+}
+
+#demo .ui-dialog div.ui-dialog-titlebar .ui-dialog-titlebar-close {
+    background-color: transparent;
+    border: none;
+}
+
+#demo .ui-widget-overlay.ui-front {
+    z-index: 0!important;
+}
+
+#demo {
+    float: left;
+    position: relative;
+    min-width: 1250px;
+    width: 100%;
+}
+
+#demo #chart {
+    width: 100%;
+}
+
+#demo #menu-side div {
+    float: left;
+}
+
+#demo #submenu {
+    display: none;
+    width: 158px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 9999;
+    margin-top: -221px;
+}
+
+#demo .left {
+    width: 42px;
+}
+
+#demo .main {
+    width: 42px;
+    padding: 10px;
+    border-left: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    height: 23px;
+}
+
+.#demo inner {
+    background: #fff;
+    width: 32px;
+    padding: 0px 10px;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    pointer-events: auto;
+}
+
+#demo .empty {
+    border-right: 1px solid #cccccc;
+    height: 134px;
+    width: 41px;
+}
+
+#demo #submenu ul {
+    margin-left: 0px;
+    margin-bottom: 7px;
+    padding-top: 5px;
+    padding-left: 0px;
+}
+
+#demo #submenu li {
+    margin-bottom: 11px;
+}
+
+#demo #submenu li:last-child {
+    margin-bottom: 0px;
+}
+
+#demo #submenu li#flag-flag {
+    -webkit-mask-image: url(../images/icons/flag-flag.svg);
+    mask-image: url(../images/icons/flag-flag.svg);
+}
+
+#demo #submenu li#flag-circlepin {
+    -webkit-mask-image: url(../images/icons/flag-circlepin.svg);
+    mask-image: url(../images/icons/flag-circlepin.svg);
+}
+
+#demo #submenu li#flag-squarepin {
+    -webkit-mask-image: url(../images/icons/flag-squarepin.svg);
+    mask-image: url(../images/icons/flag-squarepin.svg);
+}
+
+#demo #submenu li#flag-diamondpin {
+    -webkit-mask-image: url(../images/icons/flag-diamondpin.svg);
+    mask-image: url(../images/icons/flag-diamondpin.svg);
+}

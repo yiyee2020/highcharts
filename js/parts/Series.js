@@ -2491,7 +2491,8 @@ H.Series = H.seriesType('line', null, { // base series options
 			xIncrement = this.xIncrement,
 			date,
 			pointInterval,
-			pointIntervalUnit = options.pointIntervalUnit;
+			pointIntervalUnit = options.pointIntervalUnit,
+			dstCrossover = 0;
 
 		xIncrement = pick(xIncrement, options.pointStart, 0);
 
@@ -2518,7 +2519,11 @@ H.Series = H.seriesType('line', null, { // base series options
 					date[Date.hcGetFullYear]() + pointInterval
 				);
 			}
-			pointInterval = date - xIncrement;
+
+			if (Date.hcHasTimeZone) {
+				dstCrossover = H.getTZOffset(date) - H.getTZOffset(xIncrement);
+			}
+			pointInterval = date - xIncrement + dstCrossover;
 
 		}
 
@@ -3233,7 +3238,7 @@ H.Series = H.seriesType('line', null, { // base series options
 				j = y.length;
 				if (j) { // array, like ohlc or range data
 					while (j--) {
-						if (y[j] !== null) {
+						if (typeof y[j] === 'number') { // #7380
 							activeYData[activeCounter++] = y[j];
 						}
 					}

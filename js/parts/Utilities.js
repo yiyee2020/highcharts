@@ -164,9 +164,11 @@ H.Fx.prototype = {
 					setTimeout(step, 13);
 				},
 			step = function () {
-				H.timers = H.grep(H.timers, function (timer) {
-					return timer();
-				});
+				for (var i = 0; i < H.timers.length; i++) {
+					if (!H.timers[i]()) {
+						H.timers.splice(i--, 1);
+					}
+				}
 
 				if (H.timers.length) {
 					requestAnimationFrame(step);
@@ -587,15 +589,18 @@ H.isClass = function (obj) {
 };
 
 /**
- * Utility function to check if an item is of type number.
+ * Utility function to check if an item is a number and it is finite (not NaN,
+ * Infinity or -Infinity).
  *
  * @function #isNumber
  * @memberOf Highcharts
- * @param {Object} n - The item to check.
- * @returns {Boolean} - True if the item is a number and is not NaN.
+ * @param  {Object} n
+ *         The item to check.
+ * @return {Boolean}
+ *         True if the item is a finite number
  */
 H.isNumber = function (n) {
-	return typeof n === 'number' && !isNaN(n);
+	return typeof n === 'number' && !isNaN(n) && n < Infinity && n > -Infinity;
 };
 
 /**
@@ -1749,9 +1754,23 @@ H.objectEach = function (obj, fn, ctx) {
  * @returns {Function} A callback function to remove the added event.
  */
 H.addEvent = function (el, type, fn) {
-	
-	var events = el.hcEvents = el.hcEvents || {},
+
+	var events,
+		itemEvents,
 		addEventListener = el.addEventListener || H.addEventListenerPolyfill;
+
+	// If events are previously set directly on the prototype, pick them up 
+	// and copy them over to the instance. Otherwise instance handlers would
+	// be set on the prototype and apply to multiple charts in the page.
+	if (el.hcEvents && !el.hasOwnProperty('hcEvents')) {
+		itemEvents = {};
+		H.objectEach(el.hcEvents, function (handlers, eventType) {
+			itemEvents[eventType] = handlers.slice(0);
+		});
+		el.hcEvents = itemEvents;
+	}
+
+	events = el.hcEvents = el.hcEvents || {};
 
 	// Handle DOM events
 	if (addEventListener) {

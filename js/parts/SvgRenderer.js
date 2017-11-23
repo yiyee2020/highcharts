@@ -86,7 +86,7 @@ extend(SVGElement.prototype, /** @lends Highcharts.SVGElement.prototype */ {
 		'textDecoration', 'textOverflow', 'textOutline'],
 
 	/**
-	 * Initialize the SVG renderer. This function only exists to make the
+	 * Initialize the SVG element. This function only exists to make the
 	 * initiation process overridable. It should not be called directly.
 	 *
 	 * @param  {SVGRenderer} renderer
@@ -512,7 +512,7 @@ extend(SVGElement.prototype, /** @lends Highcharts.SVGElement.prototype */ {
 		// setter
 		} else {
 
-			objectEach(hash, function (val, key) {
+			objectEach(hash, function eachAttribute(val, key) {
 				skipAttr = false;
 				
 				// Unless .attr is from the animator update, stop current
@@ -1691,6 +1691,7 @@ extend(SVGElement.prototype, /** @lends Highcharts.SVGElement.prototype */ {
 	 */
 	_defaultGetter: function (key) {
 		var ret = pick(
+			this[key + 'Value'], // align getter
 			this[key],
 			this.element ? this.element.getAttribute(key) : null,
 			0
@@ -1755,6 +1756,7 @@ extend(SVGElement.prototype, /** @lends Highcharts.SVGElement.prototype */ {
 	/*= } =*/
 	alignSetter: function (value) {
 		var convert = { left: 'start', center: 'middle', right: 'end' };
+		this.alignValue = value;
 		this.element.setAttribute('text-anchor', convert[value]);
 	},
 	opacitySetter: function (value, key, element) {		
@@ -1991,6 +1993,10 @@ extend(SVGRenderer.prototype, /** @lends Highcharts.SVGRenderer.prototype */ {
 			/*= } =*/;
 		element = boxWrapper.element;
 		container.appendChild(element);
+
+		// Always use ltr on the container, otherwise text-anchor will be
+		// flipped and text appear outside labels, buttons, tooltip etc (#3482)
+		attr(container, 'dir', 'ltr');
 
 		// For browsers other than IE, add the namespace attribute (#1978)
 		if (container.innerHTML.indexOf('xmlns') === -1) {

@@ -16,7 +16,8 @@ import Highcharts from '../parts/Globals.js';
 import '../parts/Utilities.js';
 import '../parts/Chart.js';
 
-var each = Highcharts.each,
+var defined = Highcharts.defined,
+	each = Highcharts.each,
 	pick = Highcharts.pick,
 	win = Highcharts.win,
 	doc = win.document,
@@ -105,16 +106,14 @@ Highcharts.setOptions({
 });
 
 // Add an event listener to handle the showTable option
-Highcharts.Chart.prototype.callbacks.push(function (chart) {
-	Highcharts.addEvent(chart, 'render', function () {
-		if (
-			chart.options &&
-			chart.options.exporting &&
-			chart.options.exporting.showTable
-		) {
-			chart.viewData();
-		}
-	});
+Highcharts.addEvent(Highcharts.Chart.prototype, 'render', function () {
+	if (
+		this.options &&
+		this.options.exporting &&
+		this.options.exporting.showTable
+	) {
+		this.viewData();
+	}
 });
 
 // Set up key-to-axis bindings. This is used when the Y axis is datetime or 
@@ -302,7 +301,7 @@ Highcharts.Chart.prototype.getDataRows = function () {
 		// Add the category column
 		each(rowArr, function (row) { // eslint-disable-line no-loop-func
 			var category = row.name;
-			if (!category) {
+			if (!defined(category)) {
 				if (xAxis.isDatetimeAxis) {
 					if (row.x instanceof Date) {
 						row.x = row.x.getTime();
