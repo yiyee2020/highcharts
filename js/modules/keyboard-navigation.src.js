@@ -145,17 +145,16 @@ H.setOptions({
 				 * Focus border margin around the elements.
 				 */
 				margin: 2
-			}
+			},
 
 			/**
 			 * Skip null points when navigating through points with the
 			 * keyboard.
 			 * 
 			 * @type {Boolean}
-			 * @default false
 			 * @since 5.0.0
-			 * @apioption accessibility.keyboardNavigation.skipNullPoints
 			 */
+			skipNullPoints: true
 		}
 	}
 });
@@ -275,11 +274,14 @@ function fakeClickEvent(element) {
 
 // Determine if a point should be skipped
 function isSkipPoint(point) {
-	return point.isNull &&
-		point.series.chart.options.accessibility
-			.keyboardNavigation.skipNullPoints ||
+	var a11yOptions = point.series.chart.options.accessibility;
+	return point.isNull && a11yOptions.keyboardNavigation.skipNullPoints ||
 		point.series.options.skipKeyboardNavigation ||
-		!point.series.visible;
+		!point.series.visible ||
+		// Skip all points in a series where pointDescriptionThreshold is
+		// reached
+		(a11yOptions.pointDescriptionThreshold &&
+		a11yOptions.pointDescriptionThreshold <= point.series.points.length);
 }
 
 
@@ -430,9 +432,7 @@ H.Chart.prototype.highlightAdjacentPoint = function (next) {
 		// Grab next/prev point & series
 		newSeries = series[curPoint.series.index + (next ? 1 : -1)];
 		newPoint = curPoints[curPointIndex + (next ? 1 : -1)] ||
-					// Done with this series, try next one, unless shared
-					// tooltip.
-					!chart.tooltip.shared &&
+					// Done with this series, try next one
 					newSeries &&
 					newSeries.points[next ? 0 : newSeries.points.length - 1];
 
