@@ -361,7 +361,7 @@ exports.defineTags = function (dictionary) {
 
             var text = valueObj.value;
 
-            var del = text.indexOf(/\s/),
+            var del = text.indexOf(' '),
                 name = text.substr(del).trim().replace(/\s\s+/g, ' '),
                 value = text.substr(0, del).trim(),
                 folder = hcRoot + /samples/ + value
