@@ -1,24 +1,710 @@
 // Predefined analyzes, like default dataset+indicators+annotations
-window.analyzes = [];
+window.analyzes = [{
+    indicators: [{
+        linkedTo: "main",
+        type: "ema",
+        id: "s-ema"
+    }, {
+        linkedTo: "main",
+        type: "sma",
+        id: "s-sma"
+    }, {
+        linkedTo: "main",
+        type: "wma",
+        id: "s-wma"
+    }],
+    flags: [],
+    annotations: [{
+        visible: true,
+        labelOptions: {
+            align: "center",
+            allowOverlap: false,
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            borderColor: "black",
+            borderRadius: 1,
+            borderWidth: 1,
+            crop: false,
+            overflow: "none",
+            padding: 5,
+            shadow: false,
+            shape: "callout",
+            style: {
+                fontSize: "11px",
+                fontWeigth: "bold",
+                color: "contrast"
+            },
+            useHTML: false,
+            verticalAlign: "bottom",
+            x: 0,
+            y: -16
+        },
+        shapeOptions: {
+            stroke: "rgba(0, 0, 0, 0.75)",
+            strokeWidth: 1,
+            fill: "rgba(0, 0, 0, 0.75)",
+            r: 0
+        },
+        zIndex: 6,
+        events: {},
+        id: "annotation-text-5",
+        labels: [{
+            text: "September 2017:<br>iPhone X annoucment",
+            point: {
+                x: 1505174400000,
+                y: 162,
+                xAxis: 0,
+                yAxis: 0
+            },
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            shape: "callout",
+            borderWidth: 0,
+            x: 0,
+            y: -16
+        }]
+    }, {
+        visible: true,
+        labelOptions: {
+            align: "center",
+            allowOverlap: false,
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            borderColor: "black",
+            borderRadius: 1,
+            borderWidth: 1,
+            crop: false,
+            overflow: "none",
+            padding: 5,
+            shadow: false,
+            shape: "callout",
+            style: {
+                fontSize: "11px",
+                fontWeigth: "bold",
+                color: "contrast"
+            },
+            useHTML: false,
+            verticalAlign: "bottom",
+            x: 0,
+            y: -16
+        },
+        shapeOptions: {
+            stroke: "rgba(0, 0, 0, 0.75)",
+            strokeWidth: 1,
+            fill: "rgba(0, 0, 0, 0.75)",
+            r: 0
+        },
+        zIndex: 6,
+        events: {},
+        id: "annotation-text-6",
+        labels: [{
+            text: "Analysis AAPL<br> Includes indicators: <br> EMA (14), SMA (13) and WMA (9)<br> Good example how moving averages are different and how relate to a data change.",
+            point: {
+                x: 1499817600000,
+                y: 170,
+                xAxis: 0,
+                yAxis: 0
+            },
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            shape: "callout",
+            borderWidth: 0,
+            x: 0,
+            y: -16
+        }]
+    }],
+    yAxis: [{
+        height: '100%'
+    }]
+}, {
+    indicators: [{
+        linkedTo: "main",
+        type: "rsi",
+        id: "s-rsi",
+        yAxis: 1
+    }, {
+        linkedTo: "main",
+        id: "s-macd",
+        type: "macd",
+        yAxis: 2,
+        color: "#eee",
+        signalLine: {
+            styles: {
+                lineColor: "blue"
+            }
+        },
+        macdLine: {
+            styles: {
+                lineColor: "red"
+            }
+        }
+    }, {
+        linkedTo: "main",
+        color: "red",
+        type: "ema",
+        id: "s-ema"
+    }],
+    flags: [{
+        type: "flags",
+        onSeries: "s-macd",
+        shape: "squarepin",
+        data: [{
+            x: 1507593600000,
+            title: "<span style=\"position: relative; top: 5px; left: -15px;\">A</span>"
+        }],
+        yAxis: 2,
+        style: {
+            fontSize: "13px",
+            fontWeight: "bold",
+            dy: 4
+        },
+        textAlign: "center",
+        width: 25,
+        height: 25,
+        useHTML: false,
+        y: -50,
+        enableMouseTracking: false
+    }, {
+        type: "flags",
+        onSeries: "s-macd",
+        shape: "squarepin",
+        data: [{
+            x: 1509494400000,
+            title: "<span style=\"position: relative; top: 5px; left: -15px;\">B</span>"
+        }, {
+            x: 1509580800000,
+            title: "<span style=\"position: relative; top: 5px; left: -15px;\">C</span>"
+        }],
+        yAxis: 2,
+        style: {
+            fontSize: "13px",
+            fontWeight: "bold",
+            dy: 4
+        },
+        textAlign: "center",
+        width: 25,
+        height: 25,
+        useHTML: false,
+        y: -50,
+        enableMouseTracking: false
+    }, {
+        type: "flags",
+        onSeries: "s-rsi",
+        shape: "flag",
+        data: [{
+            x: 1502409600000,
+            title: "<span style=\"position: relative; top: 5px; left: 0;\">D</span>"
+        }],
+        yAxis: 1,
+        style: {
+            fontSize: "13px",
+            fontWeight: "bold",
+            dy: 4
+        },
+        textAlign: "center",
+        width: 25,
+        height: 25,
+        useHTML: false,
+        y: -50,
+        enableMouseTracking: false
+    }],
+    yAxis: [{
+        height: "50%",
+        resize: {
+            enabled: true,
+            controlledAxis: {
+                next: ["rsi"]
+            }
+        }
+    }, {
+        top: "50%",
+        height: "25%",
+        id: "rsi",
+        resize: {
+            enabled: true,
+            controlledAxis: {
+                next: ["macd"]
+            }
+        }
+    }, {
+        top: "75%",
+        height: "25%",
+        id: "macd"
+    }],
+    annotations: [{
+        visible: true,
+        labelOptions: {
+            align: "center",
+            allowOverlap: false,
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            borderColor: "black",
+            borderRadius: 1,
+            borderWidth: 1,
+            crop: false,
+            overflow: "justify",
+            padding: 5,
+            shadow: false,
+            shape: "callout",
+            style: {
+                fontSize: "11px",
+                fontWeight: "normal",
+                color: "contrast"
+            },
+            useHTML: false,
+            verticalAlign: "bottom",
+            x: 0,
+            y: -16
+        },
+        shapeOptions: {
+            stroke: "rgba(0, 0, 0, 0.75)",
+            strokeWidth: 1,
+            fill: "rgba(0, 0, 0, 0.75)",
+            r: 0
+        },
+        zIndex: 2,
+        shapes: [{
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 176.24,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 176.24,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1499299200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            strokeWidth: 0,
+            fill: "rgba(169, 255, 101, 0.4)"
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1499299200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            strokeWidth: 0,
+            fill: "rgba(162, 241, 130, 0.4)"
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1499299200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            strokeWidth: 0,
+            fill: "rgba(156, 229, 161, 0.4)"
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1499299200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            strokeWidth: 0,
+            fill: "rgba(150, 216, 192, 0.4)"
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1499299200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            strokeWidth: 0,
+            fill: "rgba(139, 191, 216, 0.4)"
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 142.73,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1499299200000,
+                y: 142.73,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            strokeWidth: 0,
+            fill: "rgba(130, 170, 255, 0.4)"
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 176.24,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 176.24,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }, {
+            type: "path",
+            points: [{
+                x: 1499299200000,
+                y: 142.73,
+                xAxis: 0,
+                yAxis: 0
+            }, {
+                x: 1510099200000,
+                y: 142.73,
+                xAxis: 0,
+                yAxis: 0
+            }],
+            stroke: "black",
+            strokeWidth: 1
+        }],
+        labels: [{
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 176.24,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "0.000",
+            y: 0
+        }, {
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 168.33164,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "0.236",
+            y: 0
+        }, {
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 163.43918,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "0.382",
+            y: 0
+        }, {
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 159.485,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "0.500",
+            y: 0
+        }, {
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 155.53082,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "0.618",
+            y: 0
+        }, {
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 149.90114,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "0.786",
+            y: 0
+        }, {
+            style: {
+                color: "grey"
+            },
+            align: "right",
+            verticalAlign: "middle",
+            backgroundColor: "none",
+            borderWidth: 0,
+            shape: "rect",
+            point: {
+                x: 1499299200000,
+                y: 142.73,
+                xAxis: 0,
+                yAxis: 0
+            },
+            text: "1.000",
+            y: 0
+        }],
+        clip: 0
+    }]
+}];
+
+/***
+ * JSONP
+ */
+
+function $jsonp(src, options) {
+    var callbackName = options.callbackName || 'callback',
+        onSuccess = options.onSuccess || function () {},
+        timeout = options.timeout || 10; // sec
+
+    var timeoutTrigger = window.setTimeout(function () {
+        window[callbackName] = function () {};
+    }, timeout * 1000);
+
+    window[callbackName] = function (data) {
+        window.clearTimeout(timeoutTrigger);
+        onSuccess(data);
+    };
+
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = src;
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+/***
+ * Get chart by ID
+ */
+
+(function (H) {
+    H.getChartById = function (id) {
+        return H.charts[document.getElementById(id).getAttribute('data-highcharts-chart')];
+    };
+}(Highcharts));
 
 /***
  * SIDE MENU
  */
 (function (H) {
-    var mainMenu = $('#menu-side');
-    var flagMenu = $('#submenu');
+    var mainMenu = document.getElementById('menu-side'),
+        flagMenu = document.getElementById('submenu'),
+        i;
 
     function resetOtherClass(button) {
-        mainMenu.children().not(button).removeClass('active');
-        flagMenu.find('li').not(button).removeClass('active');
+        var mainChildren = mainMenu.children,
+            flagMenuList = flagMenu.querySelectorAll('li');
+
+        for (i = 0; i < mainChildren.length; i++) {
+            if (mainChildren[i] !== button) {
+                mainChildren[i].classList.remove('active');
+            }
+        }
+
+        for (i = 0; i < flagMenuList.length; i++) {
+            if (flagMenuList[i] !== button) {
+                flagMenuList[i].classList.remove('active');
+            }
+        }
     }
 
     function onButtonClick(button, chart) {
-        var annotating = button.attr('id').split('-')[1];
+        var annotating = button.getAttribute('id').split('-')[1];
         var annotation = H.Annotation[chart.annotating];
 
         resetOtherClass(button);
-        button.toggleClass('active');
+        button.classList.toggle('active');
 
         if (chart.annotating && annotation && annotation.reset) {
             annotation.reset();
@@ -27,41 +713,55 @@ window.analyzes = [];
         chart.annotating = annotating === chart.annotating ? null : annotating;
     }
 
-    function sideMenu(chart) {
-        resetOtherClass();
-        mainMenu.off('click');
-        chart.annotating = null;
+    function menuOnClick(e) {
 
-        mainMenu.on('click', 'button', function () {
-            var button = $(this);
-            var id = button.attr('id');
+        var button = e.target;
+        var id = button.getAttribute('id');
 
-            if (id === 'annotation-flag') {
-                resetOtherClass(button);
+        if (id === 'annotation-flag') {
+            resetOtherClass(button);
 
-                if (flagMenu.css('display') === 'block') {
-                    flagMenu.hide();
-                    button.removeClass('active');
-
-                } else {
-                    flagMenu.show();
-                    button.addClass('active');
-                }
+            if (flagMenu.style.display === 'block') {
+                flagMenu.style.display = 'none';
+                button.classList.remove('active');
 
             } else {
-                flagMenu.hide();
-                onButtonClick(button, chart);
+                flagMenu.style.display = 'block';
+                button.classList.add('active');
             }
+
+        } else {
+            flagMenu.style.display = 'none';
+
+            onButtonClick(button, H.getChartById('container'));
+        }
+    }
+
+    function flagMenuClick(e) {
+        onButtonClick(e.target, H.getChartById('container'));
+    }
+
+    function sideMenu() {
+        var menuButtons = mainMenu.querySelectorAll('button'),
+            listButtons = mainMenu.querySelectorAll('li');
+
+        resetOtherClass();
+
+        mainMenu.removeEventListener('click', menuOnClick);
+
+        H.getChartById('container').annotating = null;
+
+        menuButtons.forEach(function (menuButton) {
+            menuButton.addEventListener('click', menuOnClick);
         });
 
-        mainMenu.on('click', 'li', function () {
-            onButtonClick($(this), chart);
+        listButtons.forEach(function (listButton) {
+            listButton.addEventListener('click', flagMenuClick);
         });
     }
 
-
-
     window.sideMenu = sideMenu;
+
 }(Highcharts));
 
 /***
@@ -485,8 +1185,8 @@ function whichAxis(e, chart) {
     }
 
     function onChartClick(e, chart) {
-        var x = e.chartX; //- chart.plotLeft
-        var y = e.chartY; //- chart.plotTop
+        var x = e.chartX;
+        var y = e.chartY;
 
         star(x, y, chart);
     }
@@ -500,34 +1200,17 @@ function whichAxis(e, chart) {
  * TEXT
  */
 (function (H) {
-  //var x = $('#x');
-  //var y = $('#y');
     var inArray = H.inArray;
 
-    var text = $('#text');
+    var text = document.getElementById('text');
     var x = -9e7;
     var y = -9e7;
     var yAxisIndex = -1;
     var chart = null;
     var counter = -1;
     var annotationToRemove;
-    var form;
 
-    var dialog = $('#annotation-text-form').dialog({
-        autoOpen: false,
-        modal: true,
-        width: 200,
-        position: {
-            of: $('#chart')
-        },
-        title: ''
-    });
-
-    function checkRadio(name, value) {
-        var nameSelector = 'input:radio[name="' + name + '"]';
-        $(nameSelector).prop('checked', false);
-        $(nameSelector + '[value="' + value + '"]').prop('checked', 'checked');
-    }
+    var dialog = document.getElementById('annotation-text-form');
 
     function onPointClick(p) {
         x = p.x;
@@ -536,30 +1219,27 @@ function whichAxis(e, chart) {
         chart = p.series.chart;
 
         if (yAxisIndex !== -1 && chart) {
-            dialog.dialog('open');
+            dialog.style.display = 'block';
         }
     }
 
     function addText(e) {
         e.preventDefault();
 
-        var backgroundColor = $('input:radio[name="background-color"]:checked').val();
-        var shape = $('input:radio[name="shape"]:checked').val();
+        var backgroundColor = document.querySelector('input[name="background-color"]:checked').value;
+        var shape = document.querySelector('input[name="shape"]:checked').value;
 
         if (annotationToRemove) {
             chart.removeAnnotation(annotationToRemove);
             annotationToRemove = null;
         }
-
         chart.addAnnotation({
             events: {
                 contextmenu: function (e) {
                     e.preventDefault();
 
                     var label = this.options.labels[0];
-                    text.val(label.text);
-                    checkRadio('background-color', label.backgroundColor);
-                    checkRadio('shape', label.shape);
+                    text.value = label.text;
 
                     var point = this.labels[0].points[0];
                     annotationToRemove = this.options.id;
@@ -568,7 +1248,7 @@ function whichAxis(e, chart) {
             },
             id: 'annotation-text-' + (++counter),
             labels: [{
-                text: text.val(),
+                text: text.value,
                 point: {
                     x: x,
                     y: y,
@@ -583,13 +1263,12 @@ function whichAxis(e, chart) {
             }]
         });
 
-        dialog.dialog('close');
-        form[0].reset();
+        dialog.style.display = 'none';
         chart = null;
         yAxisIndex = -1;
     }
 
-    form = dialog.find('#add-text-annotation').on('submit', addText);
+    document.getElementById('add-text-annotation').addEventListener('submit', addText);
 
     function onChartClick(e, chart) {
         var yAxis = window.whichAxis(e, chart);
@@ -602,102 +1281,6 @@ function whichAxis(e, chart) {
     H.Annotation.text = {
         onChartClick: onChartClick,
         onPointClick: onPointClick
-    };
-}(Highcharts));
-
-/***
- * TUNNEL
- */
-(function (H) {
-    var inArray = H.inArray;
-    var points = [];
-    var yAxisIndex = -1;
-
-    function point(x, y) {
-        var point = {
-            x: x,
-            y: y,
-            xAxis: 0,
-            yAxis: yAxisIndex
-        };
-
-        return point;
-    }
-
-    function tunnel(points, chart) {
-        var yAxis = chart.yAxis[yAxisIndex];
-        var width = yAxis.toValue(30, true) - yAxis.toValue(0, true);
-
-        var leftBottom = point(points[0].x, points[0].y - width, points[0].series.yAxis, points[0].series.chart);
-        var rightBottom = point(points[1].x, points[1].y - width, points[1].series.yAxis, points[1].series.chart);
-        var rightMiddle = point(rightBottom.x, rightBottom.y + width, rightBottom.yAxis);
-        var rightTop = point(rightBottom.x, rightBottom.y + width * 2, rightBottom.yAxis);
-        var leftTop = point(leftBottom.x, leftBottom.y + width * 2, leftBottom.yAxis);
-        var leftMiddle = point(leftBottom.x, leftBottom.y + width, leftBottom.yAxis);
-
-        chart.addAnnotation({
-            clip: yAxisIndex,
-            shapes: [
-                {
-                    type: 'path',
-                    points: [ leftBottom, rightBottom, rightMiddle, leftMiddle ],
-                    strokeWidth: 0,
-                    fill: 'rgba(169, 255, 101, 0.4)'
-                },
-                {
-                    type: 'path',
-                    points: [ leftMiddle, rightMiddle, rightTop, leftTop ],
-                    strokeWidth: 0,
-                    fill: 'rgba(208, 122, 50, 0.2)'
-                },
-                {
-                    type: 'path',
-                    points: [ leftBottom, rightBottom ],
-                    stroke: 'grey'
-                },
-                {
-                    type: 'path',
-                    points: [ leftMiddle, rightMiddle ],
-                    stroke: 'grey'
-                },
-                {
-                    type: 'path',
-                    points: [ leftTop, rightTop ],
-                    stroke: 'grey'
-                }
-            ]
-        });
-
-        points = [];
-    }
-
-    function onPointClick(p) {
-        if (!points[0]) {
-            points.push(p);
-            yAxisIndex = inArray(p.series.yAxis, p.series.chart.yAxis);
-            return;
-        }
-
-        if (yAxisIndex !== -1 && yAxisIndex === inArray(p.series.yAxis, p.series.chart.yAxis)) {
-            points.push(p);
-        }
-
-        if (points.length === 2) {
-            tunnel(points, p.series.chart);
-            points = [];
-            yAxisIndex = -1;
-        }
-    }
-
-
-    function reset() {
-        yAxisIndex = -1;
-        points = [];
-    }
-
-    H.Annotation.tunnel = {
-        onPointClick: onPointClick,
-        reset: reset
     };
 }(Highcharts));
 
@@ -925,7 +1508,7 @@ function whichAxis(e, chart) {
 /***
  * MAIN DEMO
  */
-$(function () {
+window.onload = function () {
 
     function isNavigatorAxis(axis) {
         return axis.userOptions.className === 'highcharts-navigator-yaxis';
@@ -940,15 +1523,14 @@ $(function () {
     }
 
     function getHeight() {
-        return $(window).height() - $('#demo').offset().top;
+        return window.innerHeight - document.getElementById('demo').offsetTop;
     }
 
     var indicatorsList = ['rsi', 'sma'],
-        indicatorContainer = $('#indicators-container'),
-        indicatorsButton = $('#indicators-dropdown'),
-        analyzeButton = $('#analyze-dropdown'),
+        indicatorContainer = document.getElementById('indicators-container'),
+        indicatorsButton = document.getElementById('indicators-dropdown'),
+        analyzeButton = document.getElementById('#analyze-dropdown'),
         advOptions = {
-            addEvents: true,
             chart: {
                 type: 'candlestick',
                 panning: false,
@@ -1044,75 +1626,6 @@ $(function () {
                     text: 'All'
                 }]
             },
-            tooltip: {
-                shared: true,
-                stickyTracking: true,
-                followPointer: false,
-                backgroundColor: 'white',
-                borderWidth: 0,
-                borderRadius: 0,
-                shape: 'square',
-                hideDelay: 10000000000000000,
-                headerFormat: '{point.key} ',
-                useHTML: true,
-                pointFormat: ' | <span style="color: {series.color}">{series.name}</span>: <b>{point.y}</b>',
-                formatter: function () {
-                    var shared = this.points,
-                        point = shared ? this.points[0] : this.point,
-                        x = point.x,
-                        series = point.series,
-                        str = '',
-                        keyFormat,
-                        color;
-
-                    function getPoints(pt) {
-                        var pointStr = [];
-
-                        if (pt.series.pointArrayMap) {
-                            $.each(pt.series.pointArrayMap, function (i, key) {
-                                if (pt.point[key]) {
-                                    pointStr.push(pt.point[key].toFixed(3));
-                                }
-                            });
-
-                            pointStr = pointStr.join(', ');
-                        } else {
-                            pointStr = pt.y.toFixed(3);
-                        }
-                        return pointStr;
-                    }
-
-                    keyFormat = series.tooltipOptions.dateTimeLabelFormats[series.chart.requestedFormat || 'day'];
-
-                    str += Highcharts.dateFormat(keyFormat, x) + '<br/>';
-                    // Ichimoku may have point.y undefined
-                    if (point.y !== undefined) {
-                        str += ' <span style="color:' + series.color + '">' + series.name + '</span>: <b>' + point.y.toFixed(3) + '</b>';
-                    } else if (!shared) {
-                        str += ' Flag text ';
-                    }
-                    if (shared) {
-                        $.each(this.points.slice(point.series.type !== 'ikh' ? 1 : 0), function (i, pt) {
-                            color = pt.series.options.signalLine ? pt.series.options.signalLine.styles.lineColor : pt.series.color;
-                            if ((i > 0) && (i % 5 === 0)) {
-                                str += '<br/>';
-                            } else if (point.y !== undefined) {
-                                str += ' | ';
-                            }
-
-                            str += '<span style="color:' + color + '">' + pt.series.name + '</span>: <b>' + getPoints(pt) + '</b>';
-                        });
-                    }
-
-                    return str;
-                },
-                positioner: function () {
-                    return {
-                        x: 70,
-                        y: 50
-                    };
-                }
-            },
             yAxis: [{
                 height: '50%',
                 resize: {
@@ -1178,24 +1691,22 @@ $(function () {
         defaultData = window.localStorage.getItem('data');
 
 
-    function attachEvents(chart) {
+    function attachEvents() {
 
-        window.sideMenu(chart);
+        var selectDropdowns;
 
-        if (!chart.options.addEvents) {
-            return;
-        }
+        window.sideMenu();
 
         function manageIndicators(value, adder, useAxis) {
             var index = -1,
-                chart = $("#container").highcharts(),
+                chart = Highcharts.getChartById('container'),
                 lastYAxis = getLastAxis(chart),
                 lastYAxisIndex,
                 previousYAxis,
                 newHeight,
                 nextAxis;
 
-            $.each(chart.series, function (i, e) {
+            chart.series.forEach(function (e, i) {
                 if (e.options.type === value) {
                     index = i;
                 }
@@ -1224,6 +1735,7 @@ $(function () {
                         }
                     }, false);
                 }
+
                 var lastIndicator = chart.addSeries({
                     linkedTo: 'main',
                     id: 's-' + value,
@@ -1296,24 +1808,27 @@ $(function () {
             }
         }
 
-        $('#menu-nav').on('click', '.select-dropdown', function () {
-            var container = $(this).parent().parent(),
-                dropdown = container.find('.dropdown-menu'),
-                button = container.find('button');
+        selectDropdowns = document.querySelectorAll('#menu-nav .select-dropdown');
 
-            if (dropdown.is(':visible')) {
-                button.removeClass('dropdown-active');
-                dropdown.hide();
-            } else {
-                button.addClass('dropdown-active');
-                dropdown.show();
-            }
+        selectDropdowns.forEach(function (dropdown) {
+            dropdown.addEventListener('click', function (e) {
+                var button = e.target,
+                    dropdownMenu = button.nextElementSibling;
+
+                if (dropdownMenu.style.display === 'block') {
+                    button.classList.remove('dropdown-active');
+                    dropdownMenu.style.display = 'none';
+                } else {
+                    button.classList.add('dropdown-active');
+                    dropdownMenu.style.display = 'block';
+                }
+            });
         });
 
-        $(document).click(function (e) {
-            var $target = $(e.target),
-                isIndica = $target.attr('id') === 'indicators-dropdown',
-                isAnalyze = $target.attr('id') === 'analyze-dropdown',
+        document.addEventListener('click', function (e) {
+            var target = e.target,
+                isIndica = target.getAttribute('id') === 'indicators-dropdown',
+                isAnalyze = target.getAttribute('id') === 'analyze-dropdown',
                 hiders = [],
                 removers = [];
 
@@ -1328,77 +1843,85 @@ $(function () {
                 hiders = ['indicators-container'];
             }
 
-            $.each(removers, function (i, button) {
-                button.removeClass('dropdown-active');
+
+            removers.forEach(function (button) {
+                if (button) {
+                    button.classList.remove('dropdown-active');
+                }
             });
 
-            $.each(hiders, function (i, drop) {
-                $('#' + drop + ' .dropdown-menu').hide();
+            hiders.forEach(function (drop) {
+                document.querySelectorAll('#' + drop + ' .dropdown-menu').forEach(function (dropdown) {
+                    dropdown.style.display = 'none';
+                });
             });
         });
 
-        $('#indicators-container .dropdown-menu a').on('click', function (event) {
+        document.querySelectorAll('#indicators-container .dropdown-menu a').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                var target = e.currentTarget,
+                    val = target.getAttribute('data-value'),
+                    useAxis = target.getAttribute('data-axis'),
+                    inp = target.querySelectorAll('input')[0],
+                    idx;
 
-            var $target = $(event.currentTarget),
-                val = $target.attr('data-value'),
-                useAxis = $target.attr('data-axis'),
-                $inp = $target.find('input'),
-                idx;
+                if ((idx = indicatorsList.indexOf(val)) > -1) {
+                    indicatorsList.splice(idx, 1);
+                    setTimeout(function () {
+                        inp.checked = false;
+                    }, 0);
+                    manageIndicators(val, false, useAxis);
+                } else {
+                    indicatorsList.push(val);
+                    setTimeout(function () {
+                        inp.checked = true;
+                    }, 0);
+                    manageIndicators(val, true, useAxis);
+                }
 
-            if ((idx = indicatorsList.indexOf(val)) > -1) {
-                indicatorsList.splice(idx, 1);
-                setTimeout(function () {
-                    $inp.prop('checked', false);
-                }, 0);
-                manageIndicators(val, false, useAxis);
-            } else {
-                indicatorsList.push(val);
-                setTimeout(function () {
-                    $inp.prop('checked', true);
-                }, 0);
-                manageIndicators(val, true, useAxis);
-            }
+                e.target.blur();
 
-            $(event.target).blur();
-
-            return false;
-        });
-
-        $('#analyze-container .dropdown-menu a').on('click', function (event) {
-
-            var $target = $(event.currentTarget),
-                dataset = window.analyzes[$target.attr('data-value')];
-
-            advOptions.annotations = dataset.annotations;
-            advOptions.yAxis = dataset.yAxis;
-            advOptions.series = [advOptions.series[0]].concat(dataset.indicators, dataset.flags || []);
-
-            advOptions.series[0].data = dataset.data;
-
-            advOptions.showTooltip = false;
-            advOptions.addEvents = false;
-
-            // Clear old ones:
-            indicatorContainer.find('input').prop('checked', false);
-            indicatorsList = [];
-            $.each(advOptions.series, function (i, series) {
-                // check new ones:
-                indicatorContainer.find('a[data-value="' + series.type + '"] input').prop('checked', true);
-                indicatorsList.push(series.type);
+                return false;
             });
-
-            $('#container').highcharts(
-                'StockChart',
-                $.extend(true, dataset, advOptions)
-            );
-
-            $(event.target).blur();
-
-            return false;
         });
 
-        $("#highcharts-save").click(function () {
-            var chart = $("#container").highcharts(),
+        document.querySelectorAll('#analyze-container .dropdown-menu a').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                var target = e.currentTarget,
+                    dataset = window.analyzes[target.getAttribute('data-value')],
+                    chart = Highcharts.getChartById('container');
+
+                advOptions.annotations = dataset.annotations;
+                advOptions.yAxis = dataset.yAxis;
+                advOptions.series = [chart.series[0].userOptions].concat(dataset.indicators, dataset.flags || []);
+
+                // Clear old ones:
+                indicatorContainer.querySelectorAll('input').forEach(function (inp) {
+                    inp.checked = false;
+                });
+
+                indicatorsList = [];
+                advOptions.series.forEach(function (series) {
+                    // check new ones:
+                    var inp = indicatorContainer.querySelectorAll('a[data-value="' + series.type + '"] input');
+
+                    if (Highcharts.defined(inp[0])) {
+                        inp[0].checked = true;
+                    }
+
+                    indicatorsList.push(series.type);
+                });
+
+                Highcharts.stockChart('container', Highcharts.extend(dataset, advOptions));
+
+                e.target.blur();
+
+                return false;
+            });
+        });
+
+        document.getElementById('highcharts-save').addEventListener('click', function () {
+            var chart = Highcharts.getChartById('container'),
                 chartYAxis = chart.yAxis,
                 navYAxisIdex = chartYAxis.indexOf(chart.navigator.yAxis),
                 annotations = [],
@@ -1406,7 +1929,7 @@ $(function () {
                 flags = [],
                 yAxis = [];
 
-            $.each(chart.series, function (i, series) {
+            chart.series.forEach(function (series) {
                 if (series instanceof Highcharts.seriesTypes.sma) {
                     var index = indicators.push(series.userOptions);
 
@@ -1420,11 +1943,12 @@ $(function () {
                     flags.push(series.userOptions);
                 }
             });
-            $.each(chart.annotations, function (i, ann) {
+
+            chart.annotations.forEach(function (ann, i) {
                 annotations[i] = ann.options;
             });
 
-            $.each(chart.yAxis, function (i, axis) {
+            chart.yAxis.forEach(function (axis) {
                 if (!isNavigatorAxis(axis)) {
                     yAxis.push(axis.userOptions);
                 }
@@ -1438,35 +1962,40 @@ $(function () {
                 yAxis: yAxis
             }));
         });
-        $("#highcharts-reset").click(function () {
-            $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?a=e&filename=aapl-ohlc.json&callback=?', function (data) {
 
-                var chart = $("#container").highcharts();
+        document.getElementById('highcharts-reset').addEventListener('click', function () {
+            if (confirm('Are you sure you want to clear the chart?')) {
+                $jsonp('https://www.highcharts.com/samples/data/jsonp.php?a=e&filename=aapl-ohlc.json&callback=callbackfunc', {
+                    callbackName: 'callbackfunc',
+                    onSuccess: function (data) {
+                        var chart = Highcharts.getChartById('container');
 
-                window.localStorage.removeItem('data');
-                indicatorContainer.find('input').prop('checked', false);
-                indicatorsList = []; // clear array too
-                chart.showLoading();
-                advOptions.series[0].data = data;
-                advOptions.series = [advOptions.series[0]];
-                advOptions.yAxis = [
-                    Highcharts.extend(
-                        advOptions.yAxis[0],
-                        {
-                            height: '100%',
-                            resize: {
-                                enabled: false
-                            }
-                        }
-                    )
-                ];
-                advOptions.showTooltip = false;
-                advOptions.addEvents = false;
-                advOptions.indicators = [];
-                advOptions.annotations = [];
-                chart.hideLoading();
-                $('#container').highcharts('StockChart', $.extend(true, {}, advOptions));
-            });
+                        window.localStorage.removeItem('data');
+
+                        indicatorContainer.querySelectorAll('input')[0].checked = false;
+                        indicatorsList = []; // clear array too
+                        chart.showLoading();
+                        advOptions.series[0].data = data;
+                        advOptions.series = [advOptions.series[0]];
+                        advOptions.yAxis = [
+                            Highcharts.extend(
+                                advOptions.yAxis[0],
+                                {
+                                    height: '100%',
+                                    resize: {
+                                        enabled: false
+                                    }
+                                }
+                            )
+                        ];
+                        advOptions.indicators = [];
+                        advOptions.annotations = [];
+                        chart.hideLoading();
+
+                        Highcharts.stockChart('container', Highcharts.extend({}, advOptions));
+                    }
+                });
+            }
         });
     }
 
@@ -1480,28 +2009,27 @@ $(function () {
             return ind.type;
         });
         attachEvents(
-            $('#container')
-                .highcharts('StockChart', $.extend(true, {}, advOptions))
-                .highcharts()
+            Highcharts.stockChart('container', Highcharts.extend({}, advOptions))
         );
     } else {
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?a=e&filename=aapl-ohlc.json&callback=?', function (data) {
-            advOptions.series[0].data = data;
-            attachEvents(
-                $('#container')
-                    .highcharts('StockChart', $.extend(true, {}, advOptions))
-                    .highcharts()
-            );
+        $jsonp('https://www.highcharts.com/samples/data/jsonp.php?a=e&filename=aapl-ohlc.json&callback=callbackfunc', {
+            callbackName: 'callbackfunc',
+            onSuccess: function (data) {
+                advOptions.series[0].data = data;
+                attachEvents(
+                    Highcharts.stockChart('container', Highcharts.extend({}, advOptions))
+                );
+            }
         });
     }
 
     // Initial select:
-    $.each(indicatorsList, function (i, ind) {
-        indicatorContainer.find('a[data-value="' + ind + '"] input').prop('checked', true);
+    indicatorsList.forEach(function (ind) {
+        indicatorContainer.querySelectorAll('a[data-value="' + ind + '"] input')[0].checked = true;
     });
 
     // Adapt height on resize
-    $(window).on('resize', function () {
-        $('#container').highcharts().setSize(undefined, getHeight(), false);
+    window.addEventListener('resize', function () {
+        Highcharts.getChartById('container').setSize(undefined, getHeight(), false);
     });
-});
+};

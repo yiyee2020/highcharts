@@ -1118,12 +1118,12 @@ H.extend(Axis.prototype, /** @lends Highcharts.Axis.prototype */{
 		 */
 
 		/**
-		 * Refers to the index in the [panes](#pane) array. Used for circular
+		 * Refers to the index in the [panes](#panes) array. Used for circular
 		 * gauges and polar charts. When the option is not set then first pane
 		 * will be used.
 		 *
 		 * @type      {Number}
-		 * @sample    highcharts\demo\gauge-vu-meter
+		 * @sample    highcharts/demo/gauge-vu-meter
 		 *            Two gauges with different center
 		 * @product   highcharts
 		 * @apioption xAxis.pane
