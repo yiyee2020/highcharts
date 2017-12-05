@@ -49,20 +49,3 @@ QUnit.test('Return false from tooltip.formatter (#5915)', function (assert) {
     );
 
 });
-
-QUnit.test('Default tooltip format', function (assert) {
-    var chart = Highcharts.chart('container', {
-        series: [{
-            type: 'scatter',
-            data: [[201000015.53, 100000000.87]]
-        }]
-    });
-
-    chart.tooltip.refresh(chart.series[0].points[0]);
-
-    assert.strictEqual(
-        chart.tooltip.label.text.textStr.split('<b>')[1].split('<')[0],
-        '201 000 015.53',
-        'x formatted using thousands lang option (#7401)'
-    );
-});
