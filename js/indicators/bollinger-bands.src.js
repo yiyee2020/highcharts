@@ -1,12 +1,15 @@
 'use strict';
 
 import H from '../parts/Globals.js';
+import '../parts/Color.js';
 import '../parts/Utilities.js';
 
 var each = H.each,
 	merge = H.merge,
 	isArray = H.isArray,
-	SMA = H.seriesTypes.sma;
+	SMA = H.seriesTypes.sma,
+	pick = H.pick,
+	color = H.color;
 
 // Utils:
 function getStandardDeviation(arr, index, isOHLC, mean) {
@@ -98,6 +101,18 @@ H.seriesType('bb', 'sma',
 				lineColor: undefined
 			}
 		},
+
+		/**
+		 * Color of the background.
+		 * If not set, it's inherited from
+		 * [plotOptions.bb.color](#plotOptions.bb.color).
+		 *
+		 * @type {String}
+		 * @since 6.0.7
+		 * @product highstock
+		 */
+		fillColor: 'none',
+
 		tooltip: {
 			pointFormat: '<span style="color:{point.color}">\u25CF</span><b> {series.name}</b><br/>Top: {point.top}<br/>Middle: {point.middle}<br/>Bottom: {point.bottom}<br/>'
 		},
@@ -151,55 +166,239 @@ H.seriesType('bb', 'sma',
 				);
 			});
 		},
-		drawGraph: function () {
-			var indicator = this,
-				middleLinePoints = indicator.points,
-				pointsLength = middleLinePoints.length,
-				middleLineOptions = indicator.options,
-				middleLinePath = indicator.graph,
-				gappedExtend = {
-					options: {
-						gapSize: middleLineOptions.gapSize
-					}
-				},
-				deviations = [[], []], // top and bottom point place holders
-				point;
 
-			// Generate points for top and bottom lines:
-			while (pointsLength--) {
-				point = middleLinePoints[pointsLength];
-				deviations[0].push({
+		getGraphPath: function () {
+			var graphName = this.drawing;
+
+			return {
+				topLine: this.upperPath,
+				bottomLine: this.lowerPath,
+				area: this.areaPath,
+				graph: this.graphPath
+			}[graphName] || this.graphPath;
+		},
+
+		gappedPath: null,
+
+		gappedPoints: function () {
+			var indicator = this,
+				currentDataGrouping = indicator.currentDataGrouping,
+				groupingSize =
+					currentDataGrouping && currentDataGrouping.totalRange,
+				gapSize = indicator.options.gapSize,
+				points = indicator.points.slice(),
+				i = points.length - 1,
+				xRange;
+
+			if (gapSize && i > 0) { // #5008
+
+				// Gap unit is relative
+				if (indicator.options.gapUnit !== 'value') {
+					gapSize *= indicator.closestPointRange;
+				}
+
+				// Setting a new gapSize in case dataGrouping is enabled (#7686)
+				if (groupingSize && groupingSize > gapSize) {
+					gapSize = groupingSize;
+				}
+
+				// extension for ordinal breaks
+				while (i--) {
+					if (points[i + 1].x - points[i].x > gapSize) {
+						xRange = (points[i].x + points[i + 1].x) / 2;
+
+						points.splice( // insert after this one
+							i + 1,
+							0, {
+								isNull: true,
+								x: xRange
+							}
+						);
+					}
+				}
+			}
+
+			return points;
+		},
+
+		generateGraphs: function () {
+			var indicator = this,
+				getGraphPath = SMA.prototype.getGraphPath,
+				connectNulls = this.options.connectNulls,
+				lowerPoints = [],
+				upperPoints = [],
+				upperAreaPoints = [],
+				upperPoint,
+				lowerPoint,
+				point,
+				i,
+				points;
+
+			points = indicator.gappedPoints();
+			i = points.length;
+
+			while (i--) {
+				point = points[i];
+
+				upperPoint = {
+					x: point.x,
 					plotX: point.plotX,
 					plotY: point.plotTop,
 					isNull: point.isNull
-				});
-				deviations[1].push({
+				};
+
+				upperPoints.push(upperPoint);
+
+				lowerPoint = {
+					x: point.x,
 					plotX: point.plotX,
 					plotY: point.plotBottom,
 					isNull: point.isNull
-				});
+				};
+
+				lowerPoints.unshift(lowerPoint);
+
+				if (!point.isNull &&
+					!connectNulls &&
+					(!points[i + 1] || points[i + 1].isNull)
+				) {
+					upperAreaPoints.push(lowerPoint);
+				}
+
+				upperAreaPoints.push(upperPoint);
+
+
+				if (!point.isNull &&
+					!connectNulls &&
+					(!points[i - 1] || points[i - 1].isNull)
+				) {
+					upperAreaPoints.push(lowerPoint);
+				}
 			}
 
-			// Modify options and generate lines:
-			each(['topLine', 'bottomLine'], function (lineName, i) {
-				indicator.points = deviations[i];
-				indicator.options = merge(
-					middleLineOptions[lineName].styles,
-					gappedExtend
-				);
-				indicator.graph = indicator['graph' + lineName];
-				SMA.prototype.drawGraph.call(indicator);
+			indicator.lowerPath = getGraphPath.call(indicator, lowerPoints);
 
-				// Now save lines:
-				indicator['graph' + lineName] = indicator.graph;
+			indicator.upperPath = getGraphPath.call(indicator, upperPoints);
+			indicator.upperAreaPath = getGraphPath.call(
+				indicator,
+				upperAreaPoints
+			);
+
+			if (indicator.upperAreaPath[0] === 'M') {
+				indicator.upperAreaPath[0] = 'L';
+			}
+
+			indicator.areaPath = indicator.lowerPath.concat(
+				indicator.upperAreaPath
+			);
+			indicator.areaPath.isArea = true;
+			indicator.areaPath.xMap = indicator.lowerPath.xMap;
+
+			indicator.graphPath = getGraphPath.call(indicator, points);
+		},
+
+		drawAreaGraph: function () {
+			var series = this,
+				areaPath = this.areaPath,
+				options = this.options,
+				zones = this.zones,
+				props = [
+					[
+						'area',
+						'highcharts-area',
+
+						this.color,
+						options.fillColor
+
+					]
+				];
+
+			each(zones, function (zone, i) {
+				props.push([
+					'zone-area-' + i,
+					'highcharts-area highcharts-zone-area-' + i + ' ' +
+			zone.className,
+
+					zone.color || series.color,
+					zone.fillColor || options.fillColor
+
+				]);
 			});
 
-			// Restore options and draw a middle line:
-			indicator.points = middleLinePoints;
-			indicator.options = middleLineOptions;
-			indicator.graph = middleLinePath;
-			SMA.prototype.drawGraph.call(indicator);
+			each(props, function (prop) {
+				var areaKey = prop[0],
+					area = series[areaKey];
+
+				// Create or update the area
+				if (area) { // update
+					area.endX = series.preventGraphAnimation ?
+						null : 
+						areaPath.xMap;
+
+					area.animate({
+						d: areaPath
+					});
+
+				} else { // create
+					area = series[areaKey] = series.chart.renderer
+					.path(areaPath)
+					.addClass(prop[1])
+					.attr({
+						fill: pick(
+							prop[3],
+							color(prop[2])
+								.setOpacity(pick(options.fillOpacity, 0.75))
+								.get()
+						),
+
+						zIndex: 0 // #1069
+					}).add(series.group);
+					area.isArea = true;
+				}
+				area.startX = areaPath.xMap;
+				area.shiftUnit = options.step ? 2 : 1;
+			});
 		},
+
+		drawGraph: function () {
+			var indicator = this,
+				points = this.points,
+				options = this.options,
+				graph;
+
+			indicator.generateGraphs();
+
+			graph = indicator.graph;
+
+			// Modify options and generate lines:
+			each(['topLine', 'bottomLine'], function (graphName) {
+				var key = 'graph' + graphName;
+
+				indicator.drawing = graphName;
+
+				indicator.options = merge(
+					options[graphName].styles,
+					{ gapSize: options.gapSize }
+				);
+				indicator.graph = indicator[key];
+
+				SMA.prototype.drawGraph.call(indicator);
+
+				indicator[key] = indicator.graph;
+			});
+
+			// Now save lines:
+
+			indicator.points = points;
+			indicator.options = options;
+			indicator.graph = graph;
+			indicator.drawing = null;
+
+			SMA.prototype.drawGraph.call(this);
+
+			indicator.drawAreaGraph();
+		},
+
 		getValues: function (series, params) {
 			var period = params.period,
 				standardDeviation = params.standardDeviation,
@@ -235,7 +434,7 @@ H.seriesType('bb', 'sma',
 						yData: slicedY
 					},
 					params
-				);
+					);
 
 				date = point.xData[0];
 				ML = point.yData[0];
@@ -244,7 +443,7 @@ H.seriesType('bb', 'sma',
 					params.index,
 					isOHLC,
 					ML
-				);
+					);
 				TL = ML + standardDeviation * stdDev;
 				BL = ML - standardDeviation * stdDev;
 
