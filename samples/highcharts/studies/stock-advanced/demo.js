@@ -812,9 +812,6 @@ function menuOnOut() {
         var button = e.target;
         var id = button.getAttribute('id');
 
-        window.flagDialogReset();
-        window.textDialogReset();
-
         if (id === 'annotation-flag') {
             resetOtherClass(button);
 
@@ -835,8 +832,6 @@ function menuOnOut() {
     }
 
     function flagMenuClick(e) {
-        window.flagDialogReset();
-
         onButtonClick(e.target, H.getChartById('container'));
     }
 
@@ -1386,39 +1381,6 @@ function whichAxis(e, chart) {
 }(Highcharts));
 
 /***
- * DIALOG
- */
-
-(function () {
-    function getDialogPosition(p, e, dialog, chart) {
-        var left, top;
-
-        if (e) {
-            e = chart.pointer.normalize(e);
-            left = e.chartX;
-            top = e.chartY;
-        } else {
-            left = p.plotX + p.series.xAxis.pos;
-            top = p.plotY + p.series.yAxis.pos;
-        }
-
-        if (left < 100) {
-            left = 0;
-        }
-        if (top > chart.chartHeight - dialog.offsetHeight - 10) {
-            top = chart.chartHeight - dialog.offsetHeight - 10;
-        }
-
-        return {
-            left: left,
-            top: top
-        };
-    }
-
-    window.getDialogPosition = getDialogPosition;
-}());
-
-/***
  * STAR
  */
 (function (H) {
@@ -1553,18 +1515,9 @@ function whichAxis(e, chart) {
 
     var dialog = document.getElementById('annotation-text-form');
 
-    function reset() {
-        dialog.style.display = 'none';
-        yAxisIndex = -1;
-        chart = null;
-        annotationToRemove = null;
-    }
-
-    window.textDialogReset = reset;
-
     function onPointClick(p, e) {
-        var position;
 
+        var left, top;
         x = p.x;
         y = p.y;
         yAxisIndex = inArray(p.series.yAxis, p.series.chart.yAxis);
@@ -1574,10 +1527,24 @@ function whichAxis(e, chart) {
             dialog.style.display = 'block';
         }
 
-        position = window.getDialogPosition(p, e, dialog, chart);
+        if (e) {
+            e = chart.pointer.normalize(e);
+            left = e.chartX;
+            top = e.chartY;
+        } else {
+            left = p.plotX + p.series.xAxis.pos;
+            top = p.plotY + p.series.yAxis.pos;
+        }
 
-        dialog.style.left = position.left + 'px';
-        dialog.style.top = position.top + 'px';
+        if (left < 100) {
+            left = 0;
+        }
+        if (top > chart.chartHeight - dialog.offsetHeight - 10) {
+            top = chart.chartHeight - dialog.offsetHeight - 10;
+        }
+        dialog.style.left = left + 'px';
+        dialog.style.top = top + 'px';
+
     }
 
     function addText(e) {
@@ -1588,8 +1555,8 @@ function whichAxis(e, chart) {
 
         if (annotationToRemove) {
             chart.removeAnnotation(annotationToRemove);
+            annotationToRemove = null;
         }
-
         chart.addAnnotation({
             events: {
                 contextmenu: function (e) {
@@ -1620,7 +1587,9 @@ function whichAxis(e, chart) {
             }]
         });
 
-        reset();
+        dialog.style.display = 'none';
+        chart = null;
+        yAxisIndex = -1;
     }
 
     document.getElementById('add-text-annotation').addEventListener('submit', addText);
@@ -1794,21 +1763,11 @@ function whichAxis(e, chart) {
         return path;
     };
 
-    var inArray = H.inArray;
-    var dialog = document.getElementById('annotation-flag-form');
-    var flagTextInput = document.getElementById('flag-text');
-    var flagTitleInput = document.getElementById('flag-title');
-    var clickedPoint = null;
-    var chosenShape = null;
-    var flagToRemove = null;
-
-    dialog.style.display = 'none';
-
     H.seriesTypes.flags.prototype.drawBB = function (point) {
         var graphic = point.graphic;
         var bbox = graphic.element.getBBox();
         var offsetX =
-			point.series.options.shape !== 'flag' ? bbox.width / 2 : 0;
+            point.series.options.shape !== 'flag' ? bbox.width / 2 : 0;
 
         H.Annotation.drawBB(
             point.series.chart.renderer,
@@ -1829,35 +1788,14 @@ function whichAxis(e, chart) {
             }
 
             point.graphic.element.onclick = null;
-            point.graphic.element.oncontextmenu = null;
         });
 
         p.apply(this, Array.prototype.slice.call(1, arguments));
     });
 
-    function onPointClick(shape) {
-        return function (p, e, editFlag) {
-            if (p.series.type !== 'flags' || editFlag) {
-                clickedPoint = p;
-                chosenShape = shape;
-                flagTextInput.value = '';
-                flagTitleInput.value = '';
-
-                var yAxisIndex = inArray(p.series.yAxis, p.series.chart.yAxis);
-                var chart = p.series.chart;
-                var position;
-
-                if (yAxisIndex !== -1 && chart) {
-                    dialog.style.display = 'block';
-                }
-
-                position = window.getDialogPosition(p, e, dialog, chart);
-
-                dialog.style.left = position.left + 'px';
-                dialog.style.top = position.top + 'px';
-            }
-        };
-    }
+    H.wrap(H.seriesTypes.flags.prototype, 'redraw', function (p) {
+        p.apply(this, Array.prototype.slice.call(1, arguments));
+    });
 
     H.wrap(H.seriesTypes.flags.prototype, 'drawPoints', function (p) {
         var series = this;
@@ -1872,8 +1810,7 @@ function whichAxis(e, chart) {
             if (graphic) {
                 if (style && style.dy) {
                     graphic.text.attr({
-                        dy: style.dy,
-                        'pointer-events': 'none'
+                        dy: style.dy
                     });
                 }
 
@@ -1893,20 +1830,6 @@ function whichAxis(e, chart) {
                     };
                 }
 
-                if (!graphic.element.oncontextmenu) {
-                    graphic.element.oncontextmenu = function (e) {
-                        e.preventDefault();
-
-                        flagTextInput.value = point.options.text;
-                        flagTitleInput.value = point.options.title;
-
-                        var seriesOptions = point.series.options;
-
-                        flagToRemove = seriesOptions.id;
-                        onPointClick(seriesOptions.shape)(point, undefined, true);
-                    };
-                }
-
                 if (point.showBB) {
                     series.drawBB(point);
                 }
@@ -1916,44 +1839,31 @@ function whichAxis(e, chart) {
         });
     });
 
+    H.wrap(H.seriesTypes.flags.prototype, 'redraw', function (p) {
+        p.apply(this, Array.prototype.slice.call(1, arguments));
 
-    function reset() {
-        dialog.style.display = 'none';
-        clickedPoint = null;
-        chosenShape = null;
-        flagToRemove = null;
-    }
-
-    window.flagDialogReset = reset;
-
-    function addFlag(e) {
-        e.preventDefault();
+    });
 
 
-        if (clickedPoint) {
-            var chart = clickedPoint.series.chart;
-            var id = clickedPoint.series.options.id;
-            var yAxisIndex = inArray(clickedPoint.series.yAxis, chart.yAxis);
-            var x = clickedPoint.x;
-            var color;
+    var inArray = H.inArray;
+    var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    var letterIndex = -1;
 
-            if (flagToRemove) {
-				// the clicked point is from the flag series so id must be taken from the onSeries
-                id = clickedPoint.series.options.onSeries;
-                color = clickedPoint.series.color;
-                chart.get(flagToRemove).remove();
-            }
+    function onPointClick(shape) {
+        return function (p) {
+            var chart = p.series.chart;
+
+            var id = p.series.options.id;
+            var yAxisIndex = inArray(p.series.yAxis, chart.yAxis);
 
             if (id && yAxisIndex !== -1) {
                 var options = {
                     type: 'flags',
                     onSeries: id,
-                    shape: chosenShape,
-                    id: 'flag-' + H.uniqueKey(),
+                    shape: shape,
                     data: [{
-                        x: x,
-                        title: flagTitleInput.value,
-                        text: flagTextInput.value
+                        x: p.x,
+                        title: letters[++letterIndex % letters.length]
                     }],
                     yAxis: yAxisIndex,
                     style: {
@@ -1965,26 +1875,17 @@ function whichAxis(e, chart) {
                     width: 25,
                     height: 25,
                     y: -50,
-                    enableMouseTracking: true
+                    enableMouseTracking: false
                 };
 
-                if (chosenShape === 'diamondpin') {
+                if (shape === 'diamondpin') {
                     options.width = 30;
-                }
-
-                if (color) {
-                    options.color = color;
                 }
 
                 chart.addSeries(options);
             }
-        }
-
-
-        reset();
+        };
     }
-
-    document.getElementById('add-flag-annotation').addEventListener('submit', addFlag);
 
     H.each(['flag', 'circlepin', 'squarepin', 'diamondpin'], function (shape) {
         H.Annotation[shape] = {
