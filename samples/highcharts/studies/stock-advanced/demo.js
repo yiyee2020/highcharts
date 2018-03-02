@@ -996,7 +996,7 @@ function whichAxis(e, chart) {
                 .add(group)
                 .attr({
                     'stroke-width': 1,
-                    stroke: 'blue',
+                    stroke: 'black',
                     'stroke-dasharray': '5,5',
                     zIndex: 99
                 });
