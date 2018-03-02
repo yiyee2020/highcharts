@@ -1009,10 +1009,6 @@ function whichAxis(e, chart) {
             this.group.clip(clip);
         }
 
-        if (this.options.shapesGroupClip === false) {
-            this.shapesGroup.clip();
-        }
-
         var annotation = this;
         var events = this.options.events;
         var contextmenu = events && events.contextmenu;
@@ -1316,7 +1312,7 @@ function whichAxis(e, chart) {
             x = group.x - bbox.width * scale / 1.5;
             y = group.y - bbox.height * scale / 1.5;
 
-            this.shapesGroup.attr({
+            this.group.attr({
                 transform: 'translate(' + x + ', ' + y + ') scale(' + scale + ')'
             });
         }
@@ -1328,7 +1324,6 @@ function whichAxis(e, chart) {
     function star(x, y, chart) {
         chart.addAnnotation({
             group: { x: x, y: y },
-            shapesGroupClip: false,
             shapes: [{
                 animateStar: true,
                 type: 'path',
