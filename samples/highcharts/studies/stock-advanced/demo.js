@@ -777,20 +777,6 @@ function menuOnOut() {
             annotation.reset();
         }
 
-        // Change curosor on the point/plotting area:
-        chart.container.classList.toggle(
-            'crosshair-on-point',
-            // Annotation type changed
-            H.Annotation[annotating] !== annotation &&
-            // Annotation on click action
-            H.Annotation[annotating].onPointClick
-        );
-        chart.container.classList.toggle(
-            'crosshair-on-chart',
-            H.Annotation[annotating] !== annotation &&
-            H.Annotation[annotating].onChartClick
-        );
-
         chart.annotating = annotating === chart.annotating ? null : annotating;
     }
 
@@ -1706,8 +1692,6 @@ window.onload = function () {
                 height: getHeight(),
                 spacingLeft: 50,
                 alignTicks: false,
-                // Keep events for cursor change:
-                plotBackgroundColor: 'transparent',
                 events: {
                     load: function () {
                         this.onContainerMouseMove = Highcharts.Annotation.arrow.onContainerMouseMove.bind(this);
