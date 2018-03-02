@@ -649,99 +649,6 @@ window.analyzes = [{
 }(Highcharts));
 
 /***
- * Tooltip feature for custom elements:
- */
-Highcharts.tooltipDelay = 1000;
-Highcharts.tooltipIsWaiting = false;
-function menuOnOver(e) {
-    var button = e.target;
-    Highcharts.tooltipIsWaiting = button.getAttribute('data-description');
-    setTimeout(function () {
-        var description = button.getAttribute('data-description');
-        if (Highcharts.tooltipIsWaiting === description) {
-            var chart = Highcharts.getChartById('container'),
-                buttonBox = button.getBoundingClientRect(), // IE9+
-                chartBox = chart.container.getBoundingClientRect(), // IE9+
-                ttBelow = button.getAttribute('data-tt-below') || false,
-                fakePoint = {
-                    name: description,
-                    plotX: buttonBox.left + buttonBox.width -
-                        (ttBelow ? 73 : 90),
-                    plotY: buttonBox.top - chartBox.top - buttonBox.height -
-                        (ttBelow ? 30 : 0),
-                    ttBelow: ttBelow,
-                    series: {
-                        chart: chart,
-                        xAxis: chart.xAxis[0],
-                        yAxis: chart.yAxis[0],
-                        tooltipOptions: {
-                            pointFormat: '{point.name}'
-                        },
-                        options: {
-                            dataGrouping: {}
-                        }
-                    }
-                };
-
-            if (!chart.menuTooltip) {
-                chart.menuTooltip = new Highcharts.Tooltip(
-                    chart,
-                    Highcharts.merge(
-                        chart.options.tooltip,
-                        {
-                            split: false,
-                            style: {
-                                width: 220
-                            },
-                            positioner: function (w, h, p) {
-                                var chart = this.chart,
-                                    offset = p.ttBelow ? {
-                                        x: -20 - w / 2,
-                                        y: 90
-                                    } : {
-                                        x: 90,
-                                        y: 30
-                                    },
-                                    x = p.plotX + offset.x,
-                                    y = p.plotY + offset.y;
-
-                                x = Math.min(
-                                    chart.plotWidth - w + chart.plotLeft,
-                                    x
-                                );
-
-                                return {
-                                    x: x,
-                                    y: y
-                                };
-                            }
-                        }
-                    )
-                );
-            }
-
-            fakePoint.setState = Highcharts.noop;
-            fakePoint.getLabelConfig = Highcharts.Point.prototype.getLabelConfig;
-            fakePoint.tooltipFormatter = Highcharts.Point.prototype.tooltipFormatter;
-
-            chart.menuTooltip.isHidden = true;
-            chart.menuTooltip.refresh(fakePoint);
-        }
-    }, Highcharts.tooltipDelay);
-}
-
-function menuOnOut() {
-    var chart = Highcharts.getChartById('container');
-    if (Highcharts.tooltipIsWaiting) {
-        Highcharts.tooltipIsWaiting = false;
-    }
-    if (chart.menuTooltip) {
-        chart.menuTooltip.hide();
-    }
-}
-
-
-/***
  * SIDE MENU
  */
 (function (H) {
@@ -801,6 +708,70 @@ function menuOnOut() {
             flagMenu.style.display = 'none';
 
             onButtonClick(button, H.getChartById('container'));
+        }
+    }
+    var tooltipDelay = 1000,
+        tooltipIsWaiting = false;
+    function menuOnOver(e) {
+        var button = e.target;
+        tooltipIsWaiting = button.getAttribute('data-description');
+        setTimeout(function () {
+            var description = button.getAttribute('data-description');
+            if (tooltipIsWaiting === description) {
+                var chart = H.getChartById('container'),
+                    fakePoint = {
+                        name: description,
+                        plotX: button.clientWidth / 2 - chart.plotLeft,
+                        plotY: button.offsetTop + button.clientHeight / 2 + 3,
+                        ttBelow: true,
+                        series: {
+                            chart: chart,
+                            xAxis: chart.xAxis[0],
+                            yAxis: chart.yAxis[0],
+                            tooltipOptions: {
+                                pointFormat: '{point.name}'
+                            },
+                            options: {
+                                dataGrouping: {}
+                            }
+                        }
+                    };
+
+                if (!chart.menuTooltip) {
+                    chart.menuTooltip = new H.Tooltip(
+                        chart,
+                        H.merge(
+                            chart.options.tooltip,
+                            {
+                                split: false,
+                                positioner: function (w, h, p) {
+                                    return {
+                                        x: p.plotX + 90,
+                                        y: p.plotY + h
+                                    };
+                                }
+                            }
+                        )
+                    );
+                }
+
+                fakePoint.setState = H.noop;
+                fakePoint.getLabelConfig = H.Point.prototype.getLabelConfig;
+                fakePoint.tooltipFormatter = H.Point.prototype.tooltipFormatter;
+
+                chart.menuTooltip.isHidden = true;
+                chart.menuTooltip.refresh(fakePoint);
+            }
+        }, tooltipDelay);
+    }
+
+    function menuOnOut() {
+        var chart = H.getChartById('container');
+        if (tooltipIsWaiting) {
+            tooltipIsWaiting = false;
+        }
+        if (chart.menuTooltip) {
+            chart.menuTooltip.hide();
         }
     }
 
@@ -1780,9 +1751,7 @@ window.onload = function () {
 
     function attachEvents() {
 
-        var selectDropdowns,
-            highchartsSave = document.getElementById('highcharts-save'),
-            highchartsReset = document.getElementById('highcharts-reset');
+        var selectDropdowns;
 
         window.sideMenu();
 
@@ -2009,7 +1978,7 @@ window.onload = function () {
             });
         });
 
-        highchartsSave.addEventListener('click', function () {
+        document.getElementById('highcharts-save').addEventListener('click', function () {
             var chart = Highcharts.getChartById('container'),
                 chartYAxis = chart.yAxis,
                 navYAxisIdex = chartYAxis.indexOf(chart.navigator.yAxis),
@@ -2052,7 +2021,7 @@ window.onload = function () {
             }));
         });
 
-        highchartsReset.addEventListener('click', function () {
+        document.getElementById('highcharts-reset').addEventListener('click', function () {
             if (confirm('Are you sure you want to clear the chart?')) {
                 Highcharts.ajax({
                     url: 'https://www.highcharts.com/samples/data/aapl-ohlc.json',
@@ -2090,12 +2059,6 @@ window.onload = function () {
                 });
             }
         });
-
-
-        highchartsSave.addEventListener('mouseover', menuOnOver);
-        highchartsSave.addEventListener('mouseout', menuOnOut);
-        highchartsReset.addEventListener('mouseover', menuOnOver);
-        highchartsReset.addEventListener('mouseout', menuOnOut);
     }
 
     if (defaultData) {
