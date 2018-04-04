@@ -563,6 +563,15 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
 
         function update() {
 
+            var y,
+                j,
+                points,
+                optimizedRedraw = (
+                    redraw &&
+                    series.isCartesian &&
+                    (isNumber(options) || isArray(options))
+                );
+
             point.applyOptions(options);
 
             // Update visuals
@@ -603,17 +612,54 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
                 point.options :
                 pick(options, seriesOptions.data[i]);
 
-            // redraw
-            series.isDirty = series.isDirtyData = true;
-            if (!series.fixedBox && series.hasCartesianSeries) { // #1906, #2320
-                chart.isDirtyBox = true;
+            // To avoid redrawing the whole series, check if we can redraw this
+            // point without having to re-process, translate and render all
+            // other points.
+            if (optimizedRedraw) {
+                y = splat(series.yData[i]);
+                j = y.length;
+                if (j) { // array, like ohlc or range data
+                    while (j--) {
+                        if (typeof y[j] === 'number') { // #7380
+                            if (
+                                y[j] < series.dataMin ||
+                                y[j] > series.dataMax
+                            ) {
+                                optimizedRedraw = false;
+                            }
+                        }
+                    }
+                }
             }
 
-            if (seriesOptions.legendType === 'point') { // #1831, #1885
-                chart.isDirtyLegend = true;
-            }
-            if (redraw) {
-                chart.redraw(animation);
+            // Redraw only this point
+            if (optimizedRedraw) {
+                H.setAnimation(animation, chart);
+                points = series.points;
+                series.points = [point];
+                series.generatePoints = H.noop;
+                series.translate();
+                series.drawGraph();
+                series.drawPoints();
+                series.points = points;
+                delete series.generatePoints; // revert to prototype
+
+            // Redraw all points and consider axes, legend, box etc
+            } else {
+
+                series.isDirty = series.isDirtyData = true;
+
+                // #1906, #2320
+                if (!series.fixedBox && series.hasCartesianSeries) {
+                    chart.isDirtyBox = true;
+                }
+
+                if (seriesOptions.legendType === 'point') { // #1831, #1885
+                    chart.isDirtyLegend = true;
+                }
+                if (redraw) {
+                    chart.redraw(animation);
+                }
             }
         }
 

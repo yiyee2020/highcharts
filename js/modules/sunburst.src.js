@@ -532,6 +532,7 @@ var sunburstOptions = {
  * Properties of the Sunburst series.
  */
 var sunburstSeries = {
+    isCartesian: false,
     drawDataLabels: noop, // drawDataLabels is called in drawPoints
     drawPoints: function drawPoints() {
         var series = this,
