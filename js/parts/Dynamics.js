@@ -636,13 +636,21 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
             if (optimizedRedraw) {
                 H.setAnimation(animation, chart);
                 points = series.points;
+
+                // Override
                 series.points = [point];
                 series.generatePoints = H.noop;
+
+                // Translate and draw points with the affected point only
                 series.translate();
-                series.drawGraph();
                 series.drawPoints();
+
+                // Reset
                 series.points = points;
                 delete series.generatePoints; // revert to prototype
+
+                // Draw graph and area with all points
+                series.drawGraph();
 
             // Redraw all points and consider axes, legend, box etc
             } else {
