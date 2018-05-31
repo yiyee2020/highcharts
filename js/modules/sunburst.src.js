@@ -29,6 +29,9 @@ var CenteredSeriesMixin = H.CenteredSeriesMixin,
     isNumber = H.isNumber,
     isObject = H.isObject,
     isString = H.isString,
+    isUndefined = function (x) {
+        return typeof x === 'undefined';
+    },
     keys = H.keys,
     merge = H.merge,
     noop = H.noop,
@@ -147,7 +150,11 @@ var layoutAlgorithm = function layoutAlgorithm(parent, children, options) {
         x = parent.x,
         y = parent.y,
         radius = (
-            options && isObject(options.levelSize) && isNumber(options.levelSize.value) ?
+            (
+                options &&
+                isObject(options.levelSize) &&
+                isNumber(options.levelSize.value)
+             ) ?
             options.levelSize.value :
             0
         ),
@@ -855,6 +862,15 @@ var sunburstPoint = {
     shouldDraw: function shouldDraw() {
         var point = this;
         return !point.isNull;
+    },
+    isValid: function () {
+        var point = this,
+            value = point.value,
+            isValid = (
+                isNumber(value) ||
+                isUndefined(value) && isString(point.id)
+            );
+        return isValid;
     }
 };
 

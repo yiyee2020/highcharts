@@ -587,31 +587,38 @@ seriesType('treemap', 'scatter', {
             children = [],
             point = series.points[i],
             height = 0,
-            node,
+            node = false,
             child;
 
-        // Actions
-        each((list[id] || []), function (i) {
-            child = series.buildNode(
-                series.points[i].id,
-                i,
-                (level + 1),
-                list,
-                id
-            );
-            height = Math.max(child.height + 1, height);
-            children.push(child);
-        });
-        node = {
-            id: id,
-            i: i,
-            children: children,
-            height: height,
-            level: level,
-            parent: parent,
-            visible: false // @todo move this to better location
-        };
-        series.nodeMap[node.id] = node;
+        // Don't create the node if the point is invalid. We only want to work
+        // with valid data.
+        if (!point || point.isValid()) {
+            // Actions
+            each((list[id] || []), function (i) {
+                child = series.buildNode(
+                    series.points[i].id,
+                    i,
+                    (level + 1),
+                    list,
+                    id
+                );
+                if (child) {
+                    height = Math.max(child.height + 1, height);
+                    children.push(child);
+                }
+            });
+            node = {
+                id: id,
+                i: i,
+                children: children,
+                height: height,
+                level: level,
+                parent: parent,
+                visible: false // @todo move this to better location
+            };
+            series.nodeMap[node.id] = node;
+        }
+
         if (point) {
             point.node = node;
         }
