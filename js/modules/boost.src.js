@@ -755,19 +755,26 @@ function GLShader(gl) {
             '}',
 
             'void main(void) {',
+
+                'vec4 pos;',
+                'float ps;',
+
                 'if (isBubble){',
-                    'gl_PointSize = bubbleRadius();',
+                    'ps = bubbleRadius();',
                 '} else {',
-                    'gl_PointSize = pSize;',
+                    'ps = pSize;',
                 '}',
-                //'gl_PointSize = 10.0;',
+
                 'vColor = aColor;',
 
                 'if (isInverted) {',
-                    'gl_Position = uPMatrix * vec4(xToPixels(aVertexPosition.y) + yAxisPos, yToPixels(aVertexPosition.x, aVertexPosition.z) + xAxisPos, 0.0, 1.0);',
+                    'pos = uPMatrix * vec4(xToPixels(aVertexPosition.y) + yAxisPos, yToPixels(aVertexPosition.x, aVertexPosition.z) + xAxisPos, 0.0, 1.0);',
                 '} else {',
-                    'gl_Position = uPMatrix * vec4(xToPixels(aVertexPosition.x) + xAxisPos, yToPixels(aVertexPosition.y, aVertexPosition.z) + yAxisPos, 0.0, 1.0);',
+                    'pos = uPMatrix * vec4(xToPixels(aVertexPosition.x) + xAxisPos, yToPixels(aVertexPosition.y, aVertexPosition.z) + yAxisPos, 0.0, 1.0);',
                 '}',
+
+                'gl_PointSize = ps;',
+                'gl_Position = pos;',
                 //'gl_Position = uPMatrix * vec4(aVertexPosition.x, aVertexPosition.y, 0.0, 1.0);',
             '}'
             /* eslint-enable */
@@ -775,13 +782,14 @@ function GLShader(gl) {
         // Fragment shader source
         fragShade = [
             /* eslint-disable */
+            '#version 100',
             'precision highp float;',
             'uniform vec4 fillColor;',
             'varying highp vec2 position;',
             'varying highp vec4 vColor;',
-              'uniform sampler2D uSampler;',
-              'uniform bool isCircle;',
-              'uniform bool hasColor;',
+            'uniform sampler2D uSampler;',
+            'uniform bool isCircle;',
+            'uniform bool hasColor;',
 
               // 'vec4 toColor(float value, vec2 point) {',
               //     'return vec4(0.0, 0.0, 0.0, 0.0);',
@@ -800,12 +808,10 @@ function GLShader(gl) {
                     'col *= tcol;',
                     'if (tcol.r < 0.0) {',
                         'discard;',
-                    '} else {',
-                        'gl_FragColor = col;',
                     '}',
-                '} else {',
-                    'gl_FragColor = col;',
                 '}',
+
+                'gl_FragColor = col;',
             '}'
             /* eslint-enable */
         ].join('\n'),
