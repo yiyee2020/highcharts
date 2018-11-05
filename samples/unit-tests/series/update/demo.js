@@ -327,6 +327,14 @@ QUnit.test('Series.update and setData', function (assert) {
         'Graph is continuous (#7326)'
     );
 
+    chart.series[0].setData([null, 3, 2, 1, null, null]);
+
+    assert.strictEqual(
+        chart.series[0].options.data[0],
+        null,
+        'Series options respects nulls (#9290)'
+    );
+
 });
 
 QUnit.test('Series.update color index, class name should change', function (assert) {

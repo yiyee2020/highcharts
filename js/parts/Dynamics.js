@@ -690,12 +690,17 @@ extend(Point.prototype, /** @lends Highcharts.Point.prototype */ {
             // Record the options to options.data. If the old or the new config
             // is an object, use point options, otherwise use raw options
             // (#4701, #4916).
-            seriesOptions.data[i] = (
-                    isObject(seriesOptions.data[i], true) ||
-                    isObject(options, true)
-                ) ?
-                point.options :
-                pick(options, seriesOptions.data[i]);
+            if (
+                isObject(seriesOptions.data[i], true) ||
+                isObject(options, true)
+            ) {
+                seriesOptions.data[i] = point.options;
+            } else {
+                // No undefined (#8023), but allow null (#9290)
+                seriesOptions.data[i] = options !== undefined ?
+                    options :
+                    seriesOptions.data[i];
+            }
 
             // redraw
             series.isDirty = series.isDirtyData = true;
