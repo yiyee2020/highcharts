@@ -466,7 +466,7 @@ H.extend(
             return Math.abs(
                 this.systemTemperature -
                 this.prevSystemTemperature
-            ) === 0;
+            ) < 1e-2;
         },
         getSystemTemperature: function () {
             return this.nodes.reduce(function (value, node) {

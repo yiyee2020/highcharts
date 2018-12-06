@@ -13,9 +13,288 @@ import '../parts/Color.js';
 import '../parts/Point.js';
 import '../parts/Series.js';
 
+import '../modules/networkgraph/layouts.js';
+import '../modules/networkgraph/networkgraph.src.js';
+import '../modules/networkgraph/QuadTree.js';
+
 
 var seriesType = H.seriesType,
     defined = H.defined;
+
+
+
+H.extend(H.layouts['reingold-fruchterman'].prototype,
+    {
+        forces: ['applyBarycenterForces', 'applyElasticForces'],
+        run: function () {
+            var layout = this,
+                series = this.series,
+                options = this.options;
+
+            if (layout.initialRendering) {
+                layout.initPositions();
+
+                // Render elements in initial positions:
+                series.forEach(function (s) {
+                    s.render();
+                });
+            }
+
+            // Algorithm:
+            function localLayout() {
+
+                layout.forces.forEach(function (force) {
+                    layout[force]();
+                });
+
+                // Limit to the plotting area and cool down:
+                layout.applyLimits(layout.temperature);
+                // Cool down:
+                layout.temperature = layout.temperature -
+                    layout.diffTemperature;
+                // layout.diffTemperature += i;
+                layout.prevSystemTemperature = layout.systemTemperature;
+                layout.systemTemperature = layout.getSystemTemperature();
+                if (options.enableSimulation) {
+                    series.forEach(function (s) {
+                        s.render();
+                    });
+                    if (
+                        layout.maxIterations-- &&
+                        layout.temperature > 0 &&
+                        !layout.isStable()
+                    ) {
+                        layout.simulation = H.win.requestAnimationFrame(
+                            localLayout
+                        );
+                    } else {
+                        layout.simulation = false;
+                    }
+                }
+            }
+
+            layout.setK();
+            layout.resetSimulation(options);
+
+            if (options.enableSimulation) {
+                // Animate it:
+                layout.simulation = H.win.requestAnimationFrame(localLayout);
+            } else {
+                // Synchronous rendering:
+                while (
+                    layout.maxIterations-- &&
+                    !layout.isStable()
+                ) {
+                    localLayout();
+                }
+                series.forEach(function (s) {
+                    s.render();
+                });
+            }
+        },
+        applyBarycenterForces: function () {
+            var gravitationalConstant = this.options.gravitationalConstant,
+                chart = this.series[0].chart,
+                cx = 0,
+                cy = 0;
+            // Calculate center:
+            this.nodes.forEach(function (node) {
+                cx += node.plotX;
+                cy += node.plotY;
+            });
+
+            this.barycenter = {
+                x: cx,
+                y: cy
+            };
+
+            // Apply forces:
+            this.nodes.forEach(function (node) {
+                node.dispX = (chart.plotWidth / 2 - node.plotX) *
+                    gravitationalConstant;
+                node.dispY = (chart.plotHeight / 2 - node.plotY) *
+                    gravitationalConstant;
+            });
+        },
+        applyElasticForces: function () {
+            var layout = this,
+                nodes = layout.nodes,
+                options = layout.options,
+                k = this.k,
+                force,
+                distanceR,
+                distanceXY,
+                dispX, dispY;
+
+            nodes.forEach(function (node) {
+                node.fixed = false;
+            });
+
+            nodes.forEach(function (node) {
+                node.closePoints = 0;
+                dispX = 0;
+                dispY = 0;
+                nodes.forEach(function (repNode) {
+                    if (
+                        // Node can not repulse itself:
+                        node !== repNode &&
+                        // Only close nodes affect each other:
+                        /* layout.getDistR(node, repNode) < 2 * k && */
+                        // Not dragged:
+                        !node.fixedPosition
+                    ) {
+                        distanceXY = layout.getDistXY(node, repNode);
+                        distanceR = layout.vectorLength(distanceXY);
+                        if (
+                            distanceR - (
+                                node.marker.radius + repNode.marker.radius
+                            ) < 5) {
+                            node.closePoints++;
+                        }
+                        if (
+                            distanceR !== 0 &&
+                            distanceR - (
+                                node.marker.radius + repNode.marker.radius + 2
+                            ) < 0 && !node.fixed
+                        ) {
+                            force = options.elasticForce.call(
+                                layout,
+                                (
+                                    node.marker.radius +
+                                    repNode.marker.radius +
+                                    2
+                                ) - distanceR,
+                                k
+                            );
+
+                            dispX += (distanceXY.x / distanceR) * force;
+                            dispY += (distanceXY.y / distanceR) * force;
+                        } else if (
+                            distanceR <= (
+                                node.marker.radius + repNode.marker.radius + 2
+                            ) && distanceR !== 0 && !node.fixed
+                        ) {
+                            force = k *
+                                (node.marker.radius + repNode.marker.radius);
+                            dispX += (distanceXY.x / distanceR) * force;
+                            dispY += (distanceXY.y / distanceR) * force;
+                        } else if (!distanceR) {
+                            force = k *
+                                (node.marker.radius + repNode.marker.radius);
+                            node.dispX += force;
+                            node.dispY += force;
+                            repNode.dispX -= force;
+                            repNode.dispY -= force;
+                            node.fixed = true;
+                            repNode.fixed = true;
+                        }
+                    }
+                });
+                node.dispX += dispX;
+                node.dispY += dispY;
+
+            });
+        },
+        applyLimits: function (temperature) {
+            var layout = this,
+                options = layout.options,
+                nodes = layout.nodes,
+                box = layout.box,
+                abs = Math.abs;
+
+            nodes.forEach(function (node) {
+
+                if (node.fixedPosition) {
+                    return;
+                }
+
+
+                node.oldCoords = node.oldCoords || [];
+                if (node.oldCoords.length < 5) {
+                    node.oldCoords.push([node.plotX, node.plotY]);
+                }
+
+                // Friction:
+                node.dispX += options.friction /
+                    (2 * node.marker.radius) * node.dispX;
+                node.dispY += options.friction /
+                    (2 * node.marker.radius) * node.dispY;
+
+                var distanceR = node.temperature = layout.vectorLength({
+                    x: node.dispX,
+                    y: node.dispY
+                });
+                // Place nodes:
+                if (distanceR !== 0) {
+                    node.plotX += node.dispX / distanceR *
+                        Math.min(
+                            abs(node.dispX),
+                            temperature / (node.closePoints + 1)
+                        );
+                    node.plotY += node.dispY / distanceR *
+                        Math.min(
+                            abs(node.dispY),
+                            temperature / (node.closePoints + 1)
+                        );
+                }
+                // oscilation needs at least 5 records
+                // the refactoring is needed in this line
+                if (node.oldCoords.length === 5) {
+                    if (
+                        abs(node.plotX - node.oldCoords[1][0]) < 4 &&
+                        abs(node.plotY - node.oldCoords[1][1]) < 4 &&
+                        abs(node.oldCoords[3][0] - node.oldCoords[1][0]) < 4 &&
+                        abs(node.oldCoords[3][1] - node.oldCoords[1][1]) < 4 &&
+                        abs(node.oldCoords[0][1] - node.oldCoords[2][1]) < 4 &&
+                        abs(node.oldCoords[0][0] - node.oldCoords[2][0]) < 4 &&
+                        abs(node.oldCoords[4][1] - node.oldCoords[2][1]) < 4 &&
+                        abs(node.oldCoords[4][0] - node.oldCoords[2][0]) < 4
+                    ) {
+                        node.plotX = (
+                            node.oldCoords[0][0] + node.oldCoords[1][0] +
+                            node.oldCoords[2][0] + node.oldCoords[3][0] +
+                            node.oldCoords[4][0]
+                        ) / 5; // do not change the node position if oscillating
+                        node.plotY = (
+                            node.oldCoords[0][1] + node.oldCoords[2][1] +
+                            node.oldCoords[1][1] + node.oldCoords[3][0] +
+                            node.oldCoords[4][0]
+                        ) / 5;
+                    } else {
+                        node.oldCoords[0] = node.oldCoords[1];
+                        node.oldCoords[1] = node.oldCoords[2];
+                        node.oldCoords[2] = [node.plotX, node.plotY];
+                    }
+                }
+
+                // Limit X-coordinates:
+                node.plotX = Math.round(
+                    Math.max(
+                        Math.min(
+                            node.plotX,
+                            box.width
+                        ),
+                        box.left
+                    )
+                );
+
+                // Limit Y-coordinates:
+                node.plotY = Math.round(
+                    Math.max(
+                        Math.min(
+                            node.plotY,
+                            box.height
+                        ),
+                        box.top
+                    )
+                );
+
+                // Reset displacement:
+                node.dispX = 0;
+                node.dispY = 0;
+            });
+        }
+    });
 
 
 /**
@@ -61,11 +340,109 @@ seriesType('packedbubble', 'bubble',
          * @since   3.0
          * @product highcharts highstock
          */
-        maxSize: '100%',
+        maxSize: '50%',
         sizeBy: 'radius',
         zoneAxis: 'y',
         tooltip: {
             pointFormat: 'Value: {point.value}'
+        },
+        layoutAlgorithm: {
+            /**
+             * Ideal length (px) of the link between two nodes.
+             * When not defined,
+             * length is calculated as:
+             * `Math.pow(availableWidth * availableHeight / nodesLength, 0.4);`
+             *
+             * Note: Because of the algorithm specification, length of each link
+             * might be not exactly as specified.
+             *
+             * @type      {number}
+             * @apioption series.networkgraph.layoutAlgorithm.linkLength
+             * @sample    highcharts/series-networkgraph/styled-links/
+             *            Numerical values
+             * @defaults  undefined
+             */
+
+            /**
+             * Initial layout algorithm for positioning nodes. Can be one of
+             * built-in options ("circle", "random") or a
+             * function where positions
+             * should be set on each node (`this.nodes`) as `node.plotX` and
+             * `node.plotY`
+             *
+             * @sample      highcharts/series-networkgraph/initial-positions/
+             *              Initial positions with callback
+             * @type        {String|Function}
+             * @validvalue  ["circle", "random"]
+             */
+            initialPositions: 'random',
+            /**
+             * Experimental. Enables live simulation of the algorithm
+             * implementation. All nodes are animated as the forces applies on
+             * them.
+             *
+             * @sample       highcharts/demo/networkgraph/
+             *               Live simulation enabled
+             */
+            enableSimulation: true,
+            /**
+             * Type of the algorithm used when positioning nodes.
+             *
+             * @validvalue  ["reingold-fruchterman"]
+             */
+            type: 'reingold-fruchterman',
+            /**
+             * Max number of iterations before algorithm will stop. In general,
+             * algorithm should find positions sooner, but when rendering huge
+             * number of nodes, it is recommended to increase this value as
+             * finding perfect graph positions can require more time.
+             */
+            maxIterations: 1000,
+            /**
+             * Gravitational const used in the barycenter
+             * force of the algorithm.
+             *
+             * @sample      highcharts/series-networkgraph/forces/
+             *              Custom forces
+             */
+            gravitationalConstant: 0.0625,
+            /**
+             * Friction applied on forces to prevent nodes
+             * rushing to fast to the
+             * desired positions.
+             */
+            friction: -0.981,
+            /**
+             * Repulsive force applied on a node. Passed are two arguments:
+             * - `d` - which is current distance between two nodes
+             * - `k` - which is desired distance between two nodes
+             *
+             * @sample      highcharts/series-networkgraph/forces/
+             *              Custom forces
+             * @type        {Function}
+             * @default function (d, k) { return k * k / d; }
+             */
+            repulsiveForce: function () {
+                return 0;
+            },
+            /**
+             * Attraction force applied on a node which
+             * is conected to another node
+             * by a link. Passed are two arguments:
+             * - `d` - which is current distance between two nodes
+             * - `k` - which is desired distance between two nodes
+             *
+             * @sample      highcharts/series-networkgraph/forces/
+             *              Custom forces
+             * @type        {Function}
+             * @default function (d, k) { return k * k / d; }
+             */
+            attractiveForce: function () {
+                return 0;
+            },
+            elasticForce: function (d, k) {
+                return d * d * k * k;
+            }
         }
     }, {
         pointArrayMap: ['value'],
@@ -97,7 +474,13 @@ seriesType('packedbubble', 'bubble',
                             null, null,
                             series.yData[j],
                             series.index,
-                            j
+                            j,
+                            {
+                                id: j,
+                                marker: {
+                                    radius: 0
+                                }
+                            }
                         ]);
                     }
                 }
@@ -105,14 +488,51 @@ seriesType('packedbubble', 'bubble',
 
             return allDataPoints;
         },
+
+        deferLayout: function () {
+            var layoutOptions = this.options.layoutAlgorithm,
+                points = this.points,
+                graphLayoutsStorage = this.chart.graphLayoutsStorage,
+                chartOptions = this.chart.options.chart,
+                layout;
+
+            this.nodes = points;
+
+            if (!this.visible) {
+                return;
+            }
+
+            if (!graphLayoutsStorage) {
+                this.chart.graphLayoutsStorage = graphLayoutsStorage = {};
+            }
+
+            layout = graphLayoutsStorage[layoutOptions.type];
+
+            if (!layout) {
+                layoutOptions.enableSimulation =
+                    !defined(chartOptions.forExport) ?
+                        layoutOptions.enableSimulation :
+                        !chartOptions.forExport;
+
+                graphLayoutsStorage[layoutOptions.type] = layout =
+                    new H.layouts[layoutOptions.type](layoutOptions);
+            }
+
+            this.layout = layout;
+
+            layout.setArea(0, 0, this.chart.plotWidth, this.chart.plotHeight);
+            layout.addSeries(this);
+            layout.addNodes(this.nodes);
+            layout.addLinks([]);
+            this.points = points;
+        },
         /**
          * Extend the base translate method to handle bubble size,
          * and correct positioning them
          */
         translate: function () {
 
-            var positions, // calculated positions of bubbles in bubble array
-                series = this,
+            var series = this,
                 chart = series.chart,
                 data = series.data,
                 index = series.index,
@@ -126,28 +546,19 @@ seriesType('packedbubble', 'bubble',
             // merged data is an array with all of the data from all series
             if (!defined(chart.allDataPoints)) {
                 chart.allDataPoints = series.accumulateAllPoints(series);
-
                 // calculate radius for all added data
                 series.getPointRadius();
             }
 
-            // after getting initial radius, calculate bubble positions
-            positions = this.placeBubbles(chart.allDataPoints);
+           // Set the shape type and arguments to be picked up in drawPoints
+            for (i = 0; i < chart.allDataPoints.length; i++) {
 
-            // Set the shape type and arguments to be picked up in drawPoints
-            for (i = 0; i < positions.length; i++) {
-
-                if (positions[i][3] === index) {
+                if (chart.allDataPoints[i][3] === index) {
 
                     // update the series points with the values from positions
                     // array
-                    point = data[positions[i][4]];
-                    radius = positions[i][2];
-                    point.plotX = positions[i][0] - chart.plotLeft +
-                      chart.diffX;
-                    point.plotY = positions[i][1] - chart.plotTop +
-                      chart.diffY;
-
+                    point = data[chart.allDataPoints[i][4]];
+                    radius = chart.allDataPoints[i][2];
                     point.marker = H.extend(point.marker, {
                         radius: radius,
                         width: 2 * radius,
@@ -155,6 +566,8 @@ seriesType('packedbubble', 'bubble',
                     });
                 }
             }
+
+            this.deferLayout();
         },
         /**
          * Check if two bubbles overlaps.
@@ -460,11 +873,12 @@ seriesType('packedbubble', 'bubble',
                     length;
             });
 
-            chart.minRadius = minSize = extremes.minSize;
-            chart.maxRadius = maxSize = extremes.maxSize;
+            chart.minRadius = minSize = extremes.minSize /
+                Math.sqrt(allDataPoints.length);
+            chart.maxRadius = maxSize = extremes.maxSize /
+                Math.sqrt(allDataPoints.length);
 
             (allDataPoints || []).forEach(function (point, i) {
-
                 value = point[2];
 
                 radius = series.getRadius(
@@ -474,11 +888,9 @@ seriesType('packedbubble', 'bubble',
                     maxSize,
                     value
                 );
-
                 if (value === 0) {
                     radius = null;
                 }
-
                 allDataPoints[i][2] = radius;
                 radii.push(radius);
             });
@@ -487,6 +899,10 @@ seriesType('packedbubble', 'bubble',
         },
 
         alignDataLabel: H.Series.prototype.alignDataLabel
+    }, {
+        getDegree: function () {
+            return 1;
+        }
     }
 );
 
