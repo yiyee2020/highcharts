@@ -37,6 +37,43 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
         return this.options.nodePadding / Math.PI;
     },
 
+    createNode: function (id) {
+        var node = base.createNode.call(this, id);
+        node.index = this.nodes.length - 1;
+
+        // Return the sum of incoming and outgoing links
+        node.getSum = function () {
+            return node.linksFrom.concat(node.linksTo)
+                .reduce(function (acc, link) {
+                    return acc + link.weight;
+                }, 0);
+        };
+
+        // Get the offset in weight values of a point/link.
+        node.offset = function (point) {
+            var offset = 0,
+                i = 0,
+                links = node.linksFrom.concat(node.linksTo);
+
+            // Sort the links to avoid links going out of each node crossing
+            // each other. This can be further optimized.
+            links.sort(function (a, b) {
+                if (a.fromNode === node) {
+                    return a.fromNode.index - b.toNode.index;
+                }
+                return a.toNode.index - b.fromNode.index;
+            });
+            for (i = 0; i < links.length; i++) {
+                if (links[i] === point) {
+                    return offset;
+                }
+                offset += links[i].weight;
+            }
+        };
+
+        return node;
+    },
+
     translate: function () {
 
         var options = this.options,
