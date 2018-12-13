@@ -32,11 +32,16 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
         return columns;
     },
 
+    // Translate from vertical pixels to perimeter
+    getNodePadding: function () {
+        return this.options.nodePadding / Math.PI;
+    },
+
     translate: function () {
 
         var options = this.options,
             factor = 2 * Math.PI /
-                (this.chart.plotHeight + this.options.nodePadding),
+                (this.chart.plotHeight + this.getNodePadding()),
             center = this.getCenter();
 
         base.translate.call(this);
@@ -61,8 +66,8 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
             };
 
             node.dlBox = {
-                x: centerX + Math.cos((start + end) / 2) * r,
-                y: centerY + Math.sin((start + end) / 2) * r,
+                x: centerX + Math.cos((start + end) / 2) * (r + innerR) / 2,
+                y: centerY + Math.sin((start + end) / 2) * (r + innerR) / 2,
                 width: 1,
                 height: 1
             };
@@ -71,8 +76,8 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
             node.linksFrom.forEach(function (point) {
                 var corners = point.linkBase.map(function (top) {
                     var angle = factor * top,
-                        x = Math.cos(angle) * innerR,
-                        y = Math.sin(angle) * innerR;
+                        x = Math.cos(angle) * (innerR + 1),
+                        y = Math.sin(angle) * (innerR + 1);
                     return {
                         x: centerX + x,
                         y: centerY + y,
