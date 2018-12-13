@@ -423,6 +423,12 @@ seriesType('sankey', 'column'
                     }
 
                     point.shapeType = 'path';
+                    point.linkBase = [
+                        fromY,
+                        fromY + linkHeight,
+                        toY,
+                        toY + linkHeight
+                    ];
 
                     // Links going from left to right
                     if (straight) {
