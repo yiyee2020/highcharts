@@ -51,9 +51,11 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
 
         // Get the offset in weight values of a point/link.
         node.offset = function (point) {
+
             var offset = 0,
-                i = 0,
-                links = node.linksFrom.concat(node.linksTo);
+                i,
+                links = node.linksFrom.concat(node.linksTo),
+                sliced;
 
             function otherNode(link) {
                 if (link.fromNode === node) {
@@ -61,11 +63,24 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
                 }
                 return link.fromNode;
             }
-            // Sort the links to avoid links going out of each node crossing
-            // each other. This can be further optimized.
+
+            // Sort and slice the links to avoid links going out of each node
+            // crossing each other.
             links.sort(function (a, b) {
                 return otherNode(a).index - otherNode(b).index;
             });
+            for (i = 0; i < links.length; i++) {
+                if (otherNode(links[i]).index > node.index) {
+                    links = links.slice(0, i).reverse().concat(
+                        links.slice(i).reverse()
+                    );
+                    sliced = true;
+                    break;
+                }
+            }
+            if (!sliced) {
+                links.reverse();
+            }
 
             for (i = 0; i < links.length; i++) {
                 if (links[i] === point) {
