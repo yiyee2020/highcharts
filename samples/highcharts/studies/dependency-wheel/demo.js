@@ -7,6 +7,12 @@ Highcharts.chart('container', {
 
     series: [{
         keys: ['from', 'to', 'weight'],
+        _data: [
+            ['Ein', 'To', 1],
+            ['To', 'Tre', 1],
+            ['Tre', 'Fire', 1],
+            ['Fire', 'Ein', 1]
+        ],
         data: [
             ['Brazil', 'Portugal', 5 ],
             ['Brazil', 'France', 1 ],

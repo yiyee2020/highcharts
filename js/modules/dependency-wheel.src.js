@@ -55,14 +55,18 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
                 i = 0,
                 links = node.linksFrom.concat(node.linksTo);
 
+            function otherNode(link) {
+                if (link.fromNode === node) {
+                    return link.toNode;
+                }
+                return link.fromNode;
+            }
             // Sort the links to avoid links going out of each node crossing
             // each other. This can be further optimized.
             links.sort(function (a, b) {
-                if (a.fromNode === node) {
-                    return a.fromNode.index - b.toNode.index;
-                }
-                return a.toNode.index - b.fromNode.index;
+                return otherNode(a).index - otherNode(b).index;
             });
+
             for (i = 0; i < links.length; i++) {
                 if (links[i] === point) {
                     return offset;
