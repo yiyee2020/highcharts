@@ -18,7 +18,8 @@ var unsupportedSeriesType = H.seriesType;
 var base = H.seriesTypes.sankey.prototype;
 
 unsupportedSeriesType('dependencywheel', 'sankey', {
-    center: []
+    center: [],
+    curveFactor: 0.6
 }, {
     getCenter: H.seriesTypes.pie.prototype.getCenter,
 
@@ -130,15 +131,32 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
 
             // Draw the links from this node
             node.linksFrom.forEach(function (point) {
-                var corners = point.linkBase.map(function (top) {
+                var distance;
+                var corners = point.linkBase.map(function (top, i) {
                     var angle = factor * top,
                         x = Math.cos(angle) * (innerR + 1),
-                        y = Math.sin(angle) * (innerR + 1);
+                        y = Math.sin(angle) * (innerR + 1),
+                        curveFactor = options.curveFactor;
+
+                    // The distance between the from and to node along the
+                    // perimeter. This affect how curved the link is, so that
+                    // links between neighbours don't extend too far towards the
+                    // center.
+                    distance = Math.abs(point.linkBase[3 - i] * factor - angle);
+                    if (distance > Math.PI) {
+                        distance = 2 * Math.PI - distance;
+                    }
+                    distance = distance * innerR;
+                    if (distance < innerR) {
+                        curveFactor *= (distance / innerR);
+                    }
+
+
                     return {
                         x: centerX + x,
                         y: centerY + y,
-                        cpX: centerX + options.curveFactor * x,
-                        cpY: centerY + options.curveFactor * y
+                        cpX: centerX + (1 - curveFactor) * x,
+                        cpY: centerY + (1 - curveFactor) * y
                     };
                 });
 
