@@ -1,7 +1,7 @@
 /* *
  * Experimental dependency wheel module
  *
- * (c) 2010-2018 Torstein Honsi
+ * (c) 2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
@@ -19,7 +19,8 @@ var base = H.seriesTypes.sankey.prototype;
 
 unsupportedSeriesType('dependencywheel', 'sankey', {
     center: [],
-    curveFactor: 0.6
+    curveFactor: 0.6,
+    startAngle: 0
 }, {
     getCenter: H.seriesTypes.pie.prototype.getCenter,
 
@@ -99,7 +100,8 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
         var options = this.options,
             factor = 2 * Math.PI /
                 (this.chart.plotHeight + this.getNodePadding()),
-            center = this.getCenter();
+            center = this.getCenter(),
+            startAngle = (options.startAngle - 90) * H.deg2rad;
 
         base.translate.call(this);
 
@@ -109,8 +111,8 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
                 centerY = center[1],
                 r = center[2] / 2,
                 innerR = r - options.nodeWidth,
-                start = factor * shapeArgs.y,
-                end = factor * (shapeArgs.y + shapeArgs.height);
+                start = startAngle + factor * shapeArgs.y,
+                end = startAngle + factor * (shapeArgs.y + shapeArgs.height);
 
             node.shapeType = 'arc';
             node.shapeArgs = {
@@ -134,8 +136,8 @@ unsupportedSeriesType('dependencywheel', 'sankey', {
                 var distance;
                 var corners = point.linkBase.map(function (top, i) {
                     var angle = factor * top,
-                        x = Math.cos(angle) * (innerR + 1),
-                        y = Math.sin(angle) * (innerR + 1),
+                        x = Math.cos(startAngle + angle) * (innerR + 1),
+                        y = Math.sin(startAngle + angle) * (innerR + 1),
                         curveFactor = options.curveFactor;
 
                     // The distance between the from and to node along the
