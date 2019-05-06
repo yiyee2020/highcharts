@@ -107,6 +107,21 @@ var options = {
         landmarkVerbosity: 'all',
 
         /**
+         * Options for the automatic sonification added to charts. If this is
+         * enabled, screen reader users will have access to a sonification UI
+         * for playing back the chart as sound.
+         * @since next
+         */
+        sonification: {
+            /**
+             * Enable or disable adding automatic sonification for the chart.
+             * It is still possible to use the sonification API functions if
+             * this option is disabled.
+             */
+            enabled: true
+        },
+
+        /**
          * A hook for adding custom components to the accessibility module.
          * Should be an object mapping component names to instances of classes
          * inheriting from the Highcharts.AccessibilityComponent base class.

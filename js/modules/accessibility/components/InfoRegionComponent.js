@@ -12,6 +12,7 @@
 
 import H from '../../../parts/Globals.js';
 import AccessibilityComponent from '../AccessibilityComponent.js';
+import createSonificationScreenReaderUI from './SonificationUI.js';
 
 var merge = H.merge,
     pick = H.pick;
@@ -164,6 +165,15 @@ H.extend(InfoRegionComponent.prototype, /** @lends Highcharts.InfoRegionComponen
         hiddenSection.innerHTML = a11yOptions.screenReaderSectionFormatter ?
             a11yOptions.screenReaderSectionFormatter(chart) :
             this.defaultScreenReaderSectionFormatter(chart);
+
+        // Add sonification UI if enabled
+        if (
+            H.sonification && chart.options.accessibility.sonification.enabled
+        ) {
+            hiddenSection.appendChild(
+                this.sonificationUI = createSonificationScreenReaderUI(this)
+            );
+        }
 
         // Add shortcut to data table if export-data is loaded
         if (chart.getCSV && chart.options.accessibility.addTableShortcut) {
