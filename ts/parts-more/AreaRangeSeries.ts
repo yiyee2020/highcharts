@@ -193,6 +193,11 @@ seriesType<Highcharts.AreaRangeSeriesOptions>('arearange', 'area', {
      * @apioption plotOptions.arearange.shadow
      */
 
+     /**
+      * @default   low
+      * @apioption plotOptions.arearange.colorKey
+      */
+
     /**
      * Pixel width of the arearange graph line.
      *

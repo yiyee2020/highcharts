@@ -340,6 +340,11 @@ seriesType<Highcharts.BubbleSeriesOptions>('bubble', 'scatter', {
      * @apioption plotOptions.bubble.zMax
      */
 
+     /**
+      * @default   z
+      * @apioption plotOptions.bubble.colorKey
+      */
+
     /**
      * The minimum for the Z value range. Defaults to the lowest Z value
      * in the data.
@@ -700,7 +705,7 @@ Axis.prototype.beforePadding = function (this: Highcharts.Axis): void {
                     (axis.dataMin as any) <= data[i] &&
                     data[i] <= (axis.dataMax as any)
                 ) {
-                    radius = series.radii[i];
+                    radius = series.radii ? series.radii[i] : 0;
                     pxMin = Math.min(
                         ((data[i] - (min as any)) * transA) - (radius as any),
                         pxMin

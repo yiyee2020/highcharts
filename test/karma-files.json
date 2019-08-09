@@ -12,7 +12,7 @@
 	"code/modules/stock.src.js",
 	"code/modules/map.src.js",
 	"code/modules/gantt.src.js",
-	
+
 	"code/modules/exporting.src.js",
 	"code/modules/export-data.src.js",
 	"code/modules/parallel-coordinates.src.js",

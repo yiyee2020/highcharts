@@ -11,8 +11,6 @@
  */
 'use strict';
 import '../../parts-map/MapAxis.js';
-import '../../parts-map/ColorAxis.js';
-import '../../parts-map/ColorSeriesMixin.js';
 import '../../parts-map/MapNavigation.js';
 import '../../parts-map/MapPointer.js';
 import '../../parts-map/MapSeries.js';
@@ -22,3 +20,5 @@ import '../../parts-map/MapBubbleSeries.js';
 import '../../parts-map/HeatmapSeries.js';
 import '../../parts-map/GeoJSON.js';
 import '../../parts-map/Map.js';
+import '../../parts-map/ColorMapSeriesMixin.js';
+import '../../parts-map/ColorAxis.js';

@@ -2589,6 +2589,32 @@ H.Series = H.seriesType<Highcharts.SeriesOptions>(
          * @apioption plotOptions.series.zones.value
          */
 
+         /**
+          * When using dual or multiple color axes, this number defines which
+          * colorAxis the particular series is connected to. It refers to
+          * either the
+          * {@link #colorAxis.id|axis id}
+          * or the index of the axis in the colorAxis array, with 0 being the
+          * first.
+          *
+          * @type      {number|string}
+          * @default   0
+          * @since     7.1.3
+          * @product   highcharts highstock highmaps
+          * @apioption plotOptions.series.colorAxis
+          */
+
+          /**
+           * Determines what data value should be used to calculate point color
+           * if `colorAxis` is used.
+           *
+           * @type      {string}
+           * @default   y
+           * @since     7.1.3
+           * @product   highcharts highstock highmaps
+           * @apioption plotOptions.series.colorKey
+           */
+
         /**
          * Determines whether the series should look for the nearest point
          * in both dimensions or just the x-dimension when hovering the series.
@@ -4060,19 +4086,20 @@ H.Series = H.seriesType<Highcharts.SeriesOptions>(
         ): void {
             var xAxis = this.xAxis,
                 yAxis = this.yAxis,
-                xData = this.processedXData,
+                xData = this.processedXData || this.xData,
                 yDataLength,
                 activeYData = [],
                 activeCounter = 0,
                 // #2117, need to compensate for log X axis
-                xExtremes = xAxis.getExtremes(),
-                xMin = xExtremes.min,
-                xMax = xExtremes.max,
+                xExtremes,
+                xMin,
+                xMax,
                 validValue,
                 withinRange,
                 // Handle X outside the viewed area. This does not work with
                 // non-sorted data like scatter (#7639).
                 shoulder = this.requireSorting ? this.cropShoulder : 0,
+                positiveValuesOnly = yAxis ? yAxis.positiveValuesOnly : false,
                 x,
                 y,
                 i,
@@ -4080,6 +4107,12 @@ H.Series = H.seriesType<Highcharts.SeriesOptions>(
 
             yData = yData || this.stackedYData || this.processedYData || [];
             yDataLength = yData.length;
+
+            if (xAxis) {
+                xExtremes = xAxis.getExtremes();
+                xMin = xExtremes.min;
+                xMax = xExtremes.max;
+            }
 
             for (i = 0; i < yDataLength; i++) {
 
@@ -4090,15 +4123,16 @@ H.Series = H.seriesType<Highcharts.SeriesOptions>(
                 // point outside the visible range (#7061), consider y extremes.
                 validValue = (
                     (isNumber(y) || isArray(y)) &&
-                    (!yAxis.positiveValuesOnly || ((y as any).length || y > 0))
+                    (((y as any).length || y > 0) || !positiveValuesOnly)
                 );
                 withinRange = (
                     this.getExtremesFromAll ||
                     this.options.getExtremesFromAll ||
                     this.cropped ||
+                    !xAxis || // for colorAxis support
                     (
-                        ((xData as any)[i + shoulder] || x) >= xMin &&
-                        ((xData as any)[i - shoulder] || x) <= xMax
+                        ((xData as any)[i + shoulder] || x) >= (xMin as any) &&
+                        ((xData as any)[i - shoulder] || x) <= (xMax as any)
                     )
                 );
 

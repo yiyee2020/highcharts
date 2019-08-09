@@ -176,7 +176,12 @@ seriesType('timeline', 'line',
             lineWidth: 2,
             height: 15
         },
-        showInLegend: false
+        showInLegend: false,
+        /**
+         * @default   high
+         * @apioption plotOptions.boxplot.colorKey
+         */
+        colorKey: 'x'
     },
     /**
      * @lends Highcharts.Series#

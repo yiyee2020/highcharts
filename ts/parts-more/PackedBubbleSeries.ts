@@ -315,6 +315,7 @@ var seriesType = H.seriesType,
     Point = H.Point,
     pick = H.pick,
     addEvent = H.addEvent,
+    fireEvent = H.fireEvent,
     Chart = H.Chart,
     color = H.Color,
     Reingold = H.layouts['reingold-fruchterman'],
@@ -1340,6 +1341,8 @@ seriesType<Highcharts.PackedBubbleSeriesOptions>(
             if (useSimulation) {
                 series.deferLayout();
             }
+
+            fireEvent(series, 'afterTranslate');
         },
         /**
          * Check if two bubbles overlaps.

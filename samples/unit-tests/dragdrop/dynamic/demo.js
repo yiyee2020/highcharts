@@ -140,7 +140,7 @@ QUnit.test('Dragdrop with boost', function (assert) {
 
     assert.notEqual(
         point.x,
-        chart.series[0].points[0].x,
+        10,
         'Dragdrop should work with boost (#11156).'
     );
 });

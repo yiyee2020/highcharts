@@ -316,6 +316,7 @@ var addEvent = H.addEvent,
     Series = H.Series,
     seriesType = H.seriesType,
     seriesTypes = H.seriesTypes,
+    fireEvent = H.fireEvent,
     setAnimation = H.setAnimation;
 
 /**
@@ -1028,6 +1029,7 @@ seriesType<Highcharts.PieSeriesOptions>(
                     }
                 };
             }
+            fireEvent(series, 'afterTranslate');
         },
 
         /**

@@ -40,6 +40,15 @@ declare global {
                 redraw?: boolean,
                 animation?: boolean
             ): Axis;
+            addColorAxis(
+                options: AxisOptions,
+                redraw?: boolean,
+                animation?: boolean
+            ): Axis;
+            createAxis(
+                type: string,
+                args: [any]
+            ): Axis|ColorAxis;
             addSeries(
                 options: SeriesOptionsType,
                 redraw?: boolean,
@@ -277,19 +286,93 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
         redraw?: boolean,
         animation?: boolean
     ): Highcharts.Axis {
-        var key = isX ? 'xAxis' : 'yAxis',
-            chartOptions = this.options,
+        return this.createAxis(
+            isX ? 'xAxis' : 'yAxis',
+            arguments as any
+        );
+    },
+
+    /**
+     * Add a color axis to the chart after render time. Note that this method
+     * should never be used when adding data synchronously at chart render time, as
+     * it adds expense to the calculations and rendering. When adding data at the
+     * same time as the chart is initialized, add the axis as a configuration
+     * option instead.
+     *
+     * @sample highcharts/members/chart-addaxis/
+     *         Add and remove axes
+     *
+     * @function Highcharts.Chart#addColorAxis
+     *
+     * @param {Highcharts.ColorAxisOptions} options
+     *        The axis options.
+     *
+     * @param {boolean} [redraw=true]
+     *        Whether to redraw the chart after adding.
+     *
+     * @param {boolean|Highcharts.AnimationOptionsObject} [animation=true]
+     *        Whether and how to apply animation in the redraw.
+     *
+     * @return {Highcharts.ColorAxis}
+     *         The newly generated Axis object.
+     */
+    addColorAxis: function (
+        this: Highcharts.Chart,
+        options: Highcharts.AxisOptions,
+        redraw?: boolean,
+        animation?: boolean
+    ): Highcharts.Axis {
+        return this.createAxis(
+            'colorAxis',
+            arguments as any
+        );
+    },
+
+    /**
+     * Factory for creating different axis types.
+     *
+     * @private
+     * @function Highcharts.Chart#createAxis
+     *
+     * @param {string} type
+     *        An axis type.
+     *
+     * @param {...Array<*>} arguments
+     *        All arguments for the constructor.
+     *
+     * @return {Highcharts.Axis | Highcharts.ColorAxis}
+     *         The newly generated Axis object.
+     */
+    createAxis: function (
+        this: Highcharts.Chart,
+        type: string,
+        args: Array<any>
+    ) {
+        var chartOptions = this.options,
+            isColorAxis = type === 'colorAxis',
+            options = args[0],
+            redraw = args[1],
+            animation = args[2],
             userOptions = merge(options, {
-                index: (this as any)[key].length,
-                isX: isX
+                index: (this as any)[type].length,
+                isX: type === 'xAxis'
             }),
             axis;
 
-        axis = new Axis(this, userOptions);
+        if (isColorAxis) {
+            axis = new H.ColorAxis(this, userOptions);
+
+        } else {
+            axis = new Axis(this, userOptions);
+        }
 
         // Push the new axis options to the chart options
-        (chartOptions as any)[key] = splat((chartOptions as any)[key] || {});
-        (chartOptions as any)[key].push(userOptions);
+        (chartOptions as any)[type] = splat((chartOptions as any)[type] || {});
+        (chartOptions as any)[type].push(userOptions);
+
+        if (isColorAxis) {
+            this.isDirtyLegend = true;
+        }
 
         if (pick(redraw, true)) {
             this.redraw(animation);
@@ -847,6 +930,7 @@ Chart.prototype.collectionsWithInit = {
     // collectionName: [ initializingMethod, [extraArguments] ]
     xAxis: [Chart.prototype.addAxis, [true]],
     yAxis: [Chart.prototype.addAxis, [false]],
+    colorAxis: [Chart.prototype.addColorAxis, [false]],
     series: [Chart.prototype.addSeries]
 };
 

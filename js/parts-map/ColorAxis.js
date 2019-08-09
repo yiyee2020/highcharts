@@ -15,12 +15,15 @@ import H from '../parts/Globals.js';
  * @typedef {"linear"|"logarithmic"} Highcharts.ColorAxisTypeValue
  */
 import U from '../parts/Utilities.js';
-var erase = U.erase, isNumber = U.isNumber;
+var erase = U.erase, isNumber = U.isNumber, splat = U.splat;
 import '../parts/Axis.js';
 import '../parts/Chart.js';
 import '../parts/Color.js';
 import '../parts/Legend.js';
-var addEvent = H.addEvent, Axis = H.Axis, Chart = H.Chart, color = H.color, ColorAxis, extend = H.extend, Legend = H.Legend, LegendSymbolMixin = H.LegendSymbolMixin, noop = H.noop, merge = H.merge, pick = H.pick;
+import './ColorSeriesMixin.js';
+var addEvent = H.addEvent, Axis = H.Axis, Chart = H.Chart, Series = H.Series, Point = H.Point, color = H.color, ColorAxis, extend = H.extend, Legend = H.Legend, LegendSymbolMixin = H.LegendSymbolMixin, colorPointMixin = H.colorPointMixin, colorSeriesMixin = H.colorSeriesMixin, noop = H.noop, merge = H.merge, pick = H.pick;
+extend(Series.prototype, colorSeriesMixin);
+extend(Point.prototype, colorPointMixin);
 /* eslint-disable no-invalid-this, valid-jsdoc */
 /**
  * The ColorAxis object for inclusion in gradient legends.
@@ -717,16 +720,52 @@ extend(ColorAxis.prototype, {
      * @private
      */
     getSeriesExtremes: function () {
-        var series = this.series, i = series.length;
+        var series = this.series, colorValArray, colorKey, colorValIndex, pointArrayMap, calculatedExtremes, i = series.length, yData, j;
         this.dataMin = Infinity;
         this.dataMax = -Infinity;
-        while (i--) {
-            series[i].getExtremes();
-            if (series[i].valueMin !== undefined) {
+        while (i--) { // x, y, value, other
+            colorKey = series[i].colorKey = series[i].options.colorKey ||
+                series[i].colorKey || series[i].pointValKey ||
+                series[i].zoneAxis || 'y';
+            pointArrayMap = series[i].pointArrayMap;
+            calculatedExtremes = series[i][colorKey + 'Min'] &&
+                series[i][colorKey + 'Max'];
+            if (series[i][colorKey + 'Data']) {
+                colorValArray = series[i][colorKey + 'Data'];
+            }
+            else {
+                if (!pointArrayMap) {
+                    colorValArray = series[i].yData;
+                }
+                else {
+                    colorValArray = [];
+                    colorValIndex = pointArrayMap.indexOf(colorKey);
+                    yData = series[i].yData;
+                    if (colorValIndex >= 0 && yData) {
+                        for (j = 0; j < yData.length; j++) {
+                            colorValArray.push(pick(yData[j][colorValIndex], yData[j]));
+                        }
+                    }
+                }
+            }
+            // If color key extremes are already calculated, use them.
+            if (calculatedExtremes) {
+                series[i].minColorValue = series[i][colorKey + 'Min'];
+                series[i].maxColorValue = series[i][colorKey + 'Max'];
+            }
+            else {
+                Series.prototype.getExtremes.call(series[i], colorValArray);
+                series[i].minColorValue = series[i].dataMin;
+                series[i].maxColorValue = series[i].dataMax;
+            }
+            if (series[i].minColorValue !== undefined) {
                 this.dataMin =
-                    Math.min(this.dataMin, series[i].valueMin);
+                    Math.min(this.dataMin, series[i].minColorValue);
                 this.dataMax =
-                    Math.max(this.dataMax, series[i].valueMax);
+                    Math.max(this.dataMax, series[i].maxColorValue);
+            }
+            if (!calculatedExtremes) {
+                Highcharts.Series.prototype.getExtremes.call(series[i]);
             }
         }
     },
@@ -795,13 +834,8 @@ extend(ColorAxis.prototype, {
         });
         // When updating data classes, destroy old items and make sure new
         // ones are created (#3207)
-        if (newOptions.dataClasses && legend.allItems) {
-            legend.allItems.forEach(function (item) {
-                if (item.isDataClass && item.legendGroup) {
-                    item.legendGroup.destroy();
-                }
-            });
-            chart.isDirtyLegend = true;
+        if (newOptions.dataClasses && legend.allItems || this.dataClasses) {
+            this.destroyItems();
         }
         // Keep the options structure updated for export. Unlike xAxis and
         // yAxis, the colorAxis is not an array. (#3207)
@@ -814,15 +848,32 @@ extend(ColorAxis.prototype, {
         }
     },
     /**
+     * Destroy color axis legend items.
+     *
+     * @private
+     * @function Highcharts.ColorAxis#destroyItems
+     * @return {void}
+     */
+    destroyItems: function () {
+        var chart = this.chart;
+        if (this.legendItem) {
+            this.chart.legend.destroyItem(this);
+        }
+        else if (this.legendItems) {
+            this.legendItems.forEach(function (item) {
+                chart.legend.destroyItem(item);
+            });
+        }
+        chart.isDirtyLegend = true;
+    },
+    /**
      * Extend basic axis remove by also removing the legend item.
      *
      * @private
      * @function Highcharts.ColorAxis#remove
      */
     remove: function () {
-        if (this.legendItem) {
-            this.chart.legend.destroyItem(this);
-        }
+        this.destroyItems();
         Axis.prototype.remove.call(this);
     },
     /**
@@ -901,33 +952,48 @@ extend(ColorAxis.prototype, {
 });
 // Extend the chart getAxes method to also get the color axis
 addEvent(Chart, 'afterGetAxes', function () {
-    var options = this.options, colorAxisOptions = options.colorAxis;
+    var chart = this, options = chart.options;
     this.colorAxis = [];
-    if (colorAxisOptions) {
-        new ColorAxis(this, colorAxisOptions); // eslint-disable-line no-new
+    if (options.colorAxis) {
+        options.colorAxis = splat(options.colorAxis);
+        options.colorAxis.forEach(function (axisOptions, i) {
+            axisOptions.index = i;
+            new ColorAxis(chart, axisOptions); // eslint-disable-line no-new
+        });
+    }
+});
+// Add colorAxis to series axisTypes
+addEvent(Series, 'bindAxes', function () {
+    if (!this.axisTypes) {
+        this.axisTypes = ['colorAxis'];
+    }
+    else if (this.axisTypes.indexOf('colorAxis') === -1) {
+        this.axisTypes.push('colorAxis');
     }
 });
 // Add the color axis. This also removes the axis' own series to prevent
 // them from showing up individually.
 addEvent(Legend, 'afterGetAllItems', function (e) {
-    var colorAxisItems = [], colorAxis = this.chart.colorAxis[0], i;
-    if (colorAxis && colorAxis.options) {
-        if (colorAxis.options.showInLegend) {
-            // Data classes
-            if (colorAxis.options.dataClasses) {
-                colorAxisItems = colorAxis.getDataClassLegendSymbols();
-                // Gradient legend
+    var colorAxisItems = [], colorAxes = this.chart.colorAxis || [], i;
+    colorAxes.forEach(function (colorAxis) {
+        if (colorAxis && colorAxis.options) {
+            if (colorAxis.options.showInLegend) {
+                // Data classes
+                if (colorAxis.options.dataClasses) {
+                    colorAxisItems = colorAxisItems.concat(colorAxis.getDataClassLegendSymbols());
+                    // Gradient legend
+                }
+                else {
+                    // Add this axis on top
+                    colorAxisItems.push(colorAxis);
+                }
+                // Don't add the color axis' series
+                colorAxis.series.forEach(function (series) {
+                    erase(e.allItems, series);
+                });
             }
-            else {
-                // Add this axis on top
-                colorAxisItems.push(colorAxis);
-            }
-            // Don't add the color axis' series
-            colorAxis.series.forEach(function (series) {
-                erase(e.allItems, series);
-            });
         }
-    }
+    });
     i = colorAxisItems.length;
     while (i--) {
         e.allItems.unshift(colorAxisItems[i]);
@@ -942,7 +1008,16 @@ addEvent(Legend, 'afterColorizeItem', function (e) {
 });
 // Updates in the legend need to be reflected in the color axis (6888)
 addEvent(Legend, 'afterUpdate', function () {
-    if (this.chart.colorAxis[0]) {
-        this.chart.colorAxis[0].update({}, arguments[2]);
+    var colorAxis = this.chart.colorAxis;
+    if (colorAxis) {
+        colorAxis.forEach(function (axis) {
+            axis.update({}, arguments[2]);
+        });
+    }
+});
+// Calculate and set colors for points
+addEvent(Series, 'afterTranslate', function () {
+    if (this.chart.colorAxis.length || this.colorAttribs) {
+        this.translateColors();
     }
 });
