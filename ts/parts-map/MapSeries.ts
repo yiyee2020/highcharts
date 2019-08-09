@@ -315,10 +315,10 @@ seriesType<Highcharts.MapSeriesOptions>(
          */
         borderWidth: 1,
 
-         /**
-          * @default   value
-          * @apioption plotOptions.map.colorKey
-          */
+        /**
+         * @default   value
+         * @apioption plotOptions.map.colorKey
+         */
 
         /**
          * What property to join the `mapData` to the value data. For example,
@@ -453,7 +453,7 @@ seriesType<Highcharts.MapSeriesOptions>(
         }
 
     // Prototype members
-  }, merge(colorMapSeriesMixin, {
+    }, merge(colorMapSeriesMixin, {
         type: 'map',
         getExtremesFromAll: true,
         useMapGeometry: true, // get axis extremes from paths, not values

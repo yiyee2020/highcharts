@@ -173,10 +173,10 @@ seriesType<Highcharts.OHLCSeriesOptions>(
          * @apioption  plotOptions.ohlc.pointValKey
          */
 
-         /**
-          * @default   close
-          * @apioption plotOptions.ohlc.colorKey
-          */
+        /**
+         * @default   close
+         * @apioption plotOptions.ohlc.colorKey
+         */
 
         /**
          * Line color for up points.

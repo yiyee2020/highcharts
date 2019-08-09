@@ -294,10 +294,10 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
 
     /**
      * Add a color axis to the chart after render time. Note that this method
-     * should never be used when adding data synchronously at chart render time, as
-     * it adds expense to the calculations and rendering. When adding data at the
-     * same time as the chart is initialized, add the axis as a configuration
-     * option instead.
+     * should never be used when adding data synchronously at chart render time,
+     * as it adds expense to the calculations and rendering. When adding data at
+     * the same time as the chart is initialized, add the axis as a
+     * configuration option instead.
      *
      * @sample highcharts/members/chart-addaxis/
      *         Add and remove axes
@@ -347,7 +347,7 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
         this: Highcharts.Chart,
         type: string,
         args: Array<any>
-    ) {
+    ): Highcharts.Axis | Highcharts.ColorAxis {
         var chartOptions = this.options,
             isColorAxis = type === 'colorAxis',
             options = args[0],

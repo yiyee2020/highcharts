@@ -280,10 +280,10 @@ seriesType<Highcharts.BoxPlotSeriesOptions>('boxplot', 'column', {
      * @apioption plotOptions.boxplot.stemWidth
      */
 
-     /**
-      * @default   high
-      * @apioption plotOptions.boxplot.colorKey
-      */
+    /**
+     * @default   high
+     * @apioption plotOptions.boxplot.colorKey
+     */
 
     /**
      * The color of the whiskers, the horizontal lines marking low and high

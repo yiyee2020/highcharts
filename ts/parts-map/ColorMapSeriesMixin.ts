@@ -67,7 +67,7 @@ var noop = H.noop,
  */
 H.colorMapPointMixin = {
     dataLabelOnNull: true,
-
+    /* eslint-disable valid-jsdoc */
     /**
      * Color points have a value option that determines whether or not it is
      * a null point
@@ -84,11 +84,10 @@ H.colorMapPointMixin = {
         );
     },
 
-    /* eslint-disable valid-jsdoc */
     /**
      * @private
      * @function Highcharts.colorMapPointMixin.setState
-     * @param {string} [state]
+     * @param {string} state
      * @return {void}
      */
     setState: function (this: Highcharts.ColorMapPoint, state?: string): void {
@@ -136,7 +135,4 @@ H.colorMapSeriesMixin = {
         }
         return ret;
     }
-
-    /* eslint-enable valid-jsdoc */
-
 };

@@ -1056,7 +1056,9 @@ extend(ColorAxis.prototype, {
             colorValIndex: any,
             pointArrayMap,
             calculatedExtremes,
-            i = series.length;
+            i = series.length,
+            yData,
+            j;
 
         this.dataMin = Infinity;
         this.dataMax = -Infinity;
@@ -1080,13 +1082,17 @@ extend(ColorAxis.prototype, {
                 } else {
                     colorValArray = [];
                     colorValIndex = pointArrayMap.indexOf(colorKey);
+                    yData = series[i].yData;
 
-                    if (colorValIndex >= 0 && series[i].yData) {
-                        (series[i] as any).yData.forEach(function (y: any) {
+                    if (colorValIndex >= 0 && yData) {
+                        for (j = 0; j < yData.length; j++) {
                             colorValArray.push(
-                                pick(y[colorValIndex], y)
+                                pick(
+                                    (yData[j] as any)[colorValIndex],
+                                    yData[j]
+                                )
                             );
-                        });
+                        }
                     }
                 }
             }
@@ -1231,6 +1237,7 @@ extend(ColorAxis.prototype, {
      *
      * @private
      * @function Highcharts.ColorAxis#destroyItems
+     * @return {void}
      */
     destroyItems: function (this: Highcharts.ColorAxis): void {
         var chart = this.chart;
@@ -1239,7 +1246,7 @@ extend(ColorAxis.prototype, {
             this.chart.legend.destroyItem(this as any);
 
         } else if (this.legendItems) {
-            this.legendItems.forEach(function (item) {
+            this.legendItems.forEach(function (item): void {
                 chart.legend.destroyItem(item as any);
             });
         }
@@ -1375,10 +1382,10 @@ addEvent(Chart as any, 'afterGetAxes', function (this: Highcharts.Chart): void {
 
     if (options.colorAxis) {
         options.colorAxis = splat(options.colorAxis);
-        options.colorAxis.forEach(function(
+        options.colorAxis.forEach(function (
             axisOptions: Highcharts.ColorAxisOptions,
             i: number
-        ) {
+        ): void {
             axisOptions.index = i;
             new (ColorAxis as any)(chart, axisOptions); // eslint-disable-line no-new
         });
@@ -1387,7 +1394,7 @@ addEvent(Chart as any, 'afterGetAxes', function (this: Highcharts.Chart): void {
 
 
 // Add colorAxis to series axisTypes
-addEvent(Series as any, 'bindAxes', function () {
+addEvent(Series as any, 'bindAxes', function (): void {
     if (!this.axisTypes) {
         this.axisTypes = ['colorAxis'];
     } else if (this.axisTypes.indexOf('colorAxis') === -1) {
@@ -1406,7 +1413,7 @@ addEvent(Legend as any, 'afterGetAllItems', function (
         colorAxes = (this.chart.colorAxis as any) || [],
         i;
 
-    colorAxes.forEach(function(colorAxis: any) {
+    colorAxes.forEach(function (colorAxis: any): void {
         if (colorAxis && colorAxis.options) {
             if (colorAxis.options.showInLegend) {
                 // Data classes
@@ -1415,8 +1422,7 @@ addEvent(Legend as any, 'afterGetAllItems', function (
                         colorAxis.getDataClassLegendSymbols()
                     );
                     // Gradient legend
-                }
-                else {
+                } else {
                     // Add this axis on top
                     colorAxisItems.push(colorAxis);
                 }
@@ -1454,15 +1460,15 @@ addEvent(Legend as any, 'afterUpdate', function (
     var colorAxis = this.chart.colorAxis;
 
     if (colorAxis) {
-        colorAxis.forEach(function (axis) {
+        colorAxis.forEach(function (axis): void {
             axis.update({}, arguments[2]);
         });
     }
 });
 
 // Calculate and set colors for points
-addEvent(Series as any, 'afterTranslate', function () {
+addEvent(Series as any, 'afterTranslate', function (): void {
     if (this.chart.colorAxis.length || this.colorAttribs) {
-        this.translateColors.call(this);
+        this.translateColors();
     }
 });

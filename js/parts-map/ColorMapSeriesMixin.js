@@ -20,6 +20,7 @@ var noop = H.noop, seriesTypes = H.seriesTypes;
  */
 H.colorMapPointMixin = {
     dataLabelOnNull: true,
+    /* eslint-disable valid-jsdoc */
     /**
      * Color points have a value option that determines whether or not it is
      * a null point
@@ -36,7 +37,7 @@ H.colorMapPointMixin = {
     /**
      * @private
      * @function Highcharts.colorMapPointMixin.setState
-     * @param {string} [state]
+     * @param {string} state
      * @return {void}
      */
     setState: function (state) {

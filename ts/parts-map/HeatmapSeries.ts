@@ -55,7 +55,9 @@ declare global {
             public x: number;
             public y: number;
         }
-        class HeatmapSeries extends ScatterSeries implements ColorMapSeriesMixin {
+        class HeatmapSeries
+            extends ScatterSeries
+            implements ColorMapSeriesMixin {
             public alignDataLabel: ColumnSeries['alignDataLabel'];
             public colorAttribs: ColorMapSeriesMixin['colorAttribs'];
             public colorAxis: ColorAxis;
@@ -163,10 +165,10 @@ seriesType<Highcharts.HeatmapSeriesOptions>(
          * @apioption plotOptions.heatmap.pointPadding
          */
 
-         /**
-          * @default   value
-          * @apioption plotOptions.heatmap.colorKey
-          */
+        /**
+         * @default   value
+         * @apioption plotOptions.heatmap.colorKey
+         */
 
         /**
          * The main color of the series. In heat maps this color is rarely used,

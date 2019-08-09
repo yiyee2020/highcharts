@@ -2589,31 +2589,31 @@ H.Series = H.seriesType<Highcharts.SeriesOptions>(
          * @apioption plotOptions.series.zones.value
          */
 
-         /**
-          * When using dual or multiple color axes, this number defines which
-          * colorAxis the particular series is connected to. It refers to
-          * either the
-          * {@link #colorAxis.id|axis id}
-          * or the index of the axis in the colorAxis array, with 0 being the
-          * first.
-          *
-          * @type      {number|string}
-          * @default   0
-          * @since     7.1.3
-          * @product   highcharts highstock highmaps
-          * @apioption plotOptions.series.colorAxis
-          */
+        /**
+         * When using dual or multiple color axes, this number defines which
+         * colorAxis the particular series is connected to. It refers to
+         * either the
+         * {@link #colorAxis.id|axis id}
+         * or the index of the axis in the colorAxis array, with 0 being the
+         * first.
+         *
+         * @type      {number|string}
+         * @default   0
+         * @since     7.1.3
+         * @product   highcharts highstock highmaps
+         * @apioption plotOptions.series.colorAxis
+         */
 
-          /**
-           * Determines what data value should be used to calculate point color
-           * if `colorAxis` is used.
-           *
-           * @type      {string}
-           * @default   y
-           * @since     7.1.3
-           * @product   highcharts highstock highmaps
-           * @apioption plotOptions.series.colorKey
-           */
+        /**
+         * Determines what data value should be used to calculate point color
+         * if `colorAxis` is used.
+         *
+         * @type      {string}
+         * @default   y
+         * @since     7.1.3
+         * @product   highcharts highstock highmaps
+         * @apioption plotOptions.series.colorKey
+         */
 
         /**
          * Determines whether the series should look for the nearest point

@@ -340,10 +340,10 @@ seriesType<Highcharts.BubbleSeriesOptions>('bubble', 'scatter', {
      * @apioption plotOptions.bubble.zMax
      */
 
-     /**
-      * @default   z
-      * @apioption plotOptions.bubble.colorKey
-      */
+    /**
+     * @default   z
+     * @apioption plotOptions.bubble.colorKey
+     */
 
     /**
      * The minimum for the Z value range. Defaults to the lowest Z value
