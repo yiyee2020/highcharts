@@ -119,7 +119,7 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
      *         The newly generated Axis object.
      */
     addAxis: function (options, isX, redraw, animation) {
-        return this.createAxis(isX ? 'xAxis' : 'yAxis', arguments);
+        return this.createAxis(isX ? 'xAxis' : 'yAxis', { options: options, redraw: redraw, animation: animation });
     },
     /**
      * Add a color axis to the chart after render time. Note that this method
@@ -146,7 +146,7 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
      *         The newly generated Axis object.
      */
     addColorAxis: function (options, redraw, animation) {
-        return this.createAxis('colorAxis', arguments);
+        return this.createAxis('colorAxis', { options: options, redraw: redraw, animation: animation });
     },
     /**
      * Factory for creating different axis types.
@@ -164,7 +164,7 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
      *         The newly generated Axis object.
      */
     createAxis: function (type, args) {
-        var chartOptions = this.options, isColorAxis = type === 'colorAxis', options = args[0], redraw = args[1], animation = args[2], userOptions = merge(options, {
+        var chartOptions = this.options, isColorAxis = type === 'colorAxis', options = args.options, redraw = args.redraw, animation = args.animation, userOptions = merge(options, {
             index: this[type].length,
             isX: type === 'xAxis'
         }), axis;

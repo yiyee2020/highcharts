@@ -52,8 +52,8 @@ H.colorSeriesMixin = {
      * @return {void}
      */
     translateColors: function () {
-        var series = this, nullColor = this.options.nullColor, colorAxis = this.colorAxis, colorKey = this.colorKey;
-        this.data.forEach(function (point) {
+        var series = this, points = this.data.length ? this.data : this.points, nullColor = this.options.nullColor, colorAxis = this.colorAxis, colorKey = this.colorKey;
+        points.forEach(function (point) {
             var value = point[colorKey], color;
             color = point.options.color ||
                 (point.isNull ?

@@ -2595,22 +2595,35 @@ H.Series = H.seriesType<Highcharts.SeriesOptions>(
          * either the
          * {@link #colorAxis.id|axis id}
          * or the index of the axis in the colorAxis array, with 0 being the
-         * first.
+         * first. Set this option to false to prevent a series from connecting
+         * to the default color axis.
          *
-         * @type      {number|string}
+         * @sample highcharts/coloraxis/coloraxis-with-pie/
+         *         Color axis with pie series
+         * @sample highcharts/coloraxis/multiple-coloraxis/
+         *         Multiple color axis
+         *
+         * @type      {number|string|boolean}
          * @default   0
-         * @since     7.1.3
+         * @since     7.1.4
          * @product   highcharts highstock highmaps
          * @apioption plotOptions.series.colorAxis
          */
 
         /**
          * Determines what data value should be used to calculate point color
-         * if `colorAxis` is used.
+         * if `colorAxis` is used. Requires to set `min` and `max` if some
+         * custom point property is used or if approximation for data grouping
+         * is set to `'sum'`.
+         *
+         * @sample highcharts/coloraxis/custom-color-key/
+         *         Custom color key
+         * @sample highcharts/coloraxis/changed-default-color-key/
+         *         Changed default color key
          *
          * @type      {string}
          * @default   y
-         * @since     7.1.3
+         * @since     7.1.4
          * @product   highcharts highstock highmaps
          * @apioption plotOptions.series.colorKey
          */

@@ -177,10 +177,6 @@ seriesType('timeline', 'line',
             height: 15
         },
         showInLegend: false,
-        /**
-         * @default   high
-         * @apioption plotOptions.boxplot.colorKey
-         */
         colorKey: 'x'
     },
     /**

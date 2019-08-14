@@ -94,11 +94,12 @@ H.colorSeriesMixin = {
      */
     translateColors: function (this: Highcharts.ColorSeries): void {
         var series = this,
+            points = this.data.length ? this.data : this.points,
             nullColor = this.options.nullColor,
             colorAxis = this.colorAxis,
             colorKey = this.colorKey;
 
-        this.data.forEach(function (point: Highcharts.ColorPoint): void {
+        (points as any).forEach(function (point: Highcharts.ColorPoint): void {
             var value = (point as any)[colorKey],
                 color;
 

@@ -168,7 +168,8 @@ seriesType('sankey', 'column',
      *               maxPointWidth, negativeColor, pointInterval,
      *               pointIntervalUnit, pointPadding, pointPlacement,
      *               pointRange, pointStart, pointWidth, shadow, softThreshold,
-     *               stacking, threshold, zoneAxis, zones, minPointLength
+     *               stacking, threshold, zoneAxis, zones, minPointLength,
+     *               colorAxis, colorKey
      * @optionparent plotOptions.sankey
      */
     {

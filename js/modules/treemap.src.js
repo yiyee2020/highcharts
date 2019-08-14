@@ -536,11 +536,6 @@ seriesType(
          */
         borderWidth: 1,
 
-        /**
-         * The color of the border surrounding each tree map item.
-         *
-         * @default   colorValue
-         */
         colorKey: 'colorValue',
 
         /**
