@@ -396,7 +396,8 @@ extend(ColorAxis.prototype, {
          * `linear` or `logarithmic`.
          *
          * @sample highcharts/coloraxis/logarithmic-with-emulate-negative-values/
-         *         Logarithmic color axis with extension to emulate negative values
+         *         Logarithmic color axis with extension to emulate negative
+         *         values
          *
          * @type      {Highcharts.ColorAxisTypeValue}
          * @default   linear

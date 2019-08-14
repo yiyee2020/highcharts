@@ -413,8 +413,8 @@ wrap(pointerProto, 'getCoordinates', function (proceed, e) {
             if (axis.coll === 'colorAxis') {
                 return;
             }
-            x = e.chartX - center[0] - chart.plotLeft,
-                y = e.chartY - center[1] - chart.plotTop;
+            x = e.chartX - center[0] - chart.plotLeft;
+            y = e.chartY - center[1] - chart.plotTop;
             ret[isXAxis ? 'xAxis' : 'yAxis'].push({
                 axis: axis,
                 value: axis.translate(isXAxis ?
