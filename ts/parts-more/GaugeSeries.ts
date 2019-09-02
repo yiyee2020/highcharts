@@ -22,36 +22,21 @@ declare global {
             angular?: boolean;
         }
         interface GaugePointOptions extends LinePointOptions {
-        }
-        interface GaugeSeriesDialOptions {
-            backgroundColor?: ColorType;
-            baseLength?: string;
-            baseWidth?: number;
-            borderColor?: ColorType;
-            borderWidth?: number;
-            path?: SVGPathArray;
-            radius?: string;
-            rearLength?: string;
-            topWidth?: number;
+            dial?: GaugeSeriesOptions['dial'];
+            pivot?: GaugeSeriesOptions['pivot'];
         }
         interface GaugeSeriesOptions extends LineSeriesOptions {
-            dial?: GaugeSeriesDialOptions;
+            dial?: CSSObject;
             overshoot?: number;
-            pivot?: GaugeSeriesPivotOptions;
+            pivot?: CSSObject;
             states?: GaugeSeriesStatesOptions;
             wrap?: boolean;
-        }
-        interface GaugeSeriesPivotOptions {
-            backgroundColor?: ColorType;
-            borderColor?: ColorType;
-            borderWidth?: number;
-            radius?: number;
         }
         interface GaugeSeriesStatesHoverOptions
             extends LineSeriesStatesHoverOptions
         {
-            dial?: GaugeSeriesDialOptions;
-            pivot?: GaugeSeriesPivotOptions;
+            dial?: CSSObject;
+            pivot?: CSSObject;
         }
         interface GaugeSeriesStatesOptions extends LineSeriesStatesOptions {
             hover?: GaugeSeriesStatesHoverOptions;
@@ -178,7 +163,7 @@ seriesType<Highcharts.GaugeSeriesOptions>('gauge', 'line', {
      * @sample {highcharts} highcharts/css/gauge/
      *         Styled mode
      *
-     * @type    {*}
+     * @type    {Highcharts.CSSObject}
      * @since   2.3.0
      * @product highcharts
      */
@@ -322,7 +307,7 @@ seriesType<Highcharts.GaugeSeriesOptions>('gauge', 'line', {
      * @sample {highcharts} highcharts/css/gauge/
      *         Styled mode
      *
-     * @type    {*}
+     * @type    {Highcharts.CSSObject}
      * @since   2.3.0
      * @product highcharts
      */
@@ -424,20 +409,14 @@ seriesType<Highcharts.GaugeSeriesOptions>('gauge', 'line', {
 
         series.points.forEach(function (point: Highcharts.GaugePoint): void {
 
-            var dialOptions: Highcharts.GaugeSeriesDialOptions =
-                    merge(options.dial, point.dial) as any,
-                radius = (
-                    (pInt(pick(dialOptions.radius, 80 as any)) * center[2]) /
-                    200
-                ),
-                baseLength = (
-                    (pInt(pick(dialOptions.baseLength, 70 as any)) * radius) /
-                    100
-                ),
-                rearLength = (
-                    (pInt(pick(dialOptions.rearLength, 10 as any)) * radius) /
-                    100
-                ),
+            var dialOptions =
+                    merge(options.dial, point.dial) as Highcharts.CSSObject,
+                radius = (pInt(pick(dialOptions.radius, 80)) * center[2]) /
+                    200,
+                baseLength = (pInt(pick(dialOptions.baseLength, 70)) * radius) /
+                    100,
+                rearLength = (pInt(pick(dialOptions.rearLength, 10)) * radius) /
+                    100,
                 baseWidth = dialOptions.baseWidth || 3,
                 topWidth = dialOptions.topWidth || 1,
                 overshoot = options.overshoot,
