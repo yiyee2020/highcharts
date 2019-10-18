@@ -16,7 +16,7 @@ Click [here](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree
 Data structure
 --------------
 
-Each data point in an x-range is a range from an x value (typically start date) to x2 (typically the end date). Note that dates on a Highcharts datetime axis are given as milliseconds since 1970.
+Each data point in an x-range is a range from an `x` value (typically start date) to `x2` (typically the end date). Note that dates on a Highcharts datetime axis are given as milliseconds since 1970.
 
 The `y` value of an x-range data point sets where to draw the range vertically. On a categorized y axis, this will reflect the category index.
 

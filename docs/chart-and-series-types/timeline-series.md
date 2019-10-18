@@ -28,7 +28,7 @@ The Timeline series data is structured differently for the above alternatives fo
 
 ### Data series for a Timeline chart with time periods
 
-The data series has no `x`property set.
+The data series has no `x` property set.
 
     
      data: [{
