@@ -66,6 +66,9 @@
         "../../code/modules/data.d.ts",
         "../../code/modules/data.src.d.ts",
 
+        "../../code/modules/data-filter.d.ts",
+        "../../code/modules/data-filter.src.d.ts",
+
         "../../code/modules/datagrouping.d.ts",
         "../../code/modules/datagrouping.src.d.ts",
 

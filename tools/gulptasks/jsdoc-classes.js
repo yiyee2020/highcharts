@@ -47,6 +47,7 @@ const SOURCE_GLOBS = [
     'js/mixins/ajax.js',
     'js/modules/accessibility/*.js',
     'js/modules/data.src.js',
+    'js/modules/data-filter.src.js',
     'js/modules/draggable-points.src.js',
     'js/modules/drilldown.src.js',
     'js/modules/exporting.src.js',

@@ -82,6 +82,7 @@
         <property name="boost.src.name" value="boost.src.js"/>
         <property name="broken-axis.src.name" value="broken-axis.src.js"/>
         <property name="data.src.name" value="data.src.js"/>
+        <property name="data-filter.src.name" value="data-filter.src.js"/>
         <property name="drilldown.src.name" value="drilldown.src.js"/>
         <property name="funnel.src.name" value="funnel.src.js"/>
         <property name="serieslabel.src.name" value="series-label.src.js"/>
@@ -99,6 +100,7 @@
         <property name="boost.minified.name" value="boost.js"/>
         <property name="broken-axis.minified.name" value="broken-axis.js"/>
         <property name="data.minified.name" value="data.js"/>
+        <property name="data-filter.minified.name" value="data-filter.js"/>
         <property name="drilldown.minified.name" value="drilldown.js"/>
         <property name="funnel.minified.name" value="funnel.js"/>
         <property name="serieslabel.minified.name" value="series-label.js"/>

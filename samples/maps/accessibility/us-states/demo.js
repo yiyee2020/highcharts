@@ -107,3 +107,8 @@ Highcharts.addEvent(chart, 'exportData', function (e) {
         dataRow.shift();
     });
 });
+
+document.getElementById('filter').onclick = function () {
+    var filter = new Highcharts.DataFilter();
+    chart.applyDataFilter(filter);
+};
