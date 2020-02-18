@@ -37,7 +37,23 @@ class DataFilterDialog {
     }
 
     private getDialogContent(options: Highcharts.DataFilterDialogOptions): string {
-        return 'Dummy HTML content<br>goes here<hr>';
+        return `
+            <label>Point key:
+            <select>
+                <option>State name</option>
+                <option>Value</option>
+                <option>Postal Code</option>
+            </select>
+            </label>
+            <label>Comparison:
+            <select>
+                <option>Equals</option>
+                <option>Contains</option>
+                <option>Starts with</option>
+            </select>
+            </label>
+            <input>
+        `;
     }
 }
 

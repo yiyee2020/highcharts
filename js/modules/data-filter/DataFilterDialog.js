@@ -28,7 +28,7 @@ var DataFilterDialog = /** @class */ (function () {
         this.dialog.destroy();
     };
     DataFilterDialog.prototype.getDialogContent = function (options) {
-        return 'Dummy HTML content<br>goes here<hr>';
+        return "\n            <label>Point key:\n            <select>\n                <option>State name</option>\n                <option>Value</option>\n                <option>Postal Code</option>\n            </select>\n            </label>\n            <label>Comparison:\n            <select>\n                <option>Equals</option>\n                <option>Contains</option>\n                <option>Starts with</option>\n            </select>\n            </label>\n            <input>\n        ";
     };
     return DataFilterDialog;
 }());

@@ -108,7 +108,6 @@ Highcharts.addEvent(chart, 'exportData', function (e) {
     });
 });
 
-document.getElementById('filter').onclick = function () {
-    var filter = new Highcharts.DataFilter();
-    chart.applyDataFilter(filter);
+document.getElementById('showDialog').onclick = function () {
+    chart.showDataFilterDialog();
 };
