@@ -11,7 +11,7 @@
  * */
 /* eslint-disable no-invalid-this, valid-jsdoc */
 import U from '../../parts/Utilities.js';
-var getNestedProperty = U.getNestedProperty;
+var defined = U.defined, getNestedProperty = U.getNestedProperty;
 /**
  * @private
  */
@@ -23,6 +23,26 @@ function makePredicate(execute, argumentType) {
  *
  * @class
  * @name Highcharts.DataFilter
+ *
+ * @param {string} [key]
+ *  The data point property to filter on. Can be a nested key, using dot
+ *  notation. If a key is not provided, the filter always returns `true`.
+ * @param {string} [predicate]
+ *  The predicate/comparison to run when filtering. The following predicates
+ *  are supported: `equals`, `contains`, and `startsWith` compare string values.
+ *  `lessThan` and `greaterThan` compare numbers. `hasValue` checks that the
+ *  property is not `null` or `undefined`. If a predicate is not provided,
+ *  the filter always returns `true`.
+ * @param {*} [argument]
+ *  The constant to compare the point properties to. Note that the argument
+ *  type must match the type expected by the predicate used. The `hasValue`
+ *  predicate does not require an argument.
+ *
+ *```js
+ *  var filterJohnPoints = new DataFilter('name', 'contains', 'John');
+ *  var filterBigValues = new DataFilter('y', 'greaterThan', 10000000);
+ *  var filterPointsWithValue = new DataFilter('y', 'hasValue');
+ *```
  */
 var DataFilter = /** @class */ (function () {
     function DataFilter(key, predicate, argument) {
@@ -45,6 +65,7 @@ var DataFilter = /** @class */ (function () {
         var predicateArgType = (_a = this.predicate) === null || _a === void 0 ? void 0 : _a.argumentType;
         if (predicateArgType &&
             ((_b = arg) === null || _b === void 0 ? void 0 : _b.constructor) !== predicateArgType) {
+            // Is it worth creating a proper Highcharts error # for this?
             throw new Error('Highcharts: DataFilter argument not matching predicate type.');
         }
     };
@@ -64,7 +85,7 @@ var DataFilter = /** @class */ (function () {
         greaterThan: makePredicate(function (a, b) {
             return a > b;
         }, Number),
-        exists: makePredicate(function (a) { return !!a; })
+        hasValue: makePredicate(function (a) { return defined(a); })
     };
     return DataFilter;
 }());
