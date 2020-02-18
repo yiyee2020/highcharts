@@ -38,21 +38,21 @@ class DataFilterDialog {
 
     private getDialogContent(options: Highcharts.DataFilterDialogOptions): string {
         return `
-            <label>Point key:
+            <p style="font-size:1.4em">Filter data</p>
+            <p>Currently showing 50 of 50 points</p>
             <select>
                 <option>State name</option>
                 <option>Value</option>
                 <option>Postal Code</option>
             </select>
-            </label>
-            <label>Comparison:
             <select>
                 <option>Equals</option>
                 <option>Contains</option>
                 <option>Starts with</option>
             </select>
-            </label>
             <input>
+            <button>Reset</button>
+            <button>Apply</button>
         `;
     }
 }
