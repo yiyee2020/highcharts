@@ -13,7 +13,7 @@
 import H from '../../parts/Globals.js';
 var doc = H.doc;
 var userAgent = H.win.navigator.userAgent;
-// TODO: Styling options, lang options, styled mode
+// TODO: Title, styling options, lang options, styled mode
 /**
  * @private
  */
@@ -24,10 +24,13 @@ var PopupDialog = /** @class */ (function () {
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
         var dc = this.dialogContainer = doc.createElement('div');
         dc.className = 'highcharts-popup-dialog';
+        dc.setAttribute('aria-hidden', 'false'); // To ensure a11y module does not hide it
         var flexContainer = this.flexContainer = doc.createElement('div');
         var dialogBox = this.dialogBox = doc.createElement('div');
         dialogBox.setAttribute('role', 'dialog');
         dialogBox.setAttribute('aria-label', 'Dialog');
+        dialogBox.setAttribute('tabindex', '-1');
+        dialogBox.onkeydown = function (e) { return e.stopPropagation(); }; // Stop a11y module from stealing kbd focus
         var innerContainer = this.innerContainer = doc.createElement('div');
         var contentContainer = this.contentContainer = doc.createElement('div');
         contentContainer.className = 'highcharts-popup-content-container';
@@ -53,6 +56,7 @@ var PopupDialog = /** @class */ (function () {
     };
     PopupDialog.prototype.show = function () {
         this.dialogContainer.style.display = 'block';
+        this.dialogBox.focus();
     };
     PopupDialog.prototype.hide = function () {
         this.dialogContainer.style.display = 'none';
@@ -94,6 +98,7 @@ var PopupDialog = /** @class */ (function () {
             'vertical-align: middle'
         ]));
         setElementStyle(this.dialogBox, [
+            'outline: none',
             'background-color: #fff',
             'box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)'
         ].concat(this.useFlex ? [] : [

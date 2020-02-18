@@ -2,7 +2,7 @@
  *
  *  (c) 2009-2020 Øystein Moseng
  *
- *  Generic accessible modal popup dialog.
+ *  Generic accessible popup dialog.
  *
  *  License: www.highcharts.com/license
  *
@@ -16,11 +16,13 @@ import H from '../../parts/Globals.js';
 const doc = H.doc;
 const userAgent = H.win.navigator.userAgent;
 
+// TODO: Title, styling options, lang options, styled mode
+
 
 /**
  * @private
  */
-class ModalDialog {
+class PopupDialog {
     private dialogContainer: HTMLElement;
     private flexContainer: HTMLElement;
     private dialogBox: HTMLElement;
@@ -33,16 +35,23 @@ class ModalDialog {
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
 
         const dc = this.dialogContainer = doc.createElement('div');
-        dc.className = 'highcharts-modal-dialog';
+        dc.className = 'highcharts-popup-dialog';
+        dc.setAttribute('aria-hidden', 'false'); // To ensure a11y module does not hide it
 
         const flexContainer = this.flexContainer = doc.createElement('div');
         const dialogBox = this.dialogBox = doc.createElement('div');
+        dialogBox.setAttribute('role', 'dialog');
+        dialogBox.setAttribute('aria-label', 'Dialog');
+        dialogBox.setAttribute('tabindex', '-1');
+        dialogBox.onkeydown = (e): void => e.stopPropagation(); // Stop a11y module from stealing kbd focus
         const innerContainer = this.innerContainer = doc.createElement('div');
         const contentContainer = this.contentContainer = doc.createElement('div');
-        contentContainer.className = 'highcharts-modal-content-container';
+        contentContainer.className = 'highcharts-popup-content-container';
 
         const closeButton = this.closeButton = doc.createElement('button');
-        closeButton.className = 'highcharts-modal-close-button';
+        closeButton.setAttribute('aria-label', 'Close dialog');
+        closeButton.innerHTML = this.getCloseButtonContent();
+        closeButton.className = 'highcharts-popup-close-button';
         closeButton.onclick = (): void => this.hide();
 
         this.addDialogStyle();
@@ -68,6 +77,7 @@ class ModalDialog {
 
     show(): void {
         this.dialogContainer.style.display = 'block';
+        this.dialogBox.focus();
     }
 
 
@@ -122,6 +132,7 @@ class ModalDialog {
         ]));
 
         setElementStyle(this.dialogBox, [
+            'outline: none',
             'background-color: #fff',
             'box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)'
         ].concat(this.useFlex ? [] : [
@@ -137,9 +148,20 @@ class ModalDialog {
         setElementStyle(this.closeButton, [
             'position: absolute',
             'right: 5px',
-            'top: 5px'
+            'top: 5px',
+            'background: none',
+            'border: none',
+            'padding: 0',
+            'cursor: pointer'
         ]);
+    }
+
+
+    private getCloseButtonContent(): string {
+        return '<svg width="20" height="20" viewBox="0 0 120 120">' +
+            '<path stroke="#4B4B4D" stroke-width="9" stroke-linecap="round"' +
+            'd="M14,14 L106,106 M106,14 L14,106"/></svg>';
     }
 }
 
-export default ModalDialog;
+export default PopupDialog;

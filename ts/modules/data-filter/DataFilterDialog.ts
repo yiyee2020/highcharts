@@ -12,16 +12,16 @@
 
 /* eslint-disable no-invalid-this, valid-jsdoc */
 
-import ModalDialog from './ModalDialog.js';
+import PopupDialog from './PopupDialog.js';
 
 /**
  * @private
  */
 class DataFilterDialog {
-    private dialog: ModalDialog;
+    private dialog: PopupDialog;
 
     constructor(chart: Highcharts.Chart) {
-        this.dialog = new ModalDialog(chart.renderTo);
+        this.dialog = new PopupDialog(chart.renderTo);
     }
 
     buildContent(options: Highcharts.DataFilterDialogOptions): void {

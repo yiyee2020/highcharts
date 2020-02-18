@@ -10,13 +10,13 @@
  *
  * */
 /* eslint-disable no-invalid-this, valid-jsdoc */
-import ModalDialog from './ModalDialog.js';
+import PopupDialog from './PopupDialog.js';
 /**
  * @private
  */
 var DataFilterDialog = /** @class */ (function () {
     function DataFilterDialog(chart) {
-        this.dialog = new ModalDialog(chart.renderTo);
+        this.dialog = new PopupDialog(chart.renderTo);
     }
     DataFilterDialog.prototype.buildContent = function (options) {
         this.dialog.setContent(this.getDialogContent(options));
