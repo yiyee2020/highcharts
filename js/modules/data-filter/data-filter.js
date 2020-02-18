@@ -26,9 +26,6 @@ H.DataFilter = _DataFilter;
  * @param {Highcharts.DataFilter} dataFilter
  *          The data filter to apply to the chart, as an
  *          instance of the DataFilter class.
- *
- * @return {number} Number of currently visible points in
- *      the chart.
  */
 H.Chart.prototype.applyDataFilter = function (dataFilter) {
     this.series.forEach(function (series) {
@@ -50,4 +47,15 @@ H.Chart.prototype.applyDataFilter = function (dataFilter) {
         });
     });
     this.redraw();
+};
+/**
+ * Remove all data filters from chart, make all points visible.
+ *
+ * @requires module:modules/data-filter
+ *
+ * @function Highcharts.Chart#clearDataFilter
+ */
+H.Chart.prototype.clearDataFilter = function () {
+    var emptyFilter = new H.DataFilter();
+    this.applyDataFilter(emptyFilter);
 };

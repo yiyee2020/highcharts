@@ -24,6 +24,8 @@ declare global {
         interface Chart {
             /** @require modules/data-filter */
             applyDataFilter(dataFilter: _DataFilter): void;
+            /** @require modules/data-filter */
+            clearDataFilter(): void;
         }
         let DataFilter: typeof _DataFilter;
     }
@@ -46,9 +48,6 @@ H.DataFilter = _DataFilter;
  * @param {Highcharts.DataFilter} dataFilter
  *          The data filter to apply to the chart, as an
  *          instance of the DataFilter class.
- *
- * @return {number} Number of currently visible points in
- *      the chart.
  */
 H.Chart.prototype.applyDataFilter = function (dataFilter: _DataFilter): void {
     this.series.forEach((series): void => {
@@ -72,4 +71,17 @@ H.Chart.prototype.applyDataFilter = function (dataFilter: _DataFilter): void {
     });
 
     this.redraw();
+};
+
+
+/**
+ * Remove all data filters from chart, make all points visible.
+ *
+ * @requires module:modules/data-filter
+ *
+ * @function Highcharts.Chart#clearDataFilter
+ */
+H.Chart.prototype.clearDataFilter = function (): void {
+    const emptyFilter = new H.DataFilter();
+    this.applyDataFilter(emptyFilter);
 };
