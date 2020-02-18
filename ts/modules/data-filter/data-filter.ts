@@ -110,7 +110,7 @@ H.Chart.prototype.clearDataFilter = function (): void {
  * @function Highcharts.Chart#showDataFilterDialog
  */
 H.Chart.prototype.showDataFilterDialog = function (): void {
-    const dialog = this.dataFilterDialog || new DataFilterDialog(this);
+    const dialog = this.dataFilterDialog = this.dataFilterDialog || new DataFilterDialog(this);
     const opts = this.options.dataFilter || {};
 
     dialog.buildContent(opts);

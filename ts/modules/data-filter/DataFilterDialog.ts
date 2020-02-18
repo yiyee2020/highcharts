@@ -21,7 +21,7 @@ class DataFilterDialog {
     private dialog: ModalDialog;
 
     constructor(chart: Highcharts.Chart) {
-        this.dialog = new ModalDialog(chart.container);
+        this.dialog = new ModalDialog(chart.renderTo);
     }
 
     buildContent(options: Highcharts.DataFilterDialogOptions): void {

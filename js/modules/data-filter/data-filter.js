@@ -73,7 +73,7 @@ H.Chart.prototype.clearDataFilter = function () {
  * @function Highcharts.Chart#showDataFilterDialog
  */
 H.Chart.prototype.showDataFilterDialog = function () {
-    var dialog = this.dataFilterDialog || new DataFilterDialog(this);
+    var dialog = this.dataFilterDialog = this.dataFilterDialog || new DataFilterDialog(this);
     var opts = this.options.dataFilter || {};
     dialog.buildContent(opts);
     dialog.show();

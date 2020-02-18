@@ -14,22 +14,36 @@
 
 import H from '../../parts/Globals.js';
 const doc = H.doc;
+const userAgent = H.win.navigator.userAgent;
+
 
 /**
  * @private
  */
 class ModalDialog {
     private dialogContainer: HTMLElement;
+    private flexContainer: HTMLElement;
+    private dialogBox: HTMLElement;
+    private innerContainer: HTMLElement;
     private contentContainer: HTMLElement;
     private closeButton: HTMLElement;
+    private useFlex: boolean;
 
     constructor(private parentDiv: HTMLElement, content?: string) {
+        this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
+
         const dc = this.dialogContainer = doc.createElement('div');
         dc.className = 'highcharts-modal-dialog';
 
-        this.contentContainer = doc.createElement('div');
-        this.closeButton = doc.createElement('button');
-        this.closeButton.onclick = (): void => this.hide();
+        const flexContainer = this.flexContainer = doc.createElement('div');
+        const dialogBox = this.dialogBox = doc.createElement('div');
+        const innerContainer = this.innerContainer = doc.createElement('div');
+        const contentContainer = this.contentContainer = doc.createElement('div');
+        contentContainer.className = 'highcharts-modal-content-container';
+
+        const closeButton = this.closeButton = doc.createElement('button');
+        closeButton.className = 'highcharts-modal-close-button';
+        closeButton.onclick = (): void => this.hide();
 
         this.addDialogStyle();
 
@@ -37,9 +51,12 @@ class ModalDialog {
             this.setContent(content);
         }
 
-        dc.appendChild(this.closeButton);
-        dc.appendChild(this.contentContainer);
-        parentDiv.appendChild(dc);
+        innerContainer.appendChild(closeButton);
+        innerContainer.appendChild(contentContainer);
+        dialogBox.appendChild(innerContainer);
+        flexContainer.appendChild(dialogBox);
+        dc.appendChild(flexContainer);
+        parentDiv.insertBefore(dc, parentDiv.firstChild);
     }
 
 
@@ -69,39 +86,59 @@ class ModalDialog {
         // This will not be visible to the end user, as the browser
         // will not repaint while JS is running synchronously.
         this.show();
-        const dialogWidth = this.dialogContainer.clientWidth;
-        const dialogHeight = this.dialogContainer.clientHeight;
-        const parentWidth = this.parentDiv.clientWidth;
-        const parentHeight = this.parentDiv.clientHeight;
+        const parentHeight = this.parentDiv.clientHeight + 'px';
         this.hide();
 
-        const top = (parentHeight - dialogHeight) / 2;
-        const left = (parentWidth - dialogWidth) / 2;
+        this.flexContainer.style.height = parentHeight;
 
-        this.dialogContainer.style.top = top + 'px';
-        this.dialogContainer.style.left = left + 'px';
+        if (!this.useFlex) {
+            this.flexContainer.style.lineHeight = parentHeight;
+        }
     }
 
 
     private addDialogStyle(): void {
-        this.addParentStyle();
-        this.dialogContainer.style.cssText = [
+        const setElementStyle = (el: HTMLElement, styles: string[]): void => {
+            el.style.cssText = styles.join(';');
+        };
+
+        setElementStyle(this.dialogContainer, [
             'display: none',
+            'position: relative',
+            'z-index: 9999'
+        ]);
+
+        setElementStyle(this.flexContainer, [
             'position: absolute',
+            'left: 0',
+            'right: 0'
+        ].concat(this.useFlex ? [
+            'display: flex',
+            'justify-content: center',
+            'align-items: center'
+        ] : [
+            'text-align: center',
+            'vertical-align: middle'
+        ]));
+
+        setElementStyle(this.dialogBox, [
             'background-color: #fff',
             'box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)'
-        ].join(';');
-    }
+        ].concat(this.useFlex ? [] : [
+            'display: inline-block',
+            'line-height: initial'
+        ]));
 
+        setElementStyle(this.innerContainer, [
+            'position: relative',
+            'padding: 10px'
+        ]);
 
-    private addParentStyle(): void {
-        const parentStyle = this.parentDiv.style;
-        if (parentStyle.position && parentStyle.position !== 'relative') {
-            throw new Error(
-                'Highcharts ModalDialog: Could not set "position: relative" style on parent div.'
-            );
-        }
-        parentStyle.position = 'relative';
+        setElementStyle(this.closeButton, [
+            'position: absolute',
+            'right: 5px',
+            'top: 5px'
+        ]);
     }
 }
 

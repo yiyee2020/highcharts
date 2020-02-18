@@ -16,7 +16,7 @@ import ModalDialog from './ModalDialog.js';
  */
 var DataFilterDialog = /** @class */ (function () {
     function DataFilterDialog(chart) {
-        this.dialog = new ModalDialog(chart.container);
+        this.dialog = new ModalDialog(chart.renderTo);
     }
     DataFilterDialog.prototype.buildContent = function (options) {
         this.dialog.setContent(this.getDialogContent(options));
