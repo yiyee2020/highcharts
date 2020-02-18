@@ -14,6 +14,8 @@
 
 import H from '../../parts/Globals.js';
 import _DataFilter from './DataFilter.js';
+import DataFilterDialog from './DataFilterDialog.js';
+import defaultOptions from './options.js';
 
 /**
  * Internal types.
@@ -22,16 +24,29 @@ import _DataFilter from './DataFilter.js';
 declare global {
     namespace Highcharts {
         interface Chart {
+            dataFilterDialog?: DataFilterDialog;
             /** @require modules/data-filter */
             applyDataFilter(dataFilter: _DataFilter): void;
             /** @require modules/data-filter */
             clearDataFilter(): void;
+            /** @require modules/data-filter */
+            showDataFilterDialog(): void;
         }
         let DataFilter: typeof _DataFilter;
     }
 }
 
 /* eslint-disable no-invalid-this, valid-jsdoc */
+
+import U from '../../parts/Utilities.js';
+const { merge } = U;
+
+// Merge default options
+merge(
+    true,
+    H.defaultOptions,
+    defaultOptions
+);
 
 // Make DataFilter class available on Highcharts scope
 H.DataFilter = _DataFilter;
@@ -84,4 +99,20 @@ H.Chart.prototype.applyDataFilter = function (dataFilter: _DataFilter): void {
 H.Chart.prototype.clearDataFilter = function (): void {
     const emptyFilter = new H.DataFilter();
     this.applyDataFilter(emptyFilter);
+};
+
+
+/**
+ * Show the popup dialog for applying data filters.
+ *
+ * @requires module:modules/data-filter
+ *
+ * @function Highcharts.Chart#showDataFilterDialog
+ */
+H.Chart.prototype.showDataFilterDialog = function (): void {
+    const dialog = this.dataFilterDialog || new DataFilterDialog(this);
+    const opts = this.options.dataFilter || {};
+
+    dialog.buildContent(opts);
+    dialog.show();
 };

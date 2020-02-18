@@ -12,7 +12,13 @@
 'use strict';
 import H from '../../parts/Globals.js';
 import _DataFilter from './DataFilter.js';
+import DataFilterDialog from './DataFilterDialog.js';
+import defaultOptions from './options.js';
 /* eslint-disable no-invalid-this, valid-jsdoc */
+import U from '../../parts/Utilities.js';
+var merge = U.merge;
+// Merge default options
+merge(true, H.defaultOptions, defaultOptions);
 // Make DataFilter class available on Highcharts scope
 H.DataFilter = _DataFilter;
 /**
@@ -58,4 +64,17 @@ H.Chart.prototype.applyDataFilter = function (dataFilter) {
 H.Chart.prototype.clearDataFilter = function () {
     var emptyFilter = new H.DataFilter();
     this.applyDataFilter(emptyFilter);
+};
+/**
+ * Show the popup dialog for applying data filters.
+ *
+ * @requires module:modules/data-filter
+ *
+ * @function Highcharts.Chart#showDataFilterDialog
+ */
+H.Chart.prototype.showDataFilterDialog = function () {
+    var dialog = this.dataFilterDialog || new DataFilterDialog(this);
+    var opts = this.options.dataFilter || {};
+    dialog.buildContent(opts);
+    dialog.show();
 };
