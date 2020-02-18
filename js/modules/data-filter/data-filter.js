@@ -38,9 +38,14 @@ H.Chart.prototype.applyDataFilter = function (dataFilter) {
         series.points.forEach(function (point) {
             var shouldBeVisible = dataFilter.execute(point);
             if (point.visible !== shouldBeVisible) {
-                point.update({
-                    visible: shouldBeVisible
-                }, false);
+                if (point.setVisible) {
+                    point.setVisible(shouldBeVisible, false);
+                }
+                else {
+                    point.update({
+                        visible: shouldBeVisible
+                    }, false);
+                }
             }
         });
     });

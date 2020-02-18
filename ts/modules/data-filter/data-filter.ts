@@ -60,9 +60,13 @@ H.Chart.prototype.applyDataFilter = function (dataFilter: _DataFilter): void {
             const shouldBeVisible = dataFilter.execute(point);
 
             if (point.visible !== shouldBeVisible) {
-                point.update({
-                    visible: shouldBeVisible
-                }, false);
+                if ((point as any).setVisible) {
+                    (point as any).setVisible(shouldBeVisible, false);
+                } else {
+                    point.update({
+                        visible: shouldBeVisible
+                    }, false);
+                }
             }
         });
     });
