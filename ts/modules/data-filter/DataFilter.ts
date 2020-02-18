@@ -10,6 +10,25 @@
  *
  * */
 
+/* eslint-disable no-invalid-this, valid-jsdoc */
+
+import U from '../../parts/Utilities.js';
+const { getNestedProperty } = U;
+
+
+interface Predicate {
+    execute: Function;
+    argumentType: unknown;
+}
+
+
+/**
+ * @private
+ */
+function makePredicate(execute: Function, argumentType?: unknown): Predicate {
+    return { execute, argumentType };
+}
+
 
 /**
  * A DataFilter that can be applied to a chart.
@@ -18,8 +37,47 @@
  * @name Highcharts.DataFilter
  */
 class DataFilter {
-    execute(point: Highcharts.Point): boolean {
-        return Math.random() > 0.5; // Random filter
+    private static predicates = {
+        equals: makePredicate((a: unknown, b: unknown): boolean => a === b, String)
+    };
+    private predicate?: Predicate;
+
+
+    constructor(
+        private key?: string,
+        predicate?: keyof typeof DataFilter.predicates,
+        private argument?: unknown
+    ) {
+        if (predicate) {
+            this.predicate = DataFilter.predicates[predicate];
+            this.verifyArgumentType();
+        }
+    }
+
+
+    execute(point: any): boolean {
+        if (!this.key || !this.predicate) {
+            return true;
+        }
+
+        return this.predicate.execute(
+            getNestedProperty(this.key, point), this.argument
+        );
+    }
+
+
+    private verifyArgumentType(): void {
+        const arg = this.argument;
+        const predicateArgType = this.predicate?.argumentType;
+
+        if (
+            predicateArgType &&
+            (arg as any)?.constructor !== predicateArgType
+        ) {
+            throw new Error(
+                'Highcharts: DataFilter argument not matching predicate type.'
+            );
+        }
     }
 }
 
