@@ -38,7 +38,12 @@ function makePredicate(execute: Function, argumentType?: unknown): Predicate {
  */
 class DataFilter {
     private static predicates = {
-        equals: makePredicate((a: unknown, b: unknown): boolean => a === b, String)
+        equals: makePredicate((a: string, b: string): boolean =>
+            '' + a === b, String),
+        contains: makePredicate((a: string, b: string): boolean =>
+            ('' + a).indexOf(b) > -1, String),
+        startsWith: makePredicate((a: string, b: string): boolean =>
+            ('' + a).indexOf(b) === 0, String)
     };
     private predicate?: Predicate;
 

@@ -49,7 +49,15 @@ var DataFilter = /** @class */ (function () {
         }
     };
     DataFilter.predicates = {
-        equals: makePredicate(function (a, b) { return a === b; }, String)
+        equals: makePredicate(function (a, b) {
+            return '' + a === b;
+        }, String),
+        contains: makePredicate(function (a, b) {
+            return ('' + a).indexOf(b) > -1;
+        }, String),
+        startsWith: makePredicate(function (a, b) {
+            return ('' + a).indexOf(b) === 0;
+        }, String)
     };
     return DataFilter;
 }());
