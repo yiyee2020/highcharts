@@ -43,7 +43,12 @@ class DataFilter {
         contains: makePredicate((a: string, b: string): boolean =>
             ('' + a).indexOf(b) > -1, String),
         startsWith: makePredicate((a: string, b: string): boolean =>
-            ('' + a).indexOf(b) === 0, String)
+            ('' + a).indexOf(b) === 0, String),
+        lessThan: makePredicate((a: number, b: number): boolean =>
+            a < b, Number),
+        greaterThan: makePredicate((a: number, b: number): boolean =>
+            a > b, Number),
+        exists: makePredicate((a: unknown): boolean => !!a)
     };
     private predicate?: Predicate;
 

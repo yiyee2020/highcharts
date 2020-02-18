@@ -57,7 +57,14 @@ var DataFilter = /** @class */ (function () {
         }, String),
         startsWith: makePredicate(function (a, b) {
             return ('' + a).indexOf(b) === 0;
-        }, String)
+        }, String),
+        lessThan: makePredicate(function (a, b) {
+            return a < b;
+        }, Number),
+        greaterThan: makePredicate(function (a, b) {
+            return a > b;
+        }, Number),
+        exists: makePredicate(function (a) { return !!a; })
     };
     return DataFilter;
 }());
