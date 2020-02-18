@@ -21,8 +21,16 @@ function makePredicate(execute, argumentType) {
 /**
  * A DataFilter that can be applied to a chart.
  *
+ * ```js
+ *  var filterJohnPoints = new DataFilter('name', 'contains', 'John');
+ *  var filterBigValues = new DataFilter('y', 'greaterThan', 10000000);
+ *  var filterPointsWithValue = new DataFilter('y', 'hasValue');
+ *```
+ *
  * @class
  * @name Highcharts.DataFilter
+ *
+ * @requires module:modules/data-filter
  *
  * @param {string} [key]
  *  The data point property to filter on. Can be a nested key, using dot
@@ -37,12 +45,6 @@ function makePredicate(execute, argumentType) {
  *  The constant to compare the point properties to. Note that the argument
  *  type must match the type expected by the predicate used. The `hasValue`
  *  predicate does not require an argument.
- *
- *```js
- *  var filterJohnPoints = new DataFilter('name', 'contains', 'John');
- *  var filterBigValues = new DataFilter('y', 'greaterThan', 10000000);
- *  var filterPointsWithValue = new DataFilter('y', 'hasValue');
- *```
  */
 var DataFilter = /** @class */ (function () {
     function DataFilter(key, predicate, argument) {
@@ -53,12 +55,25 @@ var DataFilter = /** @class */ (function () {
             this.verifyArgumentType();
         }
     }
+    /**
+     * Execute the data filter against a point in the chart to determine if
+     * it should be filtered out or not.
+     *
+     * @function Highcharts.DataFilter#execute
+     *
+     * @param {Highcharts.Point} point The point to execute the filter on.
+     *
+     * @return {boolean} Whether or not the point should be hidden.
+     */
     DataFilter.prototype.execute = function (point) {
         if (!this.key || !this.predicate) {
             return true;
         }
         return this.predicate.execute(getNestedProperty(this.key, point), this.argument);
     };
+    /**
+     * @private
+     */
     DataFilter.prototype.verifyArgumentType = function () {
         var _a, _b;
         var arg = this.argument;
