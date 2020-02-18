@@ -43,8 +43,8 @@ var PopupDialog = /** @class */ (function () {
         if (content) {
             this.setContent(content);
         }
-        innerContainer.appendChild(closeButton);
         innerContainer.appendChild(contentContainer);
+        innerContainer.appendChild(closeButton);
         dialogBox.appendChild(innerContainer);
         flexContainer.appendChild(dialogBox);
         dc.appendChild(flexContainer);
