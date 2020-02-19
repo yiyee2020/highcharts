@@ -28,6 +28,9 @@ class DataFilterDialog {
     private totalPointsElement?: HTMLElement;
     private filterKeyElement?: HTMLSelectElement;
     private predicateElement?: HTMLSelectElement;
+    private argumentContainer?: HTMLElement;
+    private argumentElement?: HTMLInputElement;
+    private currentPredicate?: Highcharts.DataFilterPredicateFunction;
 
     constructor(private chart: Highcharts.Chart) {
         this.dialog = new PopupDialog(chart.renderTo);
@@ -60,6 +63,8 @@ class DataFilterDialog {
             contentContainer.appendChild(this.totalPointsElement);
         }
 
+        this.argumentContainer = this.makeArgumentContainer();
+
         const keys = this.getFilterKeys(options.keys);
         this.filterKeyElement = this.makeFilterKeyElement(keys);
         contentContainer.appendChild(this.filterKeyElement);
@@ -67,6 +72,7 @@ class DataFilterDialog {
         this.predicateElement = this.makePredicateElement(options.predicates);
         contentContainer.appendChild(this.predicateElement);
 
+        contentContainer.appendChild(this.argumentContainer);
         contentContainer.appendChild(this.makeResetButtonElement());
         contentContainer.appendChild(this.makeApplyButtonElement());
 
@@ -153,7 +159,22 @@ class DataFilterDialog {
             select.appendChild(option);
         });
 
+        this.currentPredicate = predicates[0];
+        this.updateArgumentElement();
+
+        select.onchange = (e: Event): void => {
+            this.currentPredicate = (e.target as HTMLInputElement)
+                .value as Highcharts.DataFilterPredicateFunction;
+            this.updateArgumentElement();
+        };
+
         return select;
+    }
+
+
+    private makeArgumentContainer(): HTMLElement {
+        const container = doc.createElement('div');
+        return container;
     }
 
 
@@ -176,15 +197,16 @@ class DataFilterDialog {
         btn.innerHTML = 'Apply';
         btn.onclick = (): void => {
             const keySelect = this.filterKeyElement;
-            const predicateSelect = this.predicateElement;
+            const predicate = this.currentPredicate;
 
-            if (!keySelect || !predicateSelect) {
+            if (!keySelect || !predicate) {
                 return;
             }
 
             const key = keySelect.options[keySelect.selectedIndex].value;
-            const predicate = predicateSelect.options[predicateSelect.selectedIndex].value;
-            const argument = 'W';
+            const argumentValue = (this.argumentElement || {}).value;
+            const argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
+            const argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
 
             const filter = new DataFilter(key, predicate as any, argument);
             this.chart.applyDataFilter(filter);
@@ -192,6 +214,43 @@ class DataFilterDialog {
         };
 
         return btn;
+    }
+
+
+    private updateArgumentElement(): void {
+        let argElement = this.argumentElement;
+        const curPredicate = this.currentPredicate;
+        const curArgType = curPredicate && DataFilter.getPredicateArgumentType(curPredicate);
+        const newInputType = curArgType && this.getInputTypeFromArgumentType(curArgType);
+
+        const shouldUpdateArgument = argElement?.type !== newInputType;
+        if (!shouldUpdateArgument) {
+            return;
+        }
+
+        if (argElement) {
+            argElement.remove();
+            delete this.argumentElement;
+        }
+
+        if (newInputType) {
+            argElement = this.argumentElement = doc.createElement('input');
+            argElement.type = newInputType;
+            if (newInputType === 'number') {
+                argElement.value = '0';
+            }
+            this.argumentContainer?.appendChild(argElement);
+        }
+    }
+
+
+    private getInputTypeFromArgumentType(
+        argType: Highcharts.DataFilterPredicateArgumentTypeDescription
+    ): string {
+        if (!argType) {
+            return '';
+        }
+        return argType === 'number' ? 'number' : 'text';
     }
 }
 
