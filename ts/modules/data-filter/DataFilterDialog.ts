@@ -30,7 +30,10 @@ class DataFilterDialog {
     private predicateElement?: HTMLSelectElement;
     private argumentContainer?: HTMLElement;
     private argumentElement?: HTMLInputElement;
+    private currentFilterKey?: string;
     private currentPredicate?: Highcharts.DataFilterPredicateFunction;
+    private currentArgumentValue?: string;
+    private currentArgumentType?: string;
     private caseSensitive?: boolean;
 
     constructor(private chart: Highcharts.Chart) {
@@ -54,6 +57,12 @@ class DataFilterDialog {
     private getDialogContent(options: Highcharts.DataFilterDialogOptions): HTMLElement {
         if (this.contentContainer) {
             this.contentContainer.remove();
+            delete this.contentContainer;
+            delete this.totalPointsElement;
+            delete this.filterKeyElement;
+            delete this.predicateElement;
+            delete this.argumentContainer;
+            delete this.argumentElement;
         }
         const contentContainer = this.contentContainer = doc.createElement('div');
 
@@ -136,6 +145,7 @@ class DataFilterDialog {
 
 
     private makeFilterKeyElement(keys: Highcharts.Dictionary<string>): HTMLSelectElement {
+        const curFilterKey = this.currentFilterKey = this.currentFilterKey || Object.keys(keys)[0];
         const select = doc.createElement('select');
         select.setAttribute('aria-label', 'Filter by');
 
@@ -143,29 +153,35 @@ class DataFilterDialog {
             const option = doc.createElement('option');
             option.innerHTML = keys[pointKey];
             option.value = pointKey;
+            option.selected = curFilterKey === pointKey;
             select.appendChild(option);
         });
+
+        select.onchange = (e: Event): void => {
+            this.currentFilterKey = (e.target as HTMLOptionElement).value;
+        };
 
         return select;
     }
 
 
     private makePredicateElement(predicates: Highcharts.DataFilterPredicateFunction[]): HTMLSelectElement {
+        const curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         const select = doc.createElement('select');
         select.setAttribute('aria-label', 'Filter type');
 
         predicates.forEach((predicate: Highcharts.DataFilterPredicateFunction): void => {
             const option = doc.createElement('option');
             option.innerHTML = DataFilter.getPredicateName(predicate);
+            option.selected = predicate === curPredicate;
             option.value = predicate;
             select.appendChild(option);
         });
 
-        this.currentPredicate = predicates[0];
         this.updateArgumentElement();
 
         select.onchange = (e: Event): void => {
-            this.currentPredicate = (e.target as HTMLInputElement)
+            this.currentPredicate = (e.target as HTMLOptionElement)
                 .value as Highcharts.DataFilterPredicateFunction;
             this.updateArgumentElement();
         };
@@ -224,8 +240,8 @@ class DataFilterDialog {
     private updateArgumentElement(): void {
         let argElement = this.argumentElement;
         const curPredicate = this.currentPredicate;
-        const curArgType = curPredicate && DataFilter.getPredicateArgumentType(curPredicate);
-        const newInputType = curArgType && this.getInputTypeFromArgumentType(curArgType);
+        const newArgType = curPredicate && DataFilter.getPredicateArgumentType(curPredicate);
+        const newInputType = newArgType && this.getInputTypeFromArgumentType(newArgType);
 
         const shouldUpdateArgument = argElement?.type !== newInputType;
         if (!shouldUpdateArgument) {
@@ -240,9 +256,21 @@ class DataFilterDialog {
         if (newInputType) {
             argElement = this.argumentElement = doc.createElement('input');
             argElement.type = newInputType;
-            if (newInputType === 'number') {
+            argElement.onchange = (e: Event): void => {
+                this.currentArgumentValue = (e.target as HTMLInputElement).value;
+            };
+
+            // Init the value of the input
+            const oldValue = this.currentArgumentValue;
+            const oldType = this.currentArgumentType;
+
+            if (newInputType === oldType && typeof oldValue !== 'undefined') {
+                argElement.value = oldValue;
+            } else if (newInputType === 'number') {
                 argElement.value = '0';
             }
+
+            this.currentArgumentType = newInputType;
             this.argumentContainer?.appendChild(argElement);
         }
     }

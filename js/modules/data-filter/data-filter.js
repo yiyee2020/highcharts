@@ -16,7 +16,7 @@ import DataFilterDialog from './DataFilterDialog.js';
 import defaultOptions from './options.js';
 /* eslint-disable no-invalid-this, valid-jsdoc */
 import U from '../../parts/Utilities.js';
-var merge = U.merge;
+var addEvent = U.addEvent, merge = U.merge;
 // Merge default options
 merge(true, H.defaultOptions, defaultOptions);
 // Make DataFilter class available on Highcharts scope
@@ -80,3 +80,10 @@ H.Chart.prototype.showDataFilterDialog = function () {
         dialog.show();
     }
 };
+// Update options with chart updates
+addEvent(H.Chart, 'update', function (e) {
+    var newOptions = e.options.dataFilter;
+    if (newOptions) {
+        merge(true, this.options.dataFilter, newOptions);
+    }
+});

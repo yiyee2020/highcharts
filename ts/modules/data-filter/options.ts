@@ -32,7 +32,7 @@ declare global {
 const options = {
     dataFilter: {
         keys: null,
-        predicates: ['equals', 'contains', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
+        predicates: ['contains', 'equals', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
         showTotalPoints: true,
         caseSensitive: false
     }

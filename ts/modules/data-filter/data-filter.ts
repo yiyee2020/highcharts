@@ -39,7 +39,7 @@ declare global {
 /* eslint-disable no-invalid-this, valid-jsdoc */
 
 import U from '../../parts/Utilities.js';
-const { merge } = U;
+const { addEvent, merge } = U;
 
 // Merge default options
 merge(
@@ -118,3 +118,15 @@ H.Chart.prototype.showDataFilterDialog = function (): void {
         dialog.show();
     }
 };
+
+
+// Update options with chart updates
+addEvent(H.Chart as any, 'update', function (
+    this: Highcharts.Chart,
+    e: { options: Highcharts.Options }
+): void {
+    const newOptions = e.options.dataFilter;
+    if (newOptions) {
+        merge(true, this.options.dataFilter, newOptions);
+    }
+});

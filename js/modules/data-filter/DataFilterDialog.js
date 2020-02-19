@@ -36,6 +36,12 @@ var DataFilterDialog = /** @class */ (function () {
     DataFilterDialog.prototype.getDialogContent = function (options) {
         if (this.contentContainer) {
             this.contentContainer.remove();
+            delete this.contentContainer;
+            delete this.totalPointsElement;
+            delete this.filterKeyElement;
+            delete this.predicateElement;
+            delete this.argumentContainer;
+            delete this.argumentElement;
         }
         var contentContainer = this.contentContainer = doc.createElement('div');
         contentContainer.appendChild(this.makeHeadingElement());
@@ -95,27 +101,34 @@ var DataFilterDialog = /** @class */ (function () {
         }, {});
     };
     DataFilterDialog.prototype.makeFilterKeyElement = function (keys) {
+        var _this = this;
+        var curFilterKey = this.currentFilterKey = this.currentFilterKey || Object.keys(keys)[0];
         var select = doc.createElement('select');
         select.setAttribute('aria-label', 'Filter by');
         Object.keys(keys).forEach(function (pointKey) {
             var option = doc.createElement('option');
             option.innerHTML = keys[pointKey];
             option.value = pointKey;
+            option.selected = curFilterKey === pointKey;
             select.appendChild(option);
         });
+        select.onchange = function (e) {
+            _this.currentFilterKey = e.target.value;
+        };
         return select;
     };
     DataFilterDialog.prototype.makePredicateElement = function (predicates) {
         var _this = this;
+        var curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         var select = doc.createElement('select');
         select.setAttribute('aria-label', 'Filter type');
         predicates.forEach(function (predicate) {
             var option = doc.createElement('option');
             option.innerHTML = DataFilter.getPredicateName(predicate);
+            option.selected = predicate === curPredicate;
             option.value = predicate;
             select.appendChild(option);
         });
-        this.currentPredicate = predicates[0];
         this.updateArgumentElement();
         select.onchange = function (e) {
             _this.currentPredicate = e.target
@@ -161,11 +174,12 @@ var DataFilterDialog = /** @class */ (function () {
         return btn;
     };
     DataFilterDialog.prototype.updateArgumentElement = function () {
+        var _this = this;
         var _a, _b;
         var argElement = this.argumentElement;
         var curPredicate = this.currentPredicate;
-        var curArgType = curPredicate && DataFilter.getPredicateArgumentType(curPredicate);
-        var newInputType = curArgType && this.getInputTypeFromArgumentType(curArgType);
+        var newArgType = curPredicate && DataFilter.getPredicateArgumentType(curPredicate);
+        var newInputType = newArgType && this.getInputTypeFromArgumentType(newArgType);
         var shouldUpdateArgument = ((_a = argElement) === null || _a === void 0 ? void 0 : _a.type) !== newInputType;
         if (!shouldUpdateArgument) {
             return;
@@ -177,9 +191,19 @@ var DataFilterDialog = /** @class */ (function () {
         if (newInputType) {
             argElement = this.argumentElement = doc.createElement('input');
             argElement.type = newInputType;
-            if (newInputType === 'number') {
+            argElement.onchange = function (e) {
+                _this.currentArgumentValue = e.target.value;
+            };
+            // Init the value of the input
+            var oldValue = this.currentArgumentValue;
+            var oldType = this.currentArgumentType;
+            if (newInputType === oldType && typeof oldValue !== 'undefined') {
+                argElement.value = oldValue;
+            }
+            else if (newInputType === 'number') {
                 argElement.value = '0';
             }
+            this.currentArgumentType = newInputType;
             (_b = this.argumentContainer) === null || _b === void 0 ? void 0 : _b.appendChild(argElement);
         }
     };
