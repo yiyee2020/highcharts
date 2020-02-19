@@ -93,14 +93,15 @@ class DataFilterDialog {
 
     private makeHeadingElement(): HTMLElement {
         const heading = doc.createElement('p');
-        heading.style.cssText = 'font-size: 1.4em; color: #444';
-
+        heading.style.cssText = 'font-size: 1.4em; color: #444; margin-top: 5px';
+        heading.textContent = 'Filter data';
         return heading;
     }
 
 
     private makeTotalPointsElement(): HTMLElement {
         const total = doc.createElement('p');
+        total.style.cssText = 'font-size: 1em; color: #444;';
         total.setAttribute('aria-live', 'polite');
         return total;
     }
@@ -147,6 +148,7 @@ class DataFilterDialog {
     private makeFilterKeyElement(keys: Highcharts.Dictionary<string>): HTMLSelectElement {
         const curFilterKey = this.currentFilterKey = this.currentFilterKey || Object.keys(keys)[0];
         const select = doc.createElement('select');
+        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter by');
 
         Object.keys(keys).forEach((pointKey: string): void => {
@@ -168,6 +170,7 @@ class DataFilterDialog {
     private makePredicateElement(predicates: Highcharts.DataFilterPredicateFunction[]): HTMLSelectElement {
         const curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         const select = doc.createElement('select');
+        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter type');
 
         predicates.forEach((predicate: Highcharts.DataFilterPredicateFunction): void => {
@@ -192,12 +195,14 @@ class DataFilterDialog {
 
     private makeArgumentContainer(): HTMLElement {
         const container = doc.createElement('div');
+        container.style.cssText = 'width: 100%';
         return container;
     }
 
 
     private makeResetButtonElement(): HTMLElement {
         const btn = doc.createElement('button');
+        btn.style.cssText = 'margin: 5px 10px; width: 90px; height: 35px; padding: 0';
 
         btn.innerHTML = 'Reset';
         btn.onclick = (): void => {
@@ -211,6 +216,7 @@ class DataFilterDialog {
 
     private makeApplyButtonElement(): HTMLElement {
         const btn = doc.createElement('button');
+        btn.style.cssText = 'margin: 5px 10px; width: 90px; height: 35px; padding: 0';
 
         btn.innerHTML = 'Apply';
         btn.onclick = (): void => {
@@ -255,6 +261,8 @@ class DataFilterDialog {
 
         if (newInputType) {
             argElement = this.argumentElement = doc.createElement('input');
+            argElement.style.cssText =
+                'display: block; margin: 5px auto; width: 200px; font-size: 0.8em; color: #333; padding: 2px 8px;';
             argElement.type = newInputType;
             argElement.onchange = (e: Event): void => {
                 this.currentArgumentValue = (e.target as HTMLInputElement).value;

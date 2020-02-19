@@ -63,11 +63,13 @@ var DataFilterDialog = /** @class */ (function () {
     };
     DataFilterDialog.prototype.makeHeadingElement = function () {
         var heading = doc.createElement('p');
-        heading.style.cssText = 'font-size: 1.4em; color: #444';
+        heading.style.cssText = 'font-size: 1.4em; color: #444; margin-top: 5px';
+        heading.textContent = 'Filter data';
         return heading;
     };
     DataFilterDialog.prototype.makeTotalPointsElement = function () {
         var total = doc.createElement('p');
+        total.style.cssText = 'font-size: 1em; color: #444;';
         total.setAttribute('aria-live', 'polite');
         return total;
     };
@@ -104,6 +106,7 @@ var DataFilterDialog = /** @class */ (function () {
         var _this = this;
         var curFilterKey = this.currentFilterKey = this.currentFilterKey || Object.keys(keys)[0];
         var select = doc.createElement('select');
+        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter by');
         Object.keys(keys).forEach(function (pointKey) {
             var option = doc.createElement('option');
@@ -121,6 +124,7 @@ var DataFilterDialog = /** @class */ (function () {
         var _this = this;
         var curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         var select = doc.createElement('select');
+        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter type');
         predicates.forEach(function (predicate) {
             var option = doc.createElement('option');
@@ -139,11 +143,13 @@ var DataFilterDialog = /** @class */ (function () {
     };
     DataFilterDialog.prototype.makeArgumentContainer = function () {
         var container = doc.createElement('div');
+        container.style.cssText = 'width: 100%';
         return container;
     };
     DataFilterDialog.prototype.makeResetButtonElement = function () {
         var _this = this;
         var btn = doc.createElement('button');
+        btn.style.cssText = 'margin: 5px 10px; width: 90px; height: 35px; padding: 0';
         btn.innerHTML = 'Reset';
         btn.onclick = function () {
             _this.chart.clearDataFilter();
@@ -154,6 +160,7 @@ var DataFilterDialog = /** @class */ (function () {
     DataFilterDialog.prototype.makeApplyButtonElement = function () {
         var _this = this;
         var btn = doc.createElement('button');
+        btn.style.cssText = 'margin: 5px 10px; width: 90px; height: 35px; padding: 0';
         btn.innerHTML = 'Apply';
         btn.onclick = function () {
             var keySelect = _this.filterKeyElement;
@@ -190,6 +197,8 @@ var DataFilterDialog = /** @class */ (function () {
         }
         if (newInputType) {
             argElement = this.argumentElement = doc.createElement('input');
+            argElement.style.cssText =
+                'display: block; margin: 5px auto; width: 200px; font-size: 0.8em; color: #333; padding: 2px 8px;';
             argElement.type = newInputType;
             argElement.onchange = function (e) {
                 _this.currentArgumentValue = e.target.value;
