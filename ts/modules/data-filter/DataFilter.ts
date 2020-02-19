@@ -26,6 +26,9 @@ declare global {
             execute: Function;
             argumentType: unknown;
         }
+        interface DataFilterOptions {
+            caseSensitive?: boolean;
+        }
         type DataFilterPredicateArgumentTypeDescription = 'string'|'number'|'';
         type DataFilterPredicateFunction = keyof typeof DataFilter.predicates;
     }
@@ -43,6 +46,19 @@ function makePredicate(
     return { name, execute, argumentType };
 }
 
+/**
+ * An Earcon configuration, specifying an Earcon and when to play it.
+ *
+ * @requires module:modules/data-filter
+ *
+ * @interface Highcharts.DataFilterOptions
+ *//**
+ * Whether or not to apply the filter with case sensitivity. Only applies
+ * to string arguments. If not specified, the filter defaults to being
+ * case insensitive.
+ * @name Highcharts.DataFilterOptions#caseSensitive
+ * @type {boolean}
+ */
 
 /**
  * A DataFilter that can be applied to a chart.
@@ -71,6 +87,8 @@ function makePredicate(
  *  The constant to compare the point properties to. Note that the argument
  *  type must match the type expected by the predicate used. The `hasValue`
  *  predicate does not require an argument.
+ * @param {Highcharts.DataFilterOptions} [options]
+ *  Options for the filter.
  */
 class DataFilter {
     private predicate?: Highcharts.DataFilterPredicate;
@@ -92,7 +110,8 @@ class DataFilter {
     constructor(
         private key?: string,
         predicate?: Highcharts.DataFilterPredicateFunction,
-        private argument?: unknown
+        private argument?: unknown,
+        private options?: Highcharts.DataFilterOptions
     ) {
         if (predicate) {
             this.predicate = DataFilter.predicates[predicate];
@@ -116,8 +135,17 @@ class DataFilter {
             return true;
         }
 
+        const prop = getNestedProperty(this.key, point);
+        const argument = this.argument;
+        const shouldConvertToLowercase = !this.options?.caseSensitive;
+
+        const toLower = function<T> (x: T): string|T {
+            return typeof x === 'string' ? x.toLowerCase() : x;
+        };
+
         return this.predicate.execute(
-            getNestedProperty(this.key, point), this.argument
+            shouldConvertToLowercase ? toLower(prop) : prop,
+            shouldConvertToLowercase ? toLower(argument) : argument
         );
     }
 

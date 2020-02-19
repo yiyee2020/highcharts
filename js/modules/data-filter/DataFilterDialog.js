@@ -23,6 +23,7 @@ var DataFilterDialog = /** @class */ (function () {
         this.dialog = new PopupDialog(chart.renderTo);
     }
     DataFilterDialog.prototype.buildContent = function (options) {
+        this.caseSensitive = options.caseSensitive;
         this.dialog.setContent(this.getDialogContent(options));
     };
     DataFilterDialog.prototype.show = function () {
@@ -151,7 +152,9 @@ var DataFilterDialog = /** @class */ (function () {
             var argumentValue = (_this.argumentElement || {}).value;
             var argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
             var argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
-            var filter = new DataFilter(key, predicate, argument);
+            var filter = new DataFilter(key, predicate, argument, {
+                caseSensitive: _this.caseSensitive
+            });
             _this.chart.applyDataFilter(filter);
             _this.updateTotalPoints();
         };

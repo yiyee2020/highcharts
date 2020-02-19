@@ -20,6 +20,7 @@ declare global {
             keys: Dictionary<string>|null;
             predicates: Array<DataFilterPredicateFunction>;
             showTotalPoints: boolean;
+            caseSensitive: boolean;
         }
         interface Options {
             /** @require modules/data-filter */
@@ -32,7 +33,8 @@ const options = {
     dataFilter: {
         keys: null,
         predicates: ['equals', 'contains', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
-        showTotalPoints: true
+        showTotalPoints: true,
+        caseSensitive: false
     }
 };
 

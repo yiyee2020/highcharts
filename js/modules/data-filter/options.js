@@ -13,7 +13,8 @@ var options = {
     dataFilter: {
         keys: null,
         predicates: ['equals', 'contains', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
-        showTotalPoints: true
+        showTotalPoints: true,
+        caseSensitive: false
     }
 };
 export default options;

@@ -31,12 +31,14 @@ class DataFilterDialog {
     private argumentContainer?: HTMLElement;
     private argumentElement?: HTMLInputElement;
     private currentPredicate?: Highcharts.DataFilterPredicateFunction;
+    private caseSensitive?: boolean;
 
     constructor(private chart: Highcharts.Chart) {
         this.dialog = new PopupDialog(chart.renderTo);
     }
 
     buildContent(options: Highcharts.DataFilterDialogOptions): void {
+        this.caseSensitive = options.caseSensitive;
         this.dialog.setContent(this.getDialogContent(options));
     }
 
@@ -208,7 +210,9 @@ class DataFilterDialog {
             const argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
             const argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
 
-            const filter = new DataFilter(key, predicate as any, argument);
+            const filter = new DataFilter(key, predicate as any, argument, {
+                caseSensitive: this.caseSensitive
+            });
             this.chart.applyDataFilter(filter);
             this.updateTotalPoints();
         };

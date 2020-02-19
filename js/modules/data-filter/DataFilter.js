@@ -19,6 +19,19 @@ function makePredicate(name, execute, argumentType) {
     return { name: name, execute: execute, argumentType: argumentType };
 }
 /**
+ * An Earcon configuration, specifying an Earcon and when to play it.
+ *
+ * @requires module:modules/data-filter
+ *
+ * @interface Highcharts.DataFilterOptions
+ */ /**
+* Whether or not to apply the filter with case sensitivity. Only applies
+* to string arguments. If not specified, the filter defaults to being
+* case insensitive.
+* @name Highcharts.DataFilterOptions#caseSensitive
+* @type {boolean}
+*/
+/**
  * A DataFilter that can be applied to a chart.
  *
  * ```js
@@ -45,11 +58,14 @@ function makePredicate(name, execute, argumentType) {
  *  The constant to compare the point properties to. Note that the argument
  *  type must match the type expected by the predicate used. The `hasValue`
  *  predicate does not require an argument.
+ * @param {Highcharts.DataFilterOptions} [options]
+ *  Options for the filter.
  */
 var DataFilter = /** @class */ (function () {
-    function DataFilter(key, predicate, argument) {
+    function DataFilter(key, predicate, argument, options) {
         this.key = key;
         this.argument = argument;
+        this.options = options;
         if (predicate) {
             this.predicate = DataFilter.predicates[predicate];
             this.verifyArgumentType();
@@ -66,10 +82,17 @@ var DataFilter = /** @class */ (function () {
      * @return {boolean} Whether or not the point should be hidden.
      */
     DataFilter.prototype.execute = function (point) {
+        var _a;
         if (!this.key || !this.predicate) {
             return true;
         }
-        return this.predicate.execute(getNestedProperty(this.key, point), this.argument);
+        var prop = getNestedProperty(this.key, point);
+        var argument = this.argument;
+        var shouldConvertToLowercase = !((_a = this.options) === null || _a === void 0 ? void 0 : _a.caseSensitive);
+        var toLower = function (x) {
+            return typeof x === 'string' ? x.toLowerCase() : x;
+        };
+        return this.predicate.execute(shouldConvertToLowercase ? toLower(prop) : prop, shouldConvertToLowercase ? toLower(argument) : argument);
     };
     /**
      * Get the human readable name of a predicate function.
