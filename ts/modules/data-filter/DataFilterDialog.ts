@@ -37,7 +37,7 @@ class DataFilterDialog {
     private caseSensitive?: boolean;
 
     constructor(private chart: Highcharts.Chart) {
-        this.dialog = new PopupDialog(chart.renderTo);
+        this.dialog = new PopupDialog('Filter data', chart.renderTo);
     }
 
     buildContent(options: Highcharts.DataFilterDialogOptions): void {
@@ -171,7 +171,7 @@ class DataFilterDialog {
         const curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         const select = doc.createElement('select');
         select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
-        select.setAttribute('aria-label', 'Filter type');
+        select.setAttribute('aria-label', 'Filter operator');
 
         predicates.forEach((predicate: Highcharts.DataFilterPredicateFunction): void => {
             const option = doc.createElement('option');
@@ -264,6 +264,7 @@ class DataFilterDialog {
             argElement.style.cssText =
                 'display: block; margin: 5px auto; width: 200px; font-size: 0.8em; color: #333; padding: 2px 8px;';
             argElement.type = newInputType;
+            argElement.setAttribute('aria-label', 'Filter value');
             argElement.onchange = (e: Event): void => {
                 this.currentArgumentValue = (e.target as HTMLInputElement).value;
             };

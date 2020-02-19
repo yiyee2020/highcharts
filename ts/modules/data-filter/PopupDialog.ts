@@ -31,7 +31,7 @@ class PopupDialog {
     private closeButton: HTMLElement;
     private useFlex: boolean;
 
-    constructor(private parentDiv: HTMLElement, content?: HTMLElement) {
+    constructor(title: string, private parentDiv: HTMLElement, content?: HTMLElement) {
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
 
         const dc = this.dialogContainer = doc.createElement('div');
@@ -41,9 +41,16 @@ class PopupDialog {
         const flexContainer = this.flexContainer = doc.createElement('div');
         const dialogBox = this.dialogBox = doc.createElement('div');
         dialogBox.setAttribute('role', 'dialog');
-        dialogBox.setAttribute('aria-label', 'Dialog');
+        dialogBox.setAttribute('aria-label', title);
         dialogBox.setAttribute('tabindex', '-1');
-        dialogBox.onkeydown = (e): void => e.stopPropagation(); // Stop a11y module from stealing kbd focus
+        dialogBox.onkeydown = (e: KeyboardEvent): void => {
+            const keycode = e.which || e.keyCode;
+            const esc = 27;
+            if (keycode === esc) {
+                this.hide();
+            }
+            e.stopPropagation(); // Stop a11y module from stealing kbd focus
+        };
         const innerContainer = this.innerContainer = doc.createElement('div');
         const contentContainer = this.contentContainer = doc.createElement('div');
         contentContainer.className = 'highcharts-popup-content-container';

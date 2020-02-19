@@ -18,7 +18,7 @@ var userAgent = H.win.navigator.userAgent;
  * @private
  */
 var PopupDialog = /** @class */ (function () {
-    function PopupDialog(parentDiv, content) {
+    function PopupDialog(title, parentDiv, content) {
         var _this = this;
         this.parentDiv = parentDiv;
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
@@ -28,9 +28,16 @@ var PopupDialog = /** @class */ (function () {
         var flexContainer = this.flexContainer = doc.createElement('div');
         var dialogBox = this.dialogBox = doc.createElement('div');
         dialogBox.setAttribute('role', 'dialog');
-        dialogBox.setAttribute('aria-label', 'Dialog');
+        dialogBox.setAttribute('aria-label', title);
         dialogBox.setAttribute('tabindex', '-1');
-        dialogBox.onkeydown = function (e) { return e.stopPropagation(); }; // Stop a11y module from stealing kbd focus
+        dialogBox.onkeydown = function (e) {
+            var keycode = e.which || e.keyCode;
+            var esc = 27;
+            if (keycode === esc) {
+                _this.hide();
+            }
+            e.stopPropagation(); // Stop a11y module from stealing kbd focus
+        };
         var innerContainer = this.innerContainer = doc.createElement('div');
         var contentContainer = this.contentContainer = doc.createElement('div');
         contentContainer.className = 'highcharts-popup-content-container';

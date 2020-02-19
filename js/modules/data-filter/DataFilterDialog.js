@@ -20,7 +20,7 @@ import DataFilter from './DataFilter.js';
 var DataFilterDialog = /** @class */ (function () {
     function DataFilterDialog(chart) {
         this.chart = chart;
-        this.dialog = new PopupDialog(chart.renderTo);
+        this.dialog = new PopupDialog('Filter data', chart.renderTo);
     }
     DataFilterDialog.prototype.buildContent = function (options) {
         this.caseSensitive = options.caseSensitive;
@@ -125,7 +125,7 @@ var DataFilterDialog = /** @class */ (function () {
         var curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         var select = doc.createElement('select');
         select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
-        select.setAttribute('aria-label', 'Filter type');
+        select.setAttribute('aria-label', 'Filter operator');
         predicates.forEach(function (predicate) {
             var option = doc.createElement('option');
             option.innerHTML = DataFilter.getPredicateName(predicate);
@@ -200,6 +200,7 @@ var DataFilterDialog = /** @class */ (function () {
             argElement.style.cssText =
                 'display: block; margin: 5px auto; width: 200px; font-size: 0.8em; color: #333; padding: 2px 8px;';
             argElement.type = newInputType;
+            argElement.setAttribute('aria-label', 'Filter value');
             argElement.onchange = function (e) {
                 _this.currentArgumentValue = e.target.value;
             };
