@@ -55,7 +55,7 @@ var data = [
 var chart = Highcharts.mapChart('container', {
     accessibility: {
         point: {
-            valueDescriptionFormat: '{index}. {xDescription}, {point.value}.'
+            valueDescriptionFormat: '{index}. {xDescription}, {value}.'
         }
     },
 

@@ -398,16 +398,21 @@ function getPointArrayMapValueDescription(
     prefix: string,
     suffix: string
 ): string {
-    var pre = prefix || '',
+    const pre = prefix || '',
         suf = suffix || '',
+        pointArrayMap: Array<string> = point.series.pointArrayMap as any,
+        includeKeyDesc = pointArrayMap.length > 1,
         keyToValStr = function (key: string): string {
-            var num = pointNumberToString(
+            const num = pointNumberToString(
                 point,
                 pick((point as any)[key], (point.options as any)[key])
             );
-            return key + ': ' + pre + num + suf;
-        },
-        pointArrayMap: Array<string> = point.series.pointArrayMap as any;
+            const numAffixed = pre + num + suf;
+
+            return includeKeyDesc ?
+                key + ': ' + numAffixed :
+                numAffixed;
+        };
 
     return pointArrayMap.reduce(function (desc: string, key: string): string {
         return desc + (desc.length ? ', ' : '') + keyToValStr(key);

@@ -208,10 +208,13 @@ function getPointXDescription(point) {
  * @return {string}
  */
 function getPointArrayMapValueDescription(point, prefix, suffix) {
-    var pre = prefix || '', suf = suffix || '', keyToValStr = function (key) {
+    var pre = prefix || '', suf = suffix || '', pointArrayMap = point.series.pointArrayMap, includeKeyDesc = pointArrayMap.length > 1, keyToValStr = function (key) {
         var num = pointNumberToString(point, pick(point[key], point.options[key]));
-        return key + ': ' + pre + num + suf;
-    }, pointArrayMap = point.series.pointArrayMap;
+        var numAffixed = pre + num + suf;
+        return includeKeyDesc ?
+            key + ': ' + numAffixed :
+            numAffixed;
+    };
     return pointArrayMap.reduce(function (desc, key) {
         return desc + (desc.length ? ', ' : '') + keyToValStr(key);
     }, '');
