@@ -44,8 +44,8 @@ function findFirstPointWithGraphic(point) {
 function shouldAddDummyPoint(point) {
     // Note: Sunburst series use isNull for hidden points on drilldown.
     // Ignore these.
-    var isSunburst = point.series && point.series.is('sunburst'), isNull = point.isNull;
-    return isNull && !isSunburst;
+    var isSunburst = point.series && point.series.is('sunburst'), isNull = point.isNull, isHidden = point.visible === false;
+    return isNull && !isSunburst && !isHidden;
 }
 /**
  * @private
@@ -310,6 +310,12 @@ function describePointsInSeries(series) {
             var pointEl = point.graphic && point.graphic.element ||
                 shouldAddDummyPoint(point) && addDummyPointElement(point);
             if (pointEl) {
+                if (point.visible === false) {
+                    pointEl.setAttribute('aria-hidden', true);
+                }
+                else {
+                    pointEl.removeAttribute('aria-hidden');
+                }
                 // We always set tabindex, as long as we are setting
                 // props.
                 pointEl.setAttribute('tabindex', '-1');

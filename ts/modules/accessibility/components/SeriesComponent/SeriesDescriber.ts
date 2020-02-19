@@ -106,9 +106,10 @@ function shouldAddDummyPoint(point: Highcharts.Point): boolean {
     // Note: Sunburst series use isNull for hidden points on drilldown.
     // Ignore these.
     const isSunburst = point.series && point.series.is('sunburst'),
-        isNull = point.isNull;
+        isNull = point.isNull,
+        isHidden = point.visible === false;
 
-    return isNull && !isSunburst;
+    return isNull && !isSunburst && !isHidden;
 }
 
 
@@ -559,17 +560,23 @@ function setPointScreenReaderAttribs(
  * @param {Highcharts.Series} series
  */
 function describePointsInSeries(series: Highcharts.AccessibilitySeries): void {
-    var setScreenReaderProps = shouldSetScreenReaderPropsOnPoints(series),
+    const setScreenReaderProps = shouldSetScreenReaderPropsOnPoints(series),
         setKeyboardProps = shouldSetKeyboardNavPropsOnPoints(series);
 
     if (setScreenReaderProps || setKeyboardProps) {
         series.points.forEach(function (
             point: Highcharts.AccessibilityPoint
         ): void {
-            var pointEl = point.graphic && point.graphic.element ||
+            const pointEl = point.graphic && point.graphic.element ||
                     shouldAddDummyPoint(point) && addDummyPointElement(point);
 
             if (pointEl) {
+                if (point.visible === false) {
+                    pointEl.setAttribute('aria-hidden', true);
+                } else {
+                    pointEl.removeAttribute('aria-hidden');
+                }
+
                 // We always set tabindex, as long as we are setting
                 // props.
                 pointEl.setAttribute('tabindex', '-1');
