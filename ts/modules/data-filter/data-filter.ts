@@ -111,8 +111,10 @@ H.Chart.prototype.clearDataFilter = function (): void {
  */
 H.Chart.prototype.showDataFilterDialog = function (): void {
     const dialog = this.dataFilterDialog = this.dataFilterDialog || new DataFilterDialog(this);
-    const opts = this.options.dataFilter || {};
+    const opts = this.options.dataFilter;
 
-    dialog.buildContent(opts);
-    dialog.show();
+    if (opts) {
+        dialog.buildContent(opts);
+        dialog.show();
+    }
 };

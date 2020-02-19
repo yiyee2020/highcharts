@@ -16,7 +16,11 @@
  */
 declare global {
     namespace Highcharts {
-        type DataFilterDialogOptions = typeof options.dataFilter;
+        interface DataFilterDialogOptions {
+            keys: Dictionary<string>|null;
+            predicates: Array<DataFilterPredicateFunction>;
+            showTotalPoints: boolean;
+        }
         interface Options {
             /** @require modules/data-filter */
             dataFilter?: DataFilterDialogOptions;
@@ -26,7 +30,9 @@ declare global {
 
 const options = {
     dataFilter: {
-
+        keys: null,
+        predicates: ['equals', 'contains', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
+        showTotalPoints: true
     }
 };
 

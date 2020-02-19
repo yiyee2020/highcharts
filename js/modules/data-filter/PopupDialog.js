@@ -51,7 +51,8 @@ var PopupDialog = /** @class */ (function () {
         parentDiv.insertBefore(dc, parentDiv.firstChild);
     }
     PopupDialog.prototype.setContent = function (content) {
-        this.contentContainer.innerHTML = content;
+        this.contentContainer.innerHTML = '';
+        this.contentContainer.appendChild(content);
         this.updateDialogPosition();
     };
     PopupDialog.prototype.show = function () {

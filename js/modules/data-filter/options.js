@@ -10,6 +10,10 @@
  *
  * */
 var options = {
-    dataFilter: {}
+    dataFilter: {
+        keys: null,
+        predicates: ['equals', 'contains', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
+        showTotalPoints: true
+    }
 };
 export default options;

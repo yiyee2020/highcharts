@@ -60,6 +60,14 @@ var chart = Highcharts.mapChart('container', {
         }
     },
 
+    dataFilter: {
+        keys: {
+            name: 'State name',
+            'properties.postal-code': 'State code',
+            value: 'Population number'
+        }
+    },
+
     chart: {
         map: 'countries/us/us-all'
     },

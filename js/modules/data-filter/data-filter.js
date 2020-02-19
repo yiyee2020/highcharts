@@ -74,7 +74,9 @@ H.Chart.prototype.clearDataFilter = function () {
  */
 H.Chart.prototype.showDataFilterDialog = function () {
     var dialog = this.dataFilterDialog = this.dataFilterDialog || new DataFilterDialog(this);
-    var opts = this.options.dataFilter || {};
-    dialog.buildContent(opts);
-    dialog.show();
+    var opts = this.options.dataFilter;
+    if (opts) {
+        dialog.buildContent(opts);
+        dialog.show();
+    }
 };

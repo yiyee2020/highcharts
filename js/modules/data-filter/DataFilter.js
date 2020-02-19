@@ -15,8 +15,8 @@ var defined = U.defined, getNestedProperty = U.getNestedProperty;
 /**
  * @private
  */
-function makePredicate(execute, argumentType) {
-    return { execute: execute, argumentType: argumentType };
+function makePredicate(name, execute, argumentType) {
+    return { name: name, execute: execute, argumentType: argumentType };
 }
 /**
  * A DataFilter that can be applied to a chart.
@@ -72,6 +72,37 @@ var DataFilter = /** @class */ (function () {
         return this.predicate.execute(getNestedProperty(this.key, point), this.argument);
     };
     /**
+     * Get the human readable name of a predicate function.
+     *
+     * @function Highcharts.DataFilter#getPredicateName
+     *
+     * @param {string} predicate The predicate to get the name of, e.g. `lessThan`.
+     *
+     * @return {string} The human readable name of the predicate.
+     */
+    DataFilter.getPredicateName = function (predicate) {
+        return DataFilter.predicates[predicate].name;
+    };
+    /**
+     * Get the the predicate argument type of a predicate function.
+     *
+     * @function Highcharts.DataFilter#getPredicateArgumentType
+     *
+     * @param {string} predicate The predicate to get the argument of, e.g. `lessThan`.
+     *
+     * @return {"string"|"number"|""} The type of the predicate argument.
+     */
+    DataFilter.getPredicateArgumentType = function (predicate) {
+        var arg = DataFilter.predicates[predicate].argumentType;
+        if (arg === String) {
+            return 'string';
+        }
+        if (arg === Number) {
+            return 'number';
+        }
+        return '';
+    };
+    /**
      * @private
      */
     DataFilter.prototype.verifyArgumentType = function () {
@@ -85,22 +116,22 @@ var DataFilter = /** @class */ (function () {
         }
     };
     DataFilter.predicates = {
-        equals: makePredicate(function (a, b) {
+        equals: makePredicate('Equals', function (a, b) {
             return '' + a === b;
         }, String),
-        contains: makePredicate(function (a, b) {
+        contains: makePredicate('Contains', function (a, b) {
             return ('' + a).indexOf(b) > -1;
         }, String),
-        startsWith: makePredicate(function (a, b) {
+        startsWith: makePredicate('Starts with', function (a, b) {
             return ('' + a).indexOf(b) === 0;
         }, String),
-        lessThan: makePredicate(function (a, b) {
+        lessThan: makePredicate('Less than', function (a, b) {
             return a < b;
         }, Number),
-        greaterThan: makePredicate(function (a, b) {
+        greaterThan: makePredicate('Greater than', function (a, b) {
             return a > b;
         }, Number),
-        hasValue: makePredicate(function (a) { return defined(a); })
+        hasValue: makePredicate('Has value', function (a) { return defined(a); })
     };
     return DataFilter;
 }());

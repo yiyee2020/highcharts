@@ -15,18 +15,32 @@
 import U from '../../parts/Utilities.js';
 const { defined, getNestedProperty } = U;
 
-
-interface Predicate {
-    execute: Function;
-    argumentType: unknown;
+/**
+ * Internal types.
+ * @private
+ */
+declare global {
+    namespace Highcharts {
+        interface DataFilterPredicate {
+            name: string;
+            execute: Function;
+            argumentType: unknown;
+        }
+        type DataFilterPredicateArgumentTypeDescription = 'string'|'number'|'';
+        type DataFilterPredicateFunction = keyof typeof DataFilter.predicates;
+    }
 }
 
 
 /**
  * @private
  */
-function makePredicate(execute: Function, argumentType?: unknown): Predicate {
-    return { execute, argumentType };
+function makePredicate(
+    name: string,
+    execute: Function,
+    argumentType?: unknown
+): Highcharts.DataFilterPredicate {
+    return { name, execute, argumentType };
 }
 
 
@@ -59,25 +73,25 @@ function makePredicate(execute: Function, argumentType?: unknown): Predicate {
  *  predicate does not require an argument.
  */
 class DataFilter {
-    private static predicates = {
-        equals: makePredicate((a: string, b: string): boolean =>
+    private predicate?: Highcharts.DataFilterPredicate;
+    static predicates = {
+        equals: makePredicate('Equals', (a: string, b: string): boolean =>
             '' + a === b, String),
-        contains: makePredicate((a: string, b: string): boolean =>
+        contains: makePredicate('Contains', (a: string, b: string): boolean =>
             ('' + a).indexOf(b) > -1, String),
-        startsWith: makePredicate((a: string, b: string): boolean =>
+        startsWith: makePredicate('Starts with', (a: string, b: string): boolean =>
             ('' + a).indexOf(b) === 0, String),
-        lessThan: makePredicate((a: number, b: number): boolean =>
+        lessThan: makePredicate('Less than', (a: number, b: number): boolean =>
             a < b, Number),
-        greaterThan: makePredicate((a: number, b: number): boolean =>
+        greaterThan: makePredicate('Greater than', (a: number, b: number): boolean =>
             a > b, Number),
-        hasValue: makePredicate((a: unknown): boolean => defined(a))
+        hasValue: makePredicate('Has value', (a: unknown): boolean => defined(a))
     };
-    private predicate?: Predicate;
 
 
     constructor(
         private key?: string,
-        predicate?: keyof typeof DataFilter.predicates,
+        predicate?: Highcharts.DataFilterPredicateFunction,
         private argument?: unknown
     ) {
         if (predicate) {
@@ -105,6 +119,46 @@ class DataFilter {
         return this.predicate.execute(
             getNestedProperty(this.key, point), this.argument
         );
+    }
+
+
+    /**
+     * Get the human readable name of a predicate function.
+     *
+     * @function Highcharts.DataFilter#getPredicateName
+     *
+     * @param {string} predicate The predicate to get the name of, e.g. `lessThan`.
+     *
+     * @return {string} The human readable name of the predicate.
+     */
+    static getPredicateName(predicate: Highcharts.DataFilterPredicateFunction): string {
+        return DataFilter.predicates[predicate].name;
+    }
+
+
+    /**
+     * Get the the predicate argument type of a predicate function.
+     *
+     * @function Highcharts.DataFilter#getPredicateArgumentType
+     *
+     * @param {string} predicate The predicate to get the argument of, e.g. `lessThan`.
+     *
+     * @return {"string"|"number"|""} The type of the predicate argument.
+     */
+    static getPredicateArgumentType(
+        predicate: Highcharts.DataFilterPredicateFunction
+    ): Highcharts.DataFilterPredicateArgumentTypeDescription {
+        const arg = DataFilter.predicates[predicate].argumentType;
+
+        if (arg === String) {
+            return 'string';
+        }
+
+        if (arg === Number) {
+            return 'number';
+        }
+
+        return '';
     }
 
 

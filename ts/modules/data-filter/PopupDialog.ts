@@ -31,7 +31,7 @@ class PopupDialog {
     private closeButton: HTMLElement;
     private useFlex: boolean;
 
-    constructor(private parentDiv: HTMLElement, content?: string) {
+    constructor(private parentDiv: HTMLElement, content?: HTMLElement) {
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
 
         const dc = this.dialogContainer = doc.createElement('div');
@@ -69,8 +69,9 @@ class PopupDialog {
     }
 
 
-    setContent(content: string): void {
-        this.contentContainer.innerHTML = content;
+    setContent(content: HTMLElement): void {
+        this.contentContainer.innerHTML = '';
+        this.contentContainer.appendChild(content);
         this.updateDialogPosition();
     }
 
