@@ -47,7 +47,6 @@ var data = [
     ['South Dakota', 903027],
     ['North Dakota', 761723],
     ['Alaska', 734002],
-    ['District of Columbia', 720687],
     ['Vermont', 628061],
     ['Wyoming', 567025]
 ];
