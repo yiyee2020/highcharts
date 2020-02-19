@@ -13,6 +13,7 @@
 var langOptions = {
     dataFilter: {
         dataFilterButtonText: 'Filter data. {chartTitle}'
-    }
+    },
+    filterDataMenuText: 'Filter data'
 };
 export default langOptions;

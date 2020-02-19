@@ -40,7 +40,7 @@ declare global {
 import defaultOptions from './options.js';
 import defaultLangOptions from './langOptions.js';
 import U from '../../parts/Utilities.js';
-const { addEvent, merge } = U;
+const { addEvent, extend, merge } = U;
 
 // Merge default options
 merge(
@@ -133,3 +133,23 @@ addEvent(H.Chart as any, 'update', function (
         merge(true, this.options.dataFilter, newOptions);
     }
 });
+
+
+// Add to export menu
+const exportingOptions = Highcharts.getOptions().exporting;
+if (exportingOptions) {
+    extend(exportingOptions.menuItemDefinitions, {
+        filterData: {
+            textKey: 'filterDataMenuText',
+            onclick: function (): void {
+                this.showDataFilterDialog();
+            }
+        }
+    } as Highcharts.Dictionary<Highcharts.ExportingMenuObject>);
+
+    if (exportingOptions.buttons) {
+        (exportingOptions.buttons.contextButton.menuItems as any).push(
+            'filterData'
+        );
+    }
+}

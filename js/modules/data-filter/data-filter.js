@@ -17,7 +17,7 @@ import DataFilterDialog from './DataFilterDialog.js';
 import defaultOptions from './options.js';
 import defaultLangOptions from './langOptions.js';
 import U from '../../parts/Utilities.js';
-var addEvent = U.addEvent, merge = U.merge;
+var addEvent = U.addEvent, extend = U.extend, merge = U.merge;
 // Merge default options
 merge(true, H.defaultOptions, defaultOptions, {
     lang: defaultLangOptions
@@ -90,3 +90,18 @@ addEvent(H.Chart, 'update', function (e) {
         merge(true, this.options.dataFilter, newOptions);
     }
 });
+// Add to export menu
+var exportingOptions = Highcharts.getOptions().exporting;
+if (exportingOptions) {
+    extend(exportingOptions.menuItemDefinitions, {
+        filterData: {
+            textKey: 'filterDataMenuText',
+            onclick: function () {
+                this.showDataFilterDialog();
+            }
+        }
+    });
+    if (exportingOptions.buttons) {
+        exportingOptions.buttons.contextButton.menuItems.push('filterData');
+    }
+}

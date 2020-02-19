@@ -23,6 +23,7 @@ declare global {
         }
         interface LangOptions {
             dataFilter?: LangDataFilterOptions;
+            filterDataMenuText?: string;
         }
     }
 }
@@ -31,7 +32,8 @@ declare global {
 const langOptions: Highcharts.LangOptions = {
     dataFilter: {
         dataFilterButtonText: 'Filter data. {chartTitle}'
-    }
+    },
+    filterDataMenuText: 'Filter data'
 };
 
 
