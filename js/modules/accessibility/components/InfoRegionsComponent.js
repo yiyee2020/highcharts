@@ -153,6 +153,9 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
                     if (typeof component.dataTableButtonId !== 'undefined') {
                         component.initDataTableButton(component.dataTableButtonId);
                     }
+                    if (typeof component.filterDataButtonId !== 'undefined') {
+                        component.initFilterDataButton(component.filterDataButtonId);
+                    }
                 }
             },
             after: {
@@ -248,13 +251,16 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
      * @return {string}
      */
     defaultBeforeChartFormatter: function () {
+        var _a;
         var chart = this.chart, format = chart.options.accessibility
             .screenReaderSection.beforeChartFormat, axesDesc = this.getAxesDescription(), dataTableButtonId = 'hc-linkto-highcharts-data-table-' +
-            chart.index, annotationsList = getAnnotationsInfoHTML(chart), annotationsTitleStr = chart.langFormat('accessibility.screenReaderSection.annotations.heading', { chart: chart }), context = {
+            chart.index, filterDataButtonId = 'highcharts-filter-data-btn-' + chart.index, shouldHaveDataFilter = (_a = chart.options.dataFilter) === null || _a === void 0 ? void 0 : _a.enabled, annotationsList = getAnnotationsInfoHTML(chart), annotationsTitleStr = chart.langFormat('accessibility.screenReaderSection.annotations.heading', { chart: chart }), context = {
             chartTitle: getChartTitle(chart),
             typeDescription: this.getTypeDescriptionText(),
             chartSubtitle: this.getSubtitleText(),
             chartLongdesc: this.getLongdescText(),
+            filterDataButton: shouldHaveDataFilter ?
+                this.getFilterDataButtonText(filterDataButtonId) : '',
             xAxisDescription: axesDesc.xAxis,
             yAxisDescription: axesDesc.yAxis,
             viewTableButton: chart.getCSV ?
@@ -263,6 +269,7 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
             annotationsList: annotationsList
         }, formattedString = H.i18nFormat(format, context, chart);
         this.dataTableButtonId = dataTableButtonId;
+        this.filterDataButtonId = filterDataButtonId;
         return stringToSimpleHTML(formattedString);
     },
     /**
@@ -316,6 +323,15 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
     },
     /**
      * @private
+     * @param {string} buttonId
+     * @return {string}
+     */
+    getFilterDataButtonText: function (buttonId) {
+        var chart = this.chart, buttonText = chart.langFormat('dataFilter.dataFilterButtonText', { chart: chart, chartTitle: getChartTitle(chart) });
+        return '<button id="' + buttonId + '">' + buttonText + '</button>';
+    },
+    /**
+     * @private
      * @return {string}
      */
     getSubtitleText: function () {
@@ -355,10 +371,10 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
     /**
      * Set attribs and handlers for default viewAsDataTable button if exists.
      * @private
-     * @param {string} tableButtonId
+     * @param {string} buttonId
      */
-    initDataTableButton: function (tableButtonId) {
-        var el = this.viewDataTableButton = getElement(tableButtonId), chart = this.chart, tableId = tableButtonId.replace('hc-linkto-', '');
+    initDataTableButton: function (buttonId) {
+        var el = this.viewDataTableButton = getElement(buttonId), chart = this.chart, tableId = buttonId.replace('hc-linkto-', '');
         if (el) {
             setElAttrs(el, {
                 role: 'button',
@@ -371,6 +387,18 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
                 function () {
                     chart.viewData();
                 };
+        }
+    },
+    /**
+     * Set handler for default filter data button if exists.
+     * @private
+     * @param {string} buttonId
+     */
+    initFilterDataButton: function (buttonId) {
+        var _this = this;
+        var el = getElement(buttonId);
+        if (el) {
+            el.onclick = function () { return _this.chart.showDataFilterDialog(); };
         }
     },
     /**

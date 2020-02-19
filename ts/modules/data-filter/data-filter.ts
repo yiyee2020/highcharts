@@ -15,7 +15,6 @@
 import H from '../../parts/Globals.js';
 import _DataFilter from './DataFilter.js';
 import DataFilterDialog from './DataFilterDialog.js';
-import defaultOptions from './options.js';
 
 /**
  * Internal types.
@@ -38,6 +37,8 @@ declare global {
 
 /* eslint-disable no-invalid-this, valid-jsdoc */
 
+import defaultOptions from './options.js';
+import defaultLangOptions from './langOptions.js';
 import U from '../../parts/Utilities.js';
 const { addEvent, merge } = U;
 
@@ -45,7 +46,9 @@ const { addEvent, merge } = U;
 merge(
     true,
     H.defaultOptions,
-    defaultOptions
+    defaultOptions, {
+        lang: defaultLangOptions
+    }
 );
 
 // Make DataFilter class available on Highcharts scope

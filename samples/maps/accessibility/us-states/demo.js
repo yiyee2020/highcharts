@@ -115,7 +115,3 @@ Highcharts.addEvent(chart, 'exportData', function (e) {
         dataRow.shift();
     });
 });
-
-document.getElementById('showDialog').onclick = function () {
-    chart.showDataFilterDialog();
-};

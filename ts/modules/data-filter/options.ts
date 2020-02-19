@@ -17,6 +17,7 @@
 declare global {
     namespace Highcharts {
         interface DataFilterDialogOptions {
+            enabled: boolean;
             keys: Dictionary<string>|null;
             predicates: Array<DataFilterPredicateFunction>;
             showTotalPoints: boolean;
@@ -29,8 +30,9 @@ declare global {
     }
 }
 
-const options = {
+const options: Highcharts.Options = {
     dataFilter: {
+        enabled: true,
         keys: null,
         predicates: ['contains', 'equals', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
         showTotalPoints: true,

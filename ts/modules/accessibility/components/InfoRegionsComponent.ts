@@ -48,6 +48,7 @@ declare global {
         class InfoRegionsComponent extends AccessibilityComponent {
             public constructor();
             public dataTableButtonId?: string;
+            public filterDataButtonId?: string;
             public dataTableDiv?: HTMLDOMElement;
             public linkedDescriptionElement: (HTMLDOMElement|undefined);
             public screenReaderSections: Dictionary<(
@@ -68,6 +69,7 @@ declare global {
             public getAxisTimeLengthDesc(axis: Axis): string;
             public getCategoryAxisRangeDesc(axis: Axis): string;
             public getDataTableButtonText(buttonId: string): string;
+            public getFilterDataButtonText(buttonId: string): string;
             public getEndOfChartMarkerText(): string;
             public getLinkedDescription(): string;
             public getLinkedDescriptionElement(): (HTMLDOMElement|undefined);
@@ -75,7 +77,8 @@ declare global {
             public getSubtitleText(): string;
             public getTypeDescriptionText(): string;
             public init(): void;
-            public initDataTableButton(tableButtonId: string): void;
+            public initDataTableButton(buttonId: string): void;
+            public initFilterDataButton(buttonId: string): void;
             public initRegionsDefinitions(): void;
             public onChartUpdate(): void;
             public onDataTableCreated(e: { html: string }): void;
@@ -319,6 +322,9 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
                     if (typeof component.dataTableButtonId !== 'undefined') {
                         component.initDataTableButton(component.dataTableButtonId);
                     }
+                    if (typeof component.filterDataButtonId !== 'undefined') {
+                        component.initFilterDataButton(component.filterDataButtonId);
+                    }
                 }
             },
 
@@ -484,6 +490,8 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
             axesDesc = this.getAxesDescription(),
             dataTableButtonId = 'hc-linkto-highcharts-data-table-' +
                 chart.index,
+            filterDataButtonId = 'highcharts-filter-data-btn-' + chart.index,
+            shouldHaveDataFilter = chart.options.dataFilter?.enabled,
             annotationsList = getAnnotationsInfoHTML(chart as Highcharts.AnnotationChart),
             annotationsTitleStr = chart.langFormat(
                 'accessibility.screenReaderSection.annotations.heading',
@@ -494,6 +502,8 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
                 typeDescription: this.getTypeDescriptionText(),
                 chartSubtitle: this.getSubtitleText(),
                 chartLongdesc: this.getLongdescText(),
+                filterDataButton: shouldHaveDataFilter ?
+                    this.getFilterDataButtonText(filterDataButtonId) : '',
                 xAxisDescription: axesDesc.xAxis,
                 yAxisDescription: axesDesc.yAxis,
                 viewTableButton: chart.getCSV ?
@@ -504,6 +514,7 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
             formattedString = H.i18nFormat(format, context, chart);
 
         this.dataTableButtonId = dataTableButtonId;
+        this.filterDataButtonId = filterDataButtonId;
         return stringToSimpleHTML(formattedString);
     },
 
@@ -597,6 +608,25 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
 
     /**
      * @private
+     * @param {string} buttonId
+     * @return {string}
+     */
+    getFilterDataButtonText: function (
+        this: Highcharts.InfoRegionsComponent,
+        buttonId: string
+    ): string {
+        var chart = this.chart,
+            buttonText = chart.langFormat(
+                'dataFilter.dataFilterButtonText',
+                { chart: chart, chartTitle: getChartTitle(chart) }
+            );
+
+        return '<button id="' + buttonId + '">' + buttonText + '</button>';
+    },
+
+
+    /**
+     * @private
      * @return {string}
      */
     getSubtitleText: function (
@@ -666,15 +696,15 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
     /**
      * Set attribs and handlers for default viewAsDataTable button if exists.
      * @private
-     * @param {string} tableButtonId
+     * @param {string} buttonId
      */
     initDataTableButton: function (
         this: Highcharts.InfoRegionsComponent,
-        tableButtonId: string
+        buttonId: string
     ): void {
-        var el = this.viewDataTableButton = getElement(tableButtonId),
+        var el = this.viewDataTableButton = getElement(buttonId),
             chart = this.chart,
-            tableId = tableButtonId.replace('hc-linkto-', '');
+            tableId = buttonId.replace('hc-linkto-', '');
 
         if (el) {
             setElAttrs(el, {
@@ -689,6 +719,23 @@ extend(InfoRegionsComponent.prototype, /** @lends Highcharts.InfoRegionsComponen
                 function (): void {
                     chart.viewData();
                 };
+        }
+    },
+
+
+    /**
+     * Set handler for default filter data button if exists.
+     * @private
+     * @param {string} buttonId
+     */
+    initFilterDataButton: function (
+        this: Highcharts.InfoRegionsComponent,
+        buttonId: string
+    ): void {
+        var el = getElement(buttonId);
+
+        if (el) {
+            el.onclick = (): void => this.chart.showDataFilterDialog();
         }
     },
 

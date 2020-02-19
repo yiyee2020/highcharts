@@ -11,6 +11,7 @@
  * */
 var options = {
     dataFilter: {
+        enabled: true,
         keys: null,
         predicates: ['contains', 'equals', 'startsWith', 'lessThan', 'greaterThan', 'hasValue'],
         showTotalPoints: true,

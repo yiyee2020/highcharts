@@ -13,12 +13,15 @@
 import H from '../../parts/Globals.js';
 import _DataFilter from './DataFilter.js';
 import DataFilterDialog from './DataFilterDialog.js';
-import defaultOptions from './options.js';
 /* eslint-disable no-invalid-this, valid-jsdoc */
+import defaultOptions from './options.js';
+import defaultLangOptions from './langOptions.js';
 import U from '../../parts/Utilities.js';
 var addEvent = U.addEvent, merge = U.merge;
 // Merge default options
-merge(true, H.defaultOptions, defaultOptions);
+merge(true, H.defaultOptions, defaultOptions, {
+    lang: defaultLangOptions
+});
 // Make DataFilter class available on Highcharts scope
 H.DataFilter = _DataFilter;
 /**
