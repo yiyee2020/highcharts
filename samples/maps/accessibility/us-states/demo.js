@@ -95,6 +95,7 @@ var chart = Highcharts.mapChart('container', {
         name: 'Population',
         keys: ['name', 'value'],
         joinBy: 'name',
+        allAreas: false,
         data: data.sort(), // Sort ascending alphabetically
         dataLabels: {
             enabled: true,
