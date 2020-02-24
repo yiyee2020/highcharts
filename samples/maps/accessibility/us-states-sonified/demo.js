@@ -224,3 +224,60 @@ document.getElementById('sonify-by-cursor').onclick = function () {
 
     Highcharts.isHoveringToPlay = true;
 };
+
+document.getElementById('speak').onclick = function () {
+    const speechSynthesis = window.speechSynthesis;
+
+    if (!speechSynthesis || !speechSynthesis.speak) {
+        alert('Speech synthesis is disabled or not supported in your browser.');
+        return;
+    }
+
+    if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        return;
+    }
+
+    var values = chart.series[0].points.map(function (x) {
+        return x.value;
+    });
+    var minValue = Math.min.apply(Math, values);
+    var maxValue = Math.max.apply(Math, values);
+
+    function clamp(value, min, max) {
+        return value > min ? value < max ? value : max : min;
+    }
+
+    function virtualAxisTranslate(value, dataExtremes, limits) {
+        var lenValueAxis = dataExtremes.max - dataExtremes.min,
+            lenVirtualAxis = limits.max - limits.min,
+            virtualAxisValue = limits.min +
+                lenVirtualAxis * (value - dataExtremes.min) / lenValueAxis;
+
+        return lenValueAxis > 0 ?
+            clamp(virtualAxisValue, limits.min, limits.max) :
+            limits.min;
+    }
+
+    chart.series[0].points.forEach(function (point) {
+        var val = point.value;
+        var utterance = new SpeechSynthesisUtterance(point.name);
+        utterance.lang = 'en-US';
+        utterance.pitch = 2 - virtualAxisTranslate(
+            val,
+            { min: minValue, max: maxValue },
+            { min: 0, max: 1.5 }
+        );
+        utterance.rate = 5 - virtualAxisTranslate(
+            val,
+            { min: minValue, max: maxValue },
+            { min: 1, max: 3.5 }
+        );
+        utterance.volume = virtualAxisTranslate(
+            val,
+            { min: minValue, max: maxValue },
+            { min: 0.1, max: 1 }
+        );
+        speechSynthesis.speak(utterance);
+    });
+};
