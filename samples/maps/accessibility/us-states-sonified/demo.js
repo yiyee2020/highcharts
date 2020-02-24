@@ -266,12 +266,12 @@ document.getElementById('speak').onclick = function () {
         utterance.pitch = 2 - virtualAxisTranslate(
             val,
             { min: minValue, max: maxValue },
-            { min: 0, max: 1.5 }
+            { min: 0, max: 1.2 }
         );
-        utterance.rate = 5 - virtualAxisTranslate(
+        utterance.rate = 6 - virtualAxisTranslate(
             val,
             { min: minValue, max: maxValue },
-            { min: 1, max: 3.5 }
+            { min: 1, max: 4.5 }
         );
         utterance.volume = virtualAxisTranslate(
             val,
