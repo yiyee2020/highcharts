@@ -101,8 +101,6 @@ Highcharts.chart('container', {
             borderRadius: 5,
             shape: 'rect',
             text: 'Annotations showing presentation info for Elsevier and Highcharts',
-            backgroundColor: 'rgb(250, 245, 245)',
-            borderColor: 'rgb(255, 250, 250)',
             padding: 10
         }]
     }, {
@@ -130,13 +128,13 @@ Highcharts.chart('container', {
             text: 'First year in Anaheim',
             shape: 'rect',
             verticalAlign: 'top',
-            distance: 110
+            distance: 115
         }, {
             point: '2019',
             text: 'Elsevier and Highcharts presented 2nd session together:  Highcharts, The Next Chapter',
             shape: 'rect',
             verticalAlign: 'top',
-            distance: 55
+            distance: 58
         }, {
             point: '2019',
             text: 'Ted passes by Stevie in the hotel lobby'
