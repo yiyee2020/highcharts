@@ -79,6 +79,15 @@ var chart = Highcharts.mapChart('container', {
         text: 'Source: US Census Bureau 2020 estimates'
     },
 
+    exporting: {
+        useMultiLevelHeaders: false,
+        csv: {
+            columnHeaderFormatter: function (_, key) {
+                return key === 'value' ? 'Population' : 'State';
+            }
+        }
+    },
+
     mapNavigation: {
         enabled: true
     },
