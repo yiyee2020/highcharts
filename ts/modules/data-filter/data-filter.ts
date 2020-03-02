@@ -124,6 +124,12 @@ H.Chart.prototype.showDataFilterDialog = function (): void {
                 announcer.announce(
                     `Dialog closed. Currently showing ${visiblePoints} of ${totalPoints} data points.`
                 );
+
+                const svg = this.renderer.box;
+                if (!svg.hasAttribute('tabindex')) {
+                    svg.setAttribute('tabindex', '-1');
+                }
+                svg.focus();
             }
         }
     };
