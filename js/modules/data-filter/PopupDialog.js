@@ -115,12 +115,12 @@ var PopupDialog = /** @class */ (function () {
         ]));
         setElementStyle(this.innerContainer, [
             'position: relative',
-            'padding: 10px'
+            'padding: 15px'
         ]);
         setElementStyle(this.closeButton, [
             'position: absolute',
-            'right: 5px',
-            'top: 5px',
+            'right: 10px',
+            'top: 10px',
             'background: none',
             'border: none',
             'padding: 0',

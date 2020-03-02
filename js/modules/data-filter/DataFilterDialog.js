@@ -41,6 +41,7 @@ var DataFilterDialog = /** @class */ (function () {
             delete this.filterKeyElement;
             delete this.predicateElement;
             delete this.argumentContainer;
+            delete this.buttonContainer;
             delete this.argumentElement;
         }
         var contentContainer = this.contentContainer = doc.createElement('div');
@@ -57,8 +58,10 @@ var DataFilterDialog = /** @class */ (function () {
         this.predicateElement = this.makePredicateElement(options.predicates);
         contentContainer.appendChild(this.predicateElement);
         contentContainer.appendChild(this.argumentContainer);
-        contentContainer.appendChild(this.makeResetButtonElement());
-        contentContainer.appendChild(this.makeApplyButtonElement());
+        var buttonContainer = this.buttonContainer = this.makeButtonContainer();
+        buttonContainer.appendChild(this.makeApplyButtonElement());
+        buttonContainer.appendChild(this.makeResetButtonElement());
+        contentContainer.appendChild(buttonContainer);
         return contentContainer;
     };
     DataFilterDialog.prototype.makeHeadingElement = function () {
@@ -146,10 +149,15 @@ var DataFilterDialog = /** @class */ (function () {
         container.style.cssText = 'width: 100%';
         return container;
     };
+    DataFilterDialog.prototype.makeButtonContainer = function () {
+        var container = doc.createElement('div');
+        container.style.cssText = 'width: 100%; margin-top: 10px; text-align: center';
+        return container;
+    };
     DataFilterDialog.prototype.makeResetButtonElement = function () {
         var _this = this;
         var btn = doc.createElement('button');
-        btn.style.cssText = 'margin: 5px 10px; width: 90px; height: 35px; padding: 0';
+        btn.style.cssText = DataFilterDialog.buttonStyle;
         btn.innerHTML = 'Reset';
         btn.onclick = function () {
             _this.chart.clearDataFilter();
@@ -160,7 +168,7 @@ var DataFilterDialog = /** @class */ (function () {
     DataFilterDialog.prototype.makeApplyButtonElement = function () {
         var _this = this;
         var btn = doc.createElement('button');
-        btn.style.cssText = 'margin: 5px 10px; width: 90px; height: 35px; padding: 0';
+        btn.style.cssText = DataFilterDialog.buttonStyle;
         btn.innerHTML = 'Apply';
         btn.onclick = function () {
             var keySelect = _this.filterKeyElement;
@@ -197,8 +205,8 @@ var DataFilterDialog = /** @class */ (function () {
         }
         if (newInputType) {
             argElement = this.argumentElement = doc.createElement('input');
-            argElement.style.cssText =
-                'display: block; margin: 5px auto; width: 200px; font-size: 0.8em; color: #333; padding: 2px 8px;';
+            argElement.style.cssText = 'display: block; box-sizing: border-box; margin: 5px auto;' +
+                'width: 100%; font-size: 0.8em; color: #333; padding: 2px 8px;';
             argElement.type = newInputType;
             argElement.setAttribute('aria-label', 'Filter value');
             argElement.onchange = function (e) {
@@ -223,6 +231,9 @@ var DataFilterDialog = /** @class */ (function () {
         }
         return argType === 'number' ? 'number' : 'text';
     };
+    DataFilterDialog.buttonStyle = 'margin: 5px 10px; width: 100px; padding: 6px 15px' +
+        'border-width: 0px; border-radius: 14px; font: inherit; font-size: 14px; font-weight: bold;' +
+        'cursor: pointer; background-color: #25386f; color: #ffffff';
     return DataFilterDialog;
 }());
 export default DataFilterDialog;
