@@ -154,7 +154,7 @@ class DataFilterDialog {
     private makeFilterKeyElement(keys: Highcharts.Dictionary<string>): HTMLSelectElement {
         const curFilterKey = this.currentFilterKey = this.currentFilterKey || Object.keys(keys)[0];
         const select = doc.createElement('select');
-        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
+        select.style.cssText = 'width: 125px; margin: 5px 5px 0 0; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter by');
 
         Object.keys(keys).forEach((pointKey: string): void => {
@@ -176,7 +176,7 @@ class DataFilterDialog {
     private makePredicateElement(predicates: Highcharts.DataFilterPredicateFunction[]): HTMLSelectElement {
         const curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         const select = doc.createElement('select');
-        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
+        select.style.cssText = 'width: 125px; margin: 0 5px 0 5px; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter operator');
 
         predicates.forEach((predicate: Highcharts.DataFilterPredicateFunction): void => {
@@ -201,7 +201,7 @@ class DataFilterDialog {
 
     private makeArgumentContainer(): HTMLElement {
         const container = doc.createElement('div');
-        container.style.cssText = 'width: 100%';
+        container.style.cssText = 'margin-top: 8px; width: 100%';
         return container;
     }
 
@@ -232,25 +232,7 @@ class DataFilterDialog {
         btn.style.cssText = DataFilterDialog.buttonStyle;
 
         btn.innerHTML = 'Apply';
-        btn.onclick = (): void => {
-            const keySelect = this.filterKeyElement;
-            const predicate = this.currentPredicate;
-
-            if (!keySelect || !predicate) {
-                return;
-            }
-
-            const key = keySelect.options[keySelect.selectedIndex].value;
-            const argumentValue = (this.argumentElement || {}).value;
-            const argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
-            const argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
-
-            const filter = new DataFilter(key, predicate as any, argument, {
-                caseSensitive: this.caseSensitive
-            });
-            this.chart.applyDataFilter(filter);
-            this.dialog.hide();
-        };
+        btn.onclick = (): void => this.onApplyClick();
 
         return btn;
     }
@@ -282,6 +264,16 @@ class DataFilterDialog {
                 this.currentArgumentValue = (e.target as HTMLInputElement).value;
             };
 
+            argElement.onkeydown = (e: KeyboardEvent): void => {
+                const keycode = e.which || e.keyCode;
+                const enter = 13;
+                if (keycode === enter) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.onApplyClick();
+                }
+            };
+
             // Init the value of the input
             const oldValue = this.currentArgumentValue;
             const oldType = this.currentArgumentType;
@@ -295,6 +287,27 @@ class DataFilterDialog {
             this.currentArgumentType = newInputType;
             this.argumentContainer?.appendChild(argElement);
         }
+    }
+
+
+    private onApplyClick(): void {
+        const keySelect = this.filterKeyElement;
+        const predicate = this.currentPredicate;
+
+        if (!keySelect || !predicate) {
+            return;
+        }
+
+        const key = keySelect.options[keySelect.selectedIndex].value;
+        const argumentValue = (this.argumentElement || {}).value;
+        const argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
+        const argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
+
+        const filter = new DataFilter(key, predicate as any, argument, {
+            caseSensitive: this.caseSensitive
+        });
+        this.chart.applyDataFilter(filter);
+        this.dialog.hide();
     }
 
 

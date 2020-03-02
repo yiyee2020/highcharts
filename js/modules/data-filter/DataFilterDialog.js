@@ -100,7 +100,7 @@ var DataFilterDialog = /** @class */ (function () {
         var _this = this;
         var curFilterKey = this.currentFilterKey = this.currentFilterKey || Object.keys(keys)[0];
         var select = doc.createElement('select');
-        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
+        select.style.cssText = 'width: 125px; margin: 5px 5px 0 0; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter by');
         Object.keys(keys).forEach(function (pointKey) {
             var option = doc.createElement('option');
@@ -118,7 +118,7 @@ var DataFilterDialog = /** @class */ (function () {
         var _this = this;
         var curPredicate = this.currentPredicate = this.currentPredicate || predicates[0];
         var select = doc.createElement('select');
-        select.style.cssText = 'margin: 10px; font-size: 0.8em; color: #333';
+        select.style.cssText = 'width: 125px; margin: 0 5px 0 5px; font-size: 0.8em; color: #333';
         select.setAttribute('aria-label', 'Filter operator');
         predicates.forEach(function (predicate) {
             var option = doc.createElement('option');
@@ -137,7 +137,7 @@ var DataFilterDialog = /** @class */ (function () {
     };
     DataFilterDialog.prototype.makeArgumentContainer = function () {
         var container = doc.createElement('div');
-        container.style.cssText = 'width: 100%';
+        container.style.cssText = 'margin-top: 8px; width: 100%';
         return container;
     };
     DataFilterDialog.prototype.makeButtonContainer = function () {
@@ -161,22 +161,7 @@ var DataFilterDialog = /** @class */ (function () {
         var btn = doc.createElement('button');
         btn.style.cssText = DataFilterDialog.buttonStyle;
         btn.innerHTML = 'Apply';
-        btn.onclick = function () {
-            var keySelect = _this.filterKeyElement;
-            var predicate = _this.currentPredicate;
-            if (!keySelect || !predicate) {
-                return;
-            }
-            var key = keySelect.options[keySelect.selectedIndex].value;
-            var argumentValue = (_this.argumentElement || {}).value;
-            var argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
-            var argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
-            var filter = new DataFilter(key, predicate, argument, {
-                caseSensitive: _this.caseSensitive
-            });
-            _this.chart.applyDataFilter(filter);
-            _this.dialog.hide();
-        };
+        btn.onclick = function () { return _this.onApplyClick(); };
         return btn;
     };
     DataFilterDialog.prototype.updateArgumentElement = function () {
@@ -203,6 +188,15 @@ var DataFilterDialog = /** @class */ (function () {
             argElement.onchange = function (e) {
                 _this.currentArgumentValue = e.target.value;
             };
+            argElement.onkeydown = function (e) {
+                var keycode = e.which || e.keyCode;
+                var enter = 13;
+                if (keycode === enter) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    _this.onApplyClick();
+                }
+            };
             // Init the value of the input
             var oldValue = this.currentArgumentValue;
             var oldType = this.currentArgumentType;
@@ -215,6 +209,22 @@ var DataFilterDialog = /** @class */ (function () {
             this.currentArgumentType = newInputType;
             (_b = this.argumentContainer) === null || _b === void 0 ? void 0 : _b.appendChild(argElement);
         }
+    };
+    DataFilterDialog.prototype.onApplyClick = function () {
+        var keySelect = this.filterKeyElement;
+        var predicate = this.currentPredicate;
+        if (!keySelect || !predicate) {
+            return;
+        }
+        var key = keySelect.options[keySelect.selectedIndex].value;
+        var argumentValue = (this.argumentElement || {}).value;
+        var argIsNumber = DataFilter.getPredicateArgumentType(predicate) === 'number';
+        var argument = argIsNumber && argumentValue ? parseFloat(argumentValue) : argumentValue;
+        var filter = new DataFilter(key, predicate, argument, {
+            caseSensitive: this.caseSensitive
+        });
+        this.chart.applyDataFilter(filter);
+        this.dialog.hide();
     };
     DataFilterDialog.prototype.getInputTypeFromArgumentType = function (argType) {
         if (!argType) {
