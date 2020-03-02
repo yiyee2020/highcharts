@@ -18,6 +18,12 @@
  */
 declare global {
     namespace Highcharts {
+        interface AnnotationsAccessibilityOptionsObject {
+            description?: string;
+        }
+        interface AnnotationsLabelOptions {
+            accessibility?: AnnotationsAccessibilityOptionsObject;
+        }
         interface AccessibilityAnnouncementFormatter {
             (
                 updatedSeries: Array<Series>,
@@ -80,6 +86,7 @@ declare global {
             axisRangeDateFormat: string;
             beforeChartFormat: string;
             beforeChartFormatter?: ScreenReaderFormatterCallbackFunction<Chart>;
+            onPlayAsSoundClick?: ScreenReaderClickCallbackFunction;
             onViewDataTableClick?: ScreenReaderClickCallbackFunction;
         }
         interface AccessibilitySeriesOptions {
@@ -115,7 +122,7 @@ declare global {
             accessibility?: PointAccessibilityOptionsObject;
         }
         interface ScreenReaderClickCallbackFunction {
-            (evt: MouseEvent): void;
+            (evt: MouseEvent, chart?: AccessibilityChart): void;
         }
         interface ScreenReaderFormatterCallbackFunction<T> {
             (context: T): string;
@@ -252,6 +259,17 @@ var options: DeepPartial<Highcharts.Options> = {
              */
 
             /**
+             * Function to run upon clicking the "Play as sound" button in
+             * the screen reader region.
+             *
+             * By default Highcharts will call the `chart.sonify` function.
+             *
+             * @type      {Highcharts.ScreenReaderClickCallbackFunction}
+             * @since next
+             * @apioption accessibility.screenReaderSection.onPlayAsSoundClick
+             */
+
+            /**
              * A formatter function to create the HTML contents of the hidden
              * screen reader information region before the chart. Receives one
              * argument, `chart`, referring to the chart object. Should return a
@@ -281,6 +299,7 @@ var options: DeepPartial<Highcharts.Options> = {
                 '<div>{chartSubtitle}</div>' +
                 '<div>{chartLongdesc}</div>' +
                 '<div>{filterDataButton}</div>' +
+                '<div>{playAsSoundButton}</div>' +
                 '<div>{viewTableButton}</div>' +
                 '<div>{xAxisDescription}</div>' +
                 '<div>{yAxisDescription}</div>' +
@@ -864,6 +883,24 @@ var options: DeepPartial<Highcharts.Options> = {
      * @type       {boolean}
      * @since      7.1.0
      * @apioption  plotOptions.series.accessibility.keyboardNavigation.enabled
+     */
+
+    /**
+     * Accessibility options for an annotation label.
+     *
+     * @declare    Highcharts.AnnotationLabelAccessibilityOptionsObject
+     * @since      next
+     * @requires   modules/accessibility
+     * @apioption  annotations.labelOptions.accessibility
+     */
+
+    /**
+     * Description of an annotation label for screen readers and other assistive
+     * technology.
+     *
+     * @type       {string}
+     * @since      next
+     * @apioption  annotations.labelOptions.accessibility.description
      */
 
     /**

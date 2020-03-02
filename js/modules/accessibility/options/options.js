@@ -108,6 +108,16 @@ var options = {
              * @apioption accessibility.screenReaderSection.onViewDataTableClick
              */
             /**
+             * Function to run upon clicking the "Play as sound" button in
+             * the screen reader region.
+             *
+             * By default Highcharts will call the `chart.sonify` function.
+             *
+             * @type      {Highcharts.ScreenReaderClickCallbackFunction}
+             * @since next
+             * @apioption accessibility.screenReaderSection.onPlayAsSoundClick
+             */
+            /**
              * A formatter function to create the HTML contents of the hidden
              * screen reader information region before the chart. Receives one
              * argument, `chart`, referring to the chart object. Should return a
@@ -135,6 +145,7 @@ var options = {
                 '<div>{chartSubtitle}</div>' +
                 '<div>{chartLongdesc}</div>' +
                 '<div>{filterDataButton}</div>' +
+                '<div>{playAsSoundButton}</div>' +
                 '<div>{viewTableButton}</div>' +
                 '<div>{xAxisDescription}</div>' +
                 '<div>{yAxisDescription}</div>' +
@@ -673,6 +684,22 @@ var options = {
      * @type       {boolean}
      * @since      7.1.0
      * @apioption  plotOptions.series.accessibility.keyboardNavigation.enabled
+     */
+    /**
+     * Accessibility options for an annotation label.
+     *
+     * @declare    Highcharts.AnnotationLabelAccessibilityOptionsObject
+     * @since      next
+     * @requires   modules/accessibility
+     * @apioption  annotations.labelOptions.accessibility
+     */
+    /**
+     * Description of an annotation label for screen readers and other assistive
+     * technology.
+     *
+     * @type       {string}
+     * @since      next
+     * @apioption  annotations.labelOptions.accessibility.description
      */
     /**
      * Accessibility options for an axis. Requires the accessibility module.
