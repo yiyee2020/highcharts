@@ -79,16 +79,8 @@ var DataFilterDialog = /** @class */ (function () {
         if (!this.totalPointsElement) {
             return;
         }
-        var totalPoints = 0;
-        var visiblePoints = 0;
-        this.chart.series.forEach(function (series) {
-            series.points.forEach(function (point) {
-                if (point.visible) {
-                    visiblePoints++;
-                }
-                totalPoints++;
-            });
-        });
+        var totalPoints = this.chart.getNumPoints();
+        var visiblePoints = this.chart.getNumPointsVisible();
         this.totalPointsElement.innerHTML =
             "Currently showing " + visiblePoints + " of " + totalPoints + " data points.";
     };
@@ -160,7 +152,6 @@ var DataFilterDialog = /** @class */ (function () {
         btn.innerHTML = 'Reset';
         btn.onclick = function () {
             _this.chart.clearDataFilter();
-            _this.updateTotalPoints();
             _this.dialog.hide();
         };
         return btn;
@@ -184,7 +175,6 @@ var DataFilterDialog = /** @class */ (function () {
                 caseSensitive: _this.caseSensitive
             });
             _this.chart.applyDataFilter(filter);
-            _this.updateTotalPoints();
             _this.dialog.hide();
         };
         return btn;

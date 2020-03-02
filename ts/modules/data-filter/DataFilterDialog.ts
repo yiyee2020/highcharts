@@ -126,16 +126,8 @@ class DataFilterDialog {
             return;
         }
 
-        let totalPoints = 0;
-        let visiblePoints = 0;
-        this.chart.series.forEach((series: Highcharts.Series): void => {
-            series.points.forEach((point: Highcharts.Point): void => {
-                if (point.visible) {
-                    visiblePoints++;
-                }
-                totalPoints++;
-            });
-        });
+        const totalPoints = this.chart.getNumPoints();
+        const visiblePoints = this.chart.getNumPointsVisible();
 
         this.totalPointsElement.innerHTML =
             `Currently showing ${visiblePoints} of ${totalPoints} data points.`;
@@ -228,7 +220,6 @@ class DataFilterDialog {
         btn.innerHTML = 'Reset';
         btn.onclick = (): void => {
             this.chart.clearDataFilter();
-            this.updateTotalPoints();
             this.dialog.hide();
         };
 
@@ -258,7 +249,6 @@ class DataFilterDialog {
                 caseSensitive: this.caseSensitive
             });
             this.chart.applyDataFilter(filter);
-            this.updateTotalPoints();
             this.dialog.hide();
         };
 

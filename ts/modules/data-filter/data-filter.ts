@@ -30,6 +30,8 @@ declare global {
             clearDataFilter(): void;
             /** @require modules/data-filter */
             showDataFilterDialog(): void;
+            getNumPoints(): number;
+            getNumPointsVisible(): number;
         }
         let DataFilter: typeof _DataFilter;
     }
@@ -115,6 +117,14 @@ H.Chart.prototype.clearDataFilter = function (): void {
 H.Chart.prototype.showDataFilterDialog = function (): void {
     const dialogOptions = {
         onClose: (): void => {
+            const announcer = this.accessibility?.components.infoRegions.announcer;
+            const visiblePoints = this.getNumPointsVisible();
+            const totalPoints = this.getNumPoints();
+            if (announcer) {
+                announcer.announce(
+                    `Dialog closed. Currently showing ${visiblePoints} of ${totalPoints} data points.`
+                );
+            }
         }
     };
     const dialog = this.dataFilterDialog = this.dataFilterDialog || new DataFilterDialog(this, dialogOptions);
@@ -124,6 +134,30 @@ H.Chart.prototype.showDataFilterDialog = function (): void {
         dialog.buildContent(opts);
         dialog.show();
     }
+};
+
+
+/**
+ * @private
+ */
+H.Chart.prototype.getNumPointsVisible = function (): number {
+    return this.series.reduce((total: number, series: Highcharts.Series): number => {
+        const visiblePointsInSeries = series.points.reduce(
+            (seriesTotal: number, point: Highcharts.Point): number =>
+                seriesTotal + (point.visible ? 1 : 0)
+            , 0);
+
+        return total + visiblePointsInSeries;
+    }, 0);
+};
+
+
+/**
+ * @private
+ */
+H.Chart.prototype.getNumPoints = function (): number {
+    return this.series.reduce((total: number, series: Highcharts.Series): number =>
+        total + series.points.length, 0);
 };
 
 

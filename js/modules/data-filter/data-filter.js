@@ -76,8 +76,16 @@ H.Chart.prototype.clearDataFilter = function () {
  * @function Highcharts.Chart#showDataFilterDialog
  */
 H.Chart.prototype.showDataFilterDialog = function () {
+    var _this = this;
     var dialogOptions = {
         onClose: function () {
+            var _a;
+            var announcer = (_a = _this.accessibility) === null || _a === void 0 ? void 0 : _a.components.infoRegions.announcer;
+            var visiblePoints = _this.getNumPointsVisible();
+            var totalPoints = _this.getNumPoints();
+            if (announcer) {
+                announcer.announce("Dialog closed. Currently showing " + visiblePoints + " of " + totalPoints + " data points.");
+            }
         }
     };
     var dialog = this.dataFilterDialog = this.dataFilterDialog || new DataFilterDialog(this, dialogOptions);
@@ -86,6 +94,25 @@ H.Chart.prototype.showDataFilterDialog = function () {
         dialog.buildContent(opts);
         dialog.show();
     }
+};
+/**
+ * @private
+ */
+H.Chart.prototype.getNumPointsVisible = function () {
+    return this.series.reduce(function (total, series) {
+        var visiblePointsInSeries = series.points.reduce(function (seriesTotal, point) {
+            return seriesTotal + (point.visible ? 1 : 0);
+        }, 0);
+        return total + visiblePointsInSeries;
+    }, 0);
+};
+/**
+ * @private
+ */
+H.Chart.prototype.getNumPoints = function () {
+    return this.series.reduce(function (total, series) {
+        return total + series.points.length;
+    }, 0);
 };
 // Update options with chart updates
 addEvent(H.Chart, 'update', function (e) {
