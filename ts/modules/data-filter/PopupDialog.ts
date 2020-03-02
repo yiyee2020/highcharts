@@ -16,7 +16,11 @@ import H from '../../parts/Globals.js';
 const doc = H.doc;
 const userAgent = H.win.navigator.userAgent;
 
-// TODO: Title, styling options, lang options, styled mode
+// TODO: Styling options, lang options, styled mode
+
+interface PopupDialogOptions {
+    onClose?: () => void;
+}
 
 
 /**
@@ -31,7 +35,12 @@ class PopupDialog {
     private closeButton: HTMLElement;
     private useFlex: boolean;
 
-    constructor(title: string, private parentDiv: HTMLElement, content?: HTMLElement) {
+    constructor(
+        title: string,
+        private parentDiv: HTMLElement,
+        content?: HTMLElement|null,
+        private options?: PopupDialogOptions
+    ) {
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
 
         const dc = this.dialogContainer = doc.createElement('div');
@@ -89,8 +98,11 @@ class PopupDialog {
     }
 
 
-    hide(): void {
+    hide(triggerOnClose = true): void {
         this.dialogContainer.style.display = 'none';
+        if (triggerOnClose && this.options?.onClose) {
+            this.options.onClose();
+        }
     }
 
 
@@ -105,7 +117,7 @@ class PopupDialog {
         // will not repaint while JS is running synchronously.
         this.show();
         const parentHeight = this.parentDiv.clientHeight + 'px';
-        this.hide();
+        this.hide(false);
 
         this.flexContainer.style.height = parentHeight;
 

@@ -18,9 +18,9 @@ import DataFilter from './DataFilter.js';
  * @private
  */
 var DataFilterDialog = /** @class */ (function () {
-    function DataFilterDialog(chart) {
+    function DataFilterDialog(chart, options) {
         this.chart = chart;
-        this.dialog = new PopupDialog('Filter data', chart.renderTo);
+        this.dialog = new PopupDialog('Filter data', chart.renderTo, null, options);
     }
     DataFilterDialog.prototype.buildContent = function (options) {
         this.caseSensitive = options.caseSensitive;
@@ -73,7 +73,6 @@ var DataFilterDialog = /** @class */ (function () {
     DataFilterDialog.prototype.makeTotalPointsElement = function () {
         var total = doc.createElement('p');
         total.style.cssText = 'font-size: 1em; color: #444;';
-        total.setAttribute('aria-live', 'polite');
         return total;
     };
     DataFilterDialog.prototype.updateTotalPoints = function () {
@@ -162,6 +161,7 @@ var DataFilterDialog = /** @class */ (function () {
         btn.onclick = function () {
             _this.chart.clearDataFilter();
             _this.updateTotalPoints();
+            _this.dialog.hide();
         };
         return btn;
     };
@@ -185,6 +185,7 @@ var DataFilterDialog = /** @class */ (function () {
             });
             _this.chart.applyDataFilter(filter);
             _this.updateTotalPoints();
+            _this.dialog.hide();
         };
         return btn;
     };

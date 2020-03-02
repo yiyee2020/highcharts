@@ -13,14 +13,14 @@
 import H from '../../parts/Globals.js';
 var doc = H.doc;
 var userAgent = H.win.navigator.userAgent;
-// TODO: Title, styling options, lang options, styled mode
 /**
  * @private
  */
 var PopupDialog = /** @class */ (function () {
-    function PopupDialog(title, parentDiv, content) {
+    function PopupDialog(title, parentDiv, content, options) {
         var _this = this;
         this.parentDiv = parentDiv;
+        this.options = options;
         this.useFlex = !(/msie/i.test(userAgent)); // Don't use flexbox on IE
         var dc = this.dialogContainer = doc.createElement('div');
         dc.className = 'highcharts-popup-dialog';
@@ -66,8 +66,13 @@ var PopupDialog = /** @class */ (function () {
         this.dialogContainer.style.display = 'block';
         this.dialogBox.focus();
     };
-    PopupDialog.prototype.hide = function () {
+    PopupDialog.prototype.hide = function (triggerOnClose) {
+        if (triggerOnClose === void 0) { triggerOnClose = true; }
+        var _a;
         this.dialogContainer.style.display = 'none';
+        if (triggerOnClose && ((_a = this.options) === null || _a === void 0 ? void 0 : _a.onClose)) {
+            this.options.onClose();
+        }
     };
     PopupDialog.prototype.destroy = function () {
         this.dialogContainer.remove();
@@ -78,7 +83,7 @@ var PopupDialog = /** @class */ (function () {
         // will not repaint while JS is running synchronously.
         this.show();
         var parentHeight = this.parentDiv.clientHeight + 'px';
-        this.hide();
+        this.hide(false);
         this.flexContainer.style.height = parentHeight;
         if (!this.useFlex) {
             this.flexContainer.style.lineHeight = parentHeight;

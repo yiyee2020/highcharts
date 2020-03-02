@@ -19,6 +19,11 @@ import PopupDialog from './PopupDialog.js';
 import DataFilter from './DataFilter.js';
 
 
+interface DataFilterDialogInternalOptions {
+    onClose?: () => void;
+}
+
+
 /**
  * @private
  */
@@ -41,8 +46,8 @@ class DataFilterDialog {
     private currentArgumentType?: string;
     private caseSensitive?: boolean;
 
-    constructor(private chart: Highcharts.Chart) {
-        this.dialog = new PopupDialog('Filter data', chart.renderTo);
+    constructor(private chart: Highcharts.Chart, options?: DataFilterDialogInternalOptions) {
+        this.dialog = new PopupDialog('Filter data', chart.renderTo, null, options);
     }
 
     buildContent(options: Highcharts.DataFilterDialogOptions): void {
@@ -112,7 +117,6 @@ class DataFilterDialog {
     private makeTotalPointsElement(): HTMLElement {
         const total = doc.createElement('p');
         total.style.cssText = 'font-size: 1em; color: #444;';
-        total.setAttribute('aria-live', 'polite');
         return total;
     }
 
@@ -225,6 +229,7 @@ class DataFilterDialog {
         btn.onclick = (): void => {
             this.chart.clearDataFilter();
             this.updateTotalPoints();
+            this.dialog.hide();
         };
 
         return btn;
@@ -254,6 +259,7 @@ class DataFilterDialog {
             });
             this.chart.applyDataFilter(filter);
             this.updateTotalPoints();
+            this.dialog.hide();
         };
 
         return btn;
