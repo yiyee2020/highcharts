@@ -171,7 +171,6 @@ class TestController {
         }
 
         this.chart = chart;
-        this.mouseEnterStack = [];
         this.positionX = 0;
         this.positionY = 0;
         this.relatedTarget = null;
@@ -186,8 +185,6 @@ class TestController {
      * */
 
     private chart: Highcharts.Chart;
-
-    private mouseEnterStack: Array<Element>;
 
     private positionX: number;
     
@@ -239,22 +236,10 @@ class TestController {
     ): Event {
 
         const chartOffset = Highcharts.offset(this.chart.container);
-        let evt: Event;
-
-        if (document.createEvent) {
-            evt = document.createEvent('Events');
-            evt.initEvent(type, true, true);
-        } else {
-            evt = new Event(
-                type,
-                {
-                    bubbles: (extra.bubbles ?? true),
-                    cancelable: (extra.cancelable ?? true)
-                }
-            );
-        }
 
         extra = (extra || {});
+        extra.bubbles = (extra.bubbles ?? true);
+        extra.cancelable = (extra.cancelable ?? true);
         extra.pageX = (chartOffset.left + chartX);
         extra.pageY = (chartOffset.top + chartY);
 
@@ -272,6 +257,15 @@ class TestController {
                 extra.bubbles = false;
                 extra.cancelable = false;
                 break;
+        }
+
+        let evt: Event;
+
+        if (typeof window.Event === 'undefined') {
+            evt = document.createEvent('Events');
+            evt.initEvent(type, extra.bubbles, extra.cancelable);
+        } else {
+            evt = new Event(type, extra);
         }
 
         Object.keys(extra).forEach(function (key) {
@@ -308,7 +302,7 @@ class TestController {
             (chartOffset.top + chartY)
         );
 
-        if (element && getComputedStyle(element).pointerEvents === 'none') {
+        if (element && window.getComputedStyle(element).pointerEvents === 'none') {
             element = this.elementsFromPoint(chartX, chartY, useMSWorkaround)[0];
         }
 
@@ -408,16 +402,43 @@ class TestController {
      * might catch events and mess up the test result.
      */
     public mouseEnter (
-        chartX: number = this.positionX,
-        chartY: number = this.positionY,
+        newPosition: TestControllerPoint,
+        oldPosition: TestControllerPoint,
         extra: any = undefined,
         debug: boolean = false
     ): void {
-        this.triggerEvent('mouseenter', chartX, chartY, extra, debug);
+        const oldStack = this.elementsFromPoint(oldPosition[0], oldPosition[1]);
+        const newStack = this.elementsFromPoint(newPosition[0], newPosition[1]);
+        const newElement = newStack[0];
+        if (debug) {
+            this.setDebugMark(
+                newPosition[0], newPosition[1],
+                TestController.DebugMarkTypes.normal
+            );
+        }
+        let element: Element;
+        while (element = newStack.pop()) {
+            if (oldStack.indexOf(element) !== -1) {
+                continue;
+            }
+            extra.currentTarget = element;
+            extra.target = newElement;
+            element.dispatchEvent(this.createEvent('mouseenter', newPosition[0], newPosition[1], extra));
+        }
+        // Make sure to fire always for the top SVG element
+        if (
+            newElement instanceof SVGElement &&
+            oldStack.indexOf(newElement) !== -1
+        ) {
+            extra.currentTarget = newElement;
+            extra.target = newElement;
+            newElement.dispatchEvent(this.createEvent('mouseenter', newPosition[0], newPosition[1], extra));
+        }
     }
 
     /**
-     * Triggers mouse enter event on all necessary elements.
+     * Triggers mouse enter event on all elements, that are missing on the
+     * provided new position.
      *
      * @param chartX
      * X relative to the chart.
@@ -436,12 +457,39 @@ class TestController {
      * might catch events and mess up the test result.
      */
     public mouseLeave (
-        chartX: number = this.positionX,
-        chartY: number = this.positionY,
+        newPosition: TestControllerPoint,
+        oldPosition: TestControllerPoint,
         extra: any = undefined,
         debug: boolean = false
     ): void {
-        this.triggerEvent('mouseleave', chartX, chartY, extra, debug);
+        const oldStack = this.elementsFromPoint(oldPosition[0], oldPosition[1]);
+        const oldElement = oldStack[0];
+        const newStack = this.elementsFromPoint(newPosition[0], newPosition[1]);
+        const newElement = newStack[0];
+        if (debug) {
+            this.setDebugMark(
+                newPosition[0], newPosition[1],
+                TestController.DebugMarkTypes.normal
+            );
+        }
+        let element: Element;
+        while (element = oldStack.shift()) {
+            if (newStack.indexOf(element) !== -1) {
+                continue;
+            }
+            extra.currentTarget = element;
+            extra.target = newElement;
+            element.dispatchEvent(this.createEvent('mouseleave', oldPosition[0], oldPosition[1], extra));
+        }
+        // Make sure to fire always for the top SVG element
+        if (
+            oldElement instanceof SVGElement &&
+            newStack.indexOf(oldElement) !== -1
+        ) {
+            extra.currentTarget = oldElement;
+            extra.target = newElement;
+            oldElement.dispatchEvent(this.createEvent('mouseleave', oldPosition[0], oldPosition[1], extra));
+        }
     }
 
     /**
@@ -582,77 +630,74 @@ class TestController {
         extra: any = undefined,
         debug: boolean = false
     ): void {
+        const points = TestController.getPointsBetween(
+            [this.positionX, this.positionY],
+            [chartX, chartY]
+        );
 
-        const fromPosition = this.getPosition();
-        const from = [fromPosition.x, fromPosition.y] as TestControllerPoint;
-        const to = [chartX, chartY] as TestControllerPoint;
-        const points = TestController.getPointsBetween(from, to);
-
-        let currentTarget: Node = fromPosition.relatedTarget,
-            point: TestControllerPoint,
-            target: Node,
-            x1: number,
-            y1: number;
+        let point: TestControllerPoint,
+            oldPoint: TestControllerPoint,
+            oldTarget: Node,
+            target: Node;
 
         let clipPaths = this.setUpMSWorkaround();
 
         for (let i = 0, ie = points.length; i < ie; ++i) {
 
-            point = points[i];
+            oldPoint = [this.positionX, this.positionY];
+            oldTarget = this.relatedTarget;
 
-            x1 = point[0];
-            y1 = point[1];
-            target = this.elementFromPoint(x1, y1, false);
+            point = points[i];
+            this.setPosition(point[0], point[1], false);
+            target = this.relatedTarget;
 
             if (!target) {
                 continue;
             }
 
-            if (target !== currentTarget) {
+            if (
+                oldTarget &&
+                target !== oldTarget
+            ) {
                 // First trigger a mouseout on the old target.
                 this.mouseOut(
-                    x1, y1,
+                    oldPoint[0], oldPoint[1],
                     Highcharts.merge({
-                        currentTarget: currentTarget,
+                        currentTarget: oldTarget,
                         relatedTarget: target,
                         target: target
                     }, extra)
                 );
                 this.mouseLeave(
-                    x1, y1,
+                    point, oldPoint,
                     Highcharts.merge({
+                        currentTarget: oldTarget,
                         relatedTarget: target,
                         target: target
                     }, extra)
                 );
-            }
 
-            this.mouseMove(x1, y1, extra, debug);
-
-            if (target !== currentTarget) {
                 // Then trigger a mouseover on the new target.
                 this.mouseOver(
-                    x1, y1,
+                    point[0], point[1],
                     Highcharts.merge({
                         relatedTarget: target,
                         target: target
                     }, extra)
                 );
                 this.mouseEnter(
-                    x1, y1,
+                    point, oldPoint,
                     Highcharts.merge({
                         relatedTarget: target,
                         target: target
                     }, extra)
                 );
-                currentTarget = target;
             }
+
+            this.mouseMove(point[0], point[1], extra, debug);
         }
 
         this.tearDownMSWorkaround(clipPaths);
-
-        // Update controller positions and relatedTarget.
-        this.setPosition(chartX, chartY);
     }
 
     /**
@@ -816,14 +861,18 @@ class TestController {
      *
      * @param chartY
      * New y position on the chart.
+     *
+     * @param useMSWorkaround
+     * Whether to do additional operations to work around IE problems.
      */
     public setPosition (
         chartX: number = this.positionX,
-        chartY: number = this.positionY
+        chartY: number = this.positionY,
+        useMSWorkaround?: boolean
     ): void {
         this.positionX = chartX;
         this.positionY = chartY;
-        this.relatedTarget = this.elementFromPoint(chartX, chartY);
+        this.relatedTarget = this.elementFromPoint(chartX, chartY, useMSWorkaround);
     }
 
     /**
@@ -1163,7 +1212,7 @@ class TestController {
     ): void {
 
         // Find an element related to the coordinates and fire event.
-        let element: (Node|undefined) = (
+        let element: (Element|undefined) = (
             (extra && extra.currentTarget) ||
             (extra && extra.target) ||
             this.elementFromPoint(chartX, chartY)
@@ -1193,41 +1242,7 @@ class TestController {
             extra.target = element;
         }
 
-        let evt = this.createEvent(type, chartX, chartY, extra);
-
-        switch (type) {
-            default:
-                element.dispatchEvent(evt);
-                break;
-            case 'mouseleave':
-            case 'mouseenter':
-                const elements = this.elementsFromPoint(chartX, chartY);
-                const mouseEnterStack = this.mouseEnterStack;
-                if (type === 'mouseleave') {
-                    this.mouseEnterStack = elements.filter(element => {
-                        if (mouseEnterStack.indexOf(element)) {
-                            return true;
-                        }
-                        extra.currentTarget = element;
-                        evt = this.createEvent(type, chartX, chartY, extra);
-                        element.dispatchEvent(evt);
-                        return false;
-                    });
-                } else {
-                    this.mouseEnterStack.unshift(
-                        ...elements.filter(element => {
-                            if (mouseEnterStack.indexOf(element)) {
-                                return false;
-                            }
-                            extra.currentTarget = element;
-                            evt = this.createEvent(type, chartX, chartY, extra);
-                            element.dispatchEvent(evt);
-                            return true;
-                        })
-                    );
-                }
-                break;
-        }
+        element.dispatchEvent(this.createEvent(type, chartX, chartY, extra));
     }
 }
 
