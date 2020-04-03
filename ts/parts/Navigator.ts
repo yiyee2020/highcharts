@@ -1907,7 +1907,7 @@ class Navigator {
 
         if (navigator.navigatorEnabled) {
             // an x axis is required for scrollbar also
-            navigator.xAxis = new Axis(chart, merge<Highcharts.XAxisOptions>({
+            navigator.xAxis = new Axis(chart, merge<DeepPartial<Highcharts.XAxisOptions>>({
                 // inherit base xAxis' break and ordinal options
                 breaks: baseXaxis.options.breaks,
                 ordinal: baseXaxis.options.ordinal

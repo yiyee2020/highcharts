@@ -87,7 +87,7 @@ var ZAxis: typeof Highcharts.Axis,
 /**
  * @optionparent xAxis
  */
-var extendedOptions: Highcharts.AxisOptions = {
+var extendedOptions: DeepPartial<Highcharts.AxisOptions> = {
     labels: {
         /**
          * Defines how the labels are be repositioned according to the 3D chart

@@ -24,7 +24,7 @@ declare global {
             capitalize?: boolean
         ): string;
         function getOptions(): Options;
-        function setOptions(options: Options): Options;
+        function setOptions(options: DeepPartial<Options>): Options;
         interface Chart {
             marginRight: ChartOptions['marginRight'];
             polar: ChartOptions['polar'];
@@ -4165,7 +4165,7 @@ H.defaultOptions = {
  *         Updated options.
  */
 H.setOptions = function (
-    options: Highcharts.Options
+    options: DeepPartial<Highcharts.Options>
 ): Highcharts.Options {
 
     // Copy in the default options

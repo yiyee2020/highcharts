@@ -177,27 +177,27 @@ declare global {
         }
         interface XAxisLabelsOptions {
             align?: AlignValue;
-            autoRotation?: (false|Array<number>);
-            autoRotationLimit?: number;
-            distance?: number;
-            enabled?: boolean;
+            autoRotation: (false|Array<number>);
+            autoRotationLimit: number;
+            distance: number;
+            enabled: boolean;
             format?: string;
             formatter?: (
                 FormatterCallbackFunction<AxisLabelsFormatterContextObject>
             );
-            indentation?: number;
-            maxStaggerLines?: number;
-            overflow?: OptionsOverflowValue;
-            padding?: number;
+            indentation: number;
+            maxStaggerLines: number;
+            overflow: OptionsOverflowValue;
+            padding: number;
             reserveSpace?: boolean;
-            rotation?: number;
+            rotation?: (number|'auto');
             staggerLines?: number;
             step?: number;
-            style?: CSSObject;
-            useHTML?: boolean;
-            x?: number;
+            style: CSSObject;
+            useHTML: boolean;
+            x: number;
             y?: number;
-            zIndex?: number;
+            zIndex: number;
         }
         interface XAxisOptions {
             accessibility?: XAxisAccessibilityOptions;
@@ -223,7 +223,7 @@ declare global {
             height?: (number|string);
             id?: string;
             isX?: boolean;
-            labels?: XAxisLabelsOptions;
+            labels: XAxisLabelsOptions;
             left?: (number|string);
             lineColor?: (ColorString|GradientColorObject|PatternObject);
             lineWidth?: number;
@@ -321,7 +321,7 @@ declare global {
             public static defaultTopAxisOptions: AxisOptions;
             public static defaultYAxisOptions: YAxisOptions;
             public static keepProps: Array<string>;
-            public constructor(chart: Chart, userOptions: AxisOptions);
+            public constructor(chart: Chart, userOptions: DeepPartial<AxisOptions>);
             public _addedPlotLB?: boolean;
             public allowZoomOutside?: boolean;
             public alternateBands: Dictionary<PlotLineOrBand>;
@@ -425,7 +425,7 @@ declare global {
             public userMax?: number;
             public userMin?: number;
             public userMinRange?: number;
-            public userOptions: AxisOptions;
+            public userOptions: DeepPartial<AxisOptions>;
             public visible: boolean;
             public width: number;
             public zoomEnabled: boolean;
@@ -434,7 +434,7 @@ declare global {
             public adjustTickAmount(): void;
             public alignToOthers(): (boolean|undefined);
             public autoLabelAlign(rotation: number): AlignValue;
-            public defaultLabelFormatter(): void;
+            public defaultLabelFormatter(): string;
             public destroy(keepEvents?: boolean): void;
             public drawCrosshair(e?: PointerEventObject, point?: Point): void;
             public generateTick(pos: number, i?: number): void;
@@ -461,7 +461,7 @@ declare global {
             public hasData(): boolean;
             public hasVerticalPanning(): boolean;
             public hideCrosshair(): void;
-            public init(chart: Chart, userOptions: AxisOptions): void;
+            public init(chart: Chart, userOptions: DeepPartial<AxisOptions>): void;
             public labelMetrics(): FontMetricsObject;
             public minFromRange(): (number|undefined);
             public nameToX(point: Point): number;
@@ -480,7 +480,7 @@ declare global {
                 animation?: (boolean|AnimationOptionsObject),
                 eventArguments?: any
             ): void;
-            public setOptions(userOptions: AxisOptions): void;
+            public setOptions(userOptions: DeepPartial<AxisOptions>): void;
             public setScale(): void;
             public setTickInterval(secondPass?: boolean): void;
             public setTickPositions(): void;
@@ -1485,6 +1485,7 @@ class Axis implements AxisComposition {
              * @type       {Highcharts.AlignValue}
              * @apioption  xAxis.labels.align
              */
+            align: void 0,
 
             /**
              * For horizontal axes, the allowed degrees of label rotation
@@ -1501,11 +1502,10 @@ class Axis implements AxisComposition {
              *         Custom graded auto rotation
              *
              * @type      {Array<number>|false}
-             * @default   [-45]
              * @since     4.1.0
              * @product   highcharts highstock gantt
-             * @apioption xAxis.labels.autoRotation
              */
+            autoRotation: [-45],
 
             /**
              * When each category width is more than this many pixels, we don't
@@ -1517,22 +1517,18 @@ class Axis implements AxisComposition {
              * @sample {highcharts} highcharts/xaxis/labels-autorotationlimit/
              *         Lower limit
              *
-             * @type      {number}
-             * @default   80
              * @since     4.1.5
              * @product   highcharts gantt
-             * @apioption xAxis.labels.autoRotationLimit
              */
+            autoRotationLimit: 80,
 
             /**
              * Polar charts only. The label's pixel distance from the perimeter
              * of the plot area.
              *
-             * @type      {number}
-             * @default   15
              * @product   highcharts gantt
-             * @apioption xAxis.labels.distance
              */
+            distance: 15,
 
             /**
              * Enable or disable the axis labels.
@@ -1605,11 +1601,9 @@ class Axis implements AxisComposition {
              * disable overlap detection.
              *
              * @deprecated
-             * @type      {number}
-             * @default   5
              * @since     1.3.3
-             * @apioption xAxis.labels.maxStaggerLines
              */
+            maxStaggerLines: 5,
 
             /**
              * How to handle overflowing labels on horizontal axis. If set to
@@ -1617,22 +1611,18 @@ class Axis implements AxisComposition {
              * `"justify"` labels inside the chart area. If there is room to
              * move it, it will be aligned to the edge, else it will be removed.
              *
-             * @type       {string}
-             * @default    justify
              * @since      2.2.5
              * @validvalue ["allow", "justify"]
-             * @apioption  xAxis.labels.overflow
              */
+            overflow: 'justify',
 
             /**
              * The pixel padding for axis labels, to ensure white space between
              * them.
              *
-             * @type      {number}
-             * @default   5
              * @product   highcharts gantt
-             * @apioption xAxis.labels.padding
              */
+            padding: 5,
 
             /**
              * Whether to reserve space for the labels. By default, space is
@@ -1653,11 +1643,11 @@ class Axis implements AxisComposition {
              * @sample {highcharts} highcharts/xaxis/labels-reservespace-true/
              *         Left-aligned labels on a vertical category axis
              *
-             * @type      {boolean}
+             * @type      {boolean|undefined}
              * @since     4.1.10
              * @product   highcharts gantt
-             * @apioption xAxis.labels.reserveSpace
              */
+            reserveSpace: void 0,
 
             /**
              * Rotation of the labels in degrees.
@@ -1665,10 +1655,10 @@ class Axis implements AxisComposition {
              * @sample {highcharts} highcharts/xaxis/labels-rotation/
              *         X axis labels rotated 90°
              *
-             * @type      {number}
-             * @default   0
-             * @apioption xAxis.labels.rotation
+             * @type      {number|undefined}
+             * @default   undefined
              */
+            rotation: void 0,
 
             /**
              * Horizontal axes only. The number of lines to spread the labels
@@ -1679,10 +1669,10 @@ class Axis implements AxisComposition {
              * @sample {highstock} stock/xaxis/labels-staggerlines/
              *         Show labels over two lines
              *
-             * @type      {number}
+             * @type      {number|undefined}
              * @since     2.1
-             * @apioption xAxis.labels.staggerLines
              */
+            staggerLines: void 0,
 
             /**
              * To show only every _n_'th label on the axis, set the step to _n_.
@@ -1704,47 +1694,9 @@ class Axis implements AxisComposition {
              *         Auto steps on a category axis
              *
              * @type      {number}
-             * @since     2.1
-             * @apioption xAxis.labels.step
+             * @since     2.1.step
              */
-
-            /**
-             * Whether to [use HTML](https://www.highcharts.com/docs/chart-concepts/labels-and-string-formatting#html)
-             * to render the labels.
-             *
-             * @type      {boolean}
-             * @default   false
-             * @apioption xAxis.labels.useHTML
-             */
-
-            /**
-             * The x position offset of the label relative to the tick position
-             * on the axis.
-             *
-             * @sample {highcharts} highcharts/xaxis/labels-x/
-             *         Y axis labels placed on grid lines
-             */
-            x: 0,
-
-            /**
-             * The y position offset of the label relative to the tick position
-             * on the axis. The default makes it adapt to the font size on
-             * bottom axis.
-             *
-             * @sample {highcharts} highcharts/xaxis/labels-x/
-             *         Y axis labels placed on grid lines
-             *
-             * @type      {number}
-             * @apioption xAxis.labels.y
-             */
-
-            /**
-             * The Z index for the axis labels.
-             *
-             * @type      {number}
-             * @default   7
-             * @apioption xAxis.labels.zIndex
-             */
+            step: void 0,
 
             /**
              * CSS styles for the label. Use `whiteSpace: 'nowrap'` to prevent
@@ -1766,7 +1718,39 @@ class Axis implements AxisComposition {
                 cursor: 'default',
                 /** @internal */
                 fontSize: '11px'
-            }
+            },
+
+            /**
+             * Whether to [use HTML](https://www.highcharts.com/docs/chart-concepts/labels-and-string-formatting#html)
+             * to render the labels.
+             */
+            useHTML: false,
+
+            /**
+             * The x position offset of the label relative to the tick position
+             * on the axis.
+             *
+             * @sample {highcharts} highcharts/xaxis/labels-x/
+             *         Y axis labels placed on grid lines
+             */
+            x: 0,
+
+            /**
+             * The y position offset of the label relative to the tick position
+             * on the axis. The default makes it adapt to the font size on
+             * bottom axis.
+             *
+             * @sample {highcharts} highcharts/xaxis/labels-x/
+             *         Y axis labels placed on grid lines
+             *
+             * @type      {number|undefined}
+             */
+            y: void 0,
+
+            /**
+             * The Z index for the axis labels.
+             */
+            zIndex: 7
         },
 
         /**
@@ -2962,7 +2946,7 @@ class Axis implements AxisComposition {
      *
      * @private
      */
-    public static defaultYAxisOptions: Highcharts.YAxisOptions = {
+    public static defaultYAxisOptions: DeepPartial<Highcharts.YAxisOptions> = {
 
         /**
          * The type of axis. Can be one of `linear`, `logarithmic`, `datetime`,
@@ -3249,6 +3233,9 @@ class Axis implements AxisComposition {
              * @default    {highstock} left
              * @apioption  yAxis.labels.align
              */
+            align: void 0,
+
+            autoRotation: false,
 
             /**
              * The x position offset of the label relative to the tick position
@@ -3737,7 +3724,7 @@ class Axis implements AxisComposition {
      */
 
     // This variable extends the defaultOptions for left axes.
-    public static defaultLeftAxisOptions: Highcharts.AxisOptions = {
+    public static defaultLeftAxisOptions: DeepPartial<Highcharts.AxisOptions> = {
         labels: {
             x: -15
         },
@@ -3747,7 +3734,7 @@ class Axis implements AxisComposition {
     };
 
     // This variable extends the defaultOptions for right axes.
-    public static defaultRightAxisOptions: Highcharts.AxisOptions = {
+    public static defaultRightAxisOptions: DeepPartial<Highcharts.AxisOptions> = {
         labels: {
             x: 15
         },
@@ -3757,7 +3744,7 @@ class Axis implements AxisComposition {
     };
 
     // This variable extends the defaultOptions for bottom axes.
-    public static defaultBottomAxisOptions: Highcharts.AxisOptions = {
+    public static defaultBottomAxisOptions: DeepPartial<Highcharts.AxisOptions> = {
         labels: {
             autoRotation: [-45],
             x: 0
@@ -3771,7 +3758,7 @@ class Axis implements AxisComposition {
     };
 
     // This variable extends the defaultOptions for top axes.
-    public static defaultTopAxisOptions: Highcharts.AxisOptions = {
+    public static defaultTopAxisOptions: DeepPartial<Highcharts.AxisOptions> = {
         labels: {
             autoRotation: [-45],
             x: 0
@@ -3794,7 +3781,10 @@ class Axis implements AxisComposition {
      *
      * */
 
-    public constructor(chart: Highcharts.Chart, userOptions: Highcharts.AxisOptions) {
+    public constructor(
+        chart: Highcharts.Chart,
+        userOptions: DeepPartial<Highcharts.AxisOptions>
+    ) {
         this.init(chart, userOptions);
     }
 
@@ -3932,7 +3922,10 @@ class Axis implements AxisComposition {
      * @fires Highcharts.Axis#event:afterInit
      * @fires Highcharts.Axis#event:init
      */
-    public init(chart: Highcharts.Chart, userOptions: Highcharts.AxisOptions): void {
+    public init(
+        chart: Highcharts.Chart,
+        userOptions: DeepPartial<Highcharts.AxisOptions>
+    ): void {
 
         var isXAxis = userOptions.isX,
             axis: Highcharts.Axis = this as any;
@@ -4000,7 +3993,7 @@ class Axis implements AxisComposition {
             type = options.type;
 
         axis.labelFormatter = (
-            (options.labels as any).formatter ||
+            options.labels.formatter ||
             // can be overwritten by dynamic format
             axis.defaultLabelFormatter
         );
@@ -4186,7 +4179,7 @@ class Axis implements AxisComposition {
      *
      * @fires Highcharts.Axis#event:afterSetOptions
      */
-    public setOptions(userOptions: Highcharts.AxisOptions): void {
+    public setOptions(userOptions: DeepPartial<Highcharts.AxisOptions>): void {
         this.options = merge(
             Axis.defaultOptions,
             ((this.coll === 'yAxis') as any) && Axis.defaultYAxisOptions,
@@ -6343,8 +6336,7 @@ class Axis implements AxisComposition {
         var index = this.tickPositions && this.tickPositions[0] || 0;
 
         return this.chart.renderer.fontMetrics(
-            (this.options.labels as any).style &&
-            (this.options.labels as any).style.fontSize,
+            this.options.labels.style.fontSize,
             this.ticks[index] && this.ticks[index].label
         );
     }
@@ -6373,7 +6365,7 @@ class Axis implements AxisComposition {
                 tickInterval
             ),
             rotation: any,
-            rotationOption = (labelOptions as any).rotation,
+            rotationOption = labelOptions.rotation,
             labelMetrics = this.labelMetrics(),
             step,
             bestScore = Number.MAX_VALUE,
@@ -6400,14 +6392,13 @@ class Axis implements AxisComposition {
             };
 
         if (horiz) {
-            autoRotation = !(labelOptions as any).staggerLines &&
-                !(labelOptions as any).step &&
+            autoRotation = !labelOptions.staggerLines &&
+                !labelOptions.step &&
                 ( // #3971
                     defined(rotationOption) ?
                         [rotationOption] :
-                        slotSize < pick(
-                            (labelOptions as any).autoRotationLimit, 80
-                        ) && (labelOptions as any).autoRotation
+                        slotSize < labelOptions.autoRotationLimit &&
+                        labelOptions.autoRotation
                 );
 
             if (autoRotation) {
@@ -6439,7 +6430,7 @@ class Axis implements AxisComposition {
                 });
             }
 
-        } else if (!(labelOptions as any).step) { // #4411
+        } else if (!labelOptions.step) { // #4411
             newTickInterval = getStep(labelMetrics.h);
         }
 
@@ -6480,8 +6471,8 @@ class Axis implements AxisComposition {
             tick.slotWidth as any // Used by grid axis
         ) || (
             horiz &&
-            ((labelOptions as any).step || 0) < 2 &&
-            !(labelOptions as any).rotation && // #4415
+            (labelOptions.step || 0) < 2 &&
+            !labelOptions.rotation && // #4415
             ((this.staggerLines || 1) * this.len) / slotCount
         ) || (
             !horiz && (
@@ -6513,17 +6504,16 @@ class Axis implements AxisComposition {
             tickPositions = this.tickPositions,
             ticks = this.ticks,
             labelOptions = this.options.labels,
-            labelStyleOptions = (labelOptions && labelOptions.style || {}),
+            labelStyleOptions = labelOptions.style,
             horiz = this.horiz,
             slotWidth = this.getSlotWidth(),
             innerWidth = Math.max(
                 1,
-                Math.round(slotWidth - 2 * ((labelOptions as any).padding || 5))
+                Math.round(slotWidth - 2 * labelOptions.padding)
             ),
             attr = {} as Highcharts.SVGAttributes,
             labelMetrics = this.labelMetrics(),
-            textOverflowOption = ((labelOptions as any).style &&
-                (labelOptions as any).style.textOverflow),
+            textOverflowOption = labelOptions.style.textOverflow,
             commonWidth: number,
             commonTextOverflow: string,
             maxLabelLength = 0,
@@ -6532,9 +6522,9 @@ class Axis implements AxisComposition {
             pos;
 
         // Set rotation option unless it is "auto", like in gauges
-        if (!isString((labelOptions as any).rotation)) {
+        if (!isString(labelOptions.rotation)) {
             // #4443:
-            attr.rotation = (labelOptions as any).rotation || 0;
+            attr.rotation = labelOptions.rotation || 0;
         }
 
         // Get the longest label length
@@ -6627,7 +6617,7 @@ class Axis implements AxisComposition {
         }
 
         // Set the explicit or automatic label alignment
-        this.labelAlign = (labelOptions as any).align ||
+        this.labelAlign = labelOptions.align ||
             this.autoLabelAlign(this.labelRotation as any);
         if (this.labelAlign) {
             attr.align = this.labelAlign;
@@ -6844,7 +6834,7 @@ class Axis implements AxisComposition {
         axis.showAxis = showAxis = hasData || pick(options.showEmpty, true);
 
         // Set/reset staggerLines
-        axis.staggerLines = axis.horiz && (labelOptions as any).staggerLines;
+        axis.staggerLines = axis.horiz ? labelOptions.staggerLines : void 0;
 
         // Create the axisGroup and gridGroup elements on first iteration
         if (!axis.axisGroup) {
@@ -6863,7 +6853,7 @@ class Axis implements AxisComposition {
                 )
                 .add(axisParent);
             axis.labelGroup = renderer.g('axis-labels')
-                .attr({ zIndex: (labelOptions as any).zIndex || 7 })
+                .attr({ zIndex: labelOptions.zIndex })
                 .addClass(
                     'highcharts-' + axis.coll.toLowerCase() + '-labels ' +
                     (className || '')
@@ -6890,7 +6880,7 @@ class Axis implements AxisComposition {
                 ({ 1: 'left', 3: 'right' } as any)[side] === axis.labelAlign
             );
             if (pick(
-                (labelOptions as any).reserveSpace,
+                labelOptions.reserveSpace,
                 axis.labelAlign === 'center' ? true : null,
                 axis.reserveSpaceDefault
             )) {
@@ -6962,10 +6952,10 @@ class Axis implements AxisComposition {
             labelOffsetPadded += directionFactor * (
                 horiz ?
                     pick(
-                        (labelOptions as any).y,
+                        labelOptions.y,
                         axis.tickRotCorr.y + directionFactor * 8
                     ) :
-                    (labelOptions as any).x
+                    labelOptions.x
             );
         }
 

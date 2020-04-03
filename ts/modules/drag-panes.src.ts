@@ -104,7 +104,7 @@ var hasTouch = H.hasTouch,
 class AxisResizer {
 
     // Default options for AxisResizer.
-    public static resizerOptions: Highcharts.YAxisOptions = {
+    public static resizerOptions: DeepPartial<Highcharts.YAxisOptions> = {
         /**
          * Minimal size of a resizable axis. Could be set as a percent
          * of plot area or pixel size.
@@ -543,7 +543,7 @@ class AxisResizer {
                                 chart.get(axisInfo)
                         ),
                     axisOptions = axis && axis.options,
-                    optionsToUpdate: Highcharts.YAxisOptions = {},
+                    optionsToUpdate: DeepPartial<Highcharts.YAxisOptions> = {},
                     hDelta = 0,
                     height, top,
                     minLength, maxLength;

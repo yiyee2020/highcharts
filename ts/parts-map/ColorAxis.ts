@@ -19,7 +19,10 @@ import H from '../parts/Globals.js';
 declare global {
     namespace Highcharts {
         class ColorAxis extends Axis { // eslint-disable-line no-undef
-            public constructor(chart: Chart, userOptions: ColorAxisOptions);
+            public constructor(
+                chart: Chart,
+                userOptions: DeepPartial<ColorAxisOptions>
+            );
             public added?: boolean;
             public chart: Chart;
             public coll: 'colorAxis';
@@ -40,8 +43,8 @@ declare global {
             public stops: GradientColorObject['stops'];
             public visible: true;
             public buildOptions(
-                options: ColorAxisOptions,
-                userOptions?: ColorAxisOptions
+                options: DeepPartial<ColorAxisOptions>,
+                userOptions?: DeepPartial<ColorAxisOptions>
             ): ColorAxisOptions;
             public drawCrosshair(e: PointerEventObject, point: Point): void;
             public drawLegendSymbol(legend: Legend, item: ColorAxis): void;
@@ -810,8 +813,8 @@ extend(ColorAxis.prototype, {
      */
     buildOptions: function (
         this: Highcharts.ColorAxis,
-        options: Highcharts.ColorAxisOptions,
-        userOptions: Highcharts.ColorAxisOptions
+        options: DeepPartial<Highcharts.ColorAxisOptions>,
+        userOptions: DeepPartial<Highcharts.ColorAxisOptions>
     ): Highcharts.ColorAxisOptions {
         var legend = (this.options as any).legend,
             horiz = userOptions.layout ?
@@ -1302,7 +1305,7 @@ extend(ColorAxis.prototype, {
      */
     update: function (
         this: Highcharts.ColorAxis,
-        newOptions: Highcharts.ColorAxisOptions,
+        newOptions: DeepPartial<Highcharts.ColorAxisOptions>,
         redraw?: boolean
     ): void {
         var chart = this.chart,

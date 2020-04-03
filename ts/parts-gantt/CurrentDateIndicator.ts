@@ -68,7 +68,7 @@ var Axis = H.Axis;
 
 var defaultConfig: (
     Highcharts.CurrentDateIndicatorOptions &
-    Highcharts.XAxisOptions
+    DeepPartial<Highcharts.XAxisOptions>
 ) = {
     /**
      * Show an indicator on the axis for the current date and time. Can be a

@@ -92,7 +92,7 @@ var defaultXAxisOptions = {
 /**
  * @optionparent chart
  */
-var defaultParallelOptions: Highcharts.ChartOptions = {
+var defaultParallelOptions: DeepPartial<Highcharts.ChartOptions> = {
     /**
      * Flag to render charts as a parallel coordinates plot. In a parallel
      * coordinates plot (||-coords) by default all required yAxes are generated

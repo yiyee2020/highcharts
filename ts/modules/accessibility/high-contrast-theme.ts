@@ -27,7 +27,7 @@ declare global {
     }
 }
 
-var theme: Highcharts.Options = {
+var theme: DeepPartial<Highcharts.Options> = {
     chart: {
         backgroundColor: 'window'
     },

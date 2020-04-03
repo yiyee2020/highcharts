@@ -76,7 +76,7 @@ class RadialAxis {
      * Circular axis around the perimeter of a polar chart.
      * @private
      */
-    public static defaultCircularOptions: RadialAxisOptions = {
+    public static defaultCircularOptions: DeepPartial<RadialAxisOptions> = {
         gridLineWidth: 1, // spokes
         labels: {
             align: null as any, // auto
@@ -97,7 +97,7 @@ class RadialAxis {
      * The default options extend defaultYAxisOptions.
      * @private
      */
-    public static defaultRadialGaugeOptions: RadialAxisOptions = {
+    public static defaultRadialGaugeOptions: DeepPartial<RadialAxisOptions> = {
         labels: {
             align: 'center',
             x: 0,
@@ -121,7 +121,7 @@ class RadialAxis {
      * Radial axis, like a spoke in a polar chart.
      * @private
      */
-    public static defaultRadialOptions: RadialAxisOptions = {
+    public static defaultRadialOptions: DeepPartial<RadialAxisOptions> = {
 
         /**
          * In a polar chart, this is the angle of the Y axis in degrees, where
@@ -1232,7 +1232,7 @@ interface RadialAxis extends Axis {
     angleRad: number;
     autoConnect?: boolean;
     center: Array<number>;
-    defaultPolarOptions: RadialAxisOptions;
+    defaultPolarOptions: DeepPartial<RadialAxisOptions>;
     endAngleRad: number;
     isCircular?: boolean;
     labelCollector?: Highcharts.ChartLabelCollectorFunction;

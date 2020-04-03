@@ -10,7 +10,13 @@
 
 'use strict';
 
+import './Axis.js';
+import './Chart.js';
 import H from './Globals.js';
+import Point from './Point.js';
+import './Series.js';
+import Time from './Time.js';
+import U from './Utilities.js';
 
 /**
  * Internal types
@@ -23,7 +29,7 @@ declare global {
             remove(redraw?: boolean): void;
             setCategories(categories: Array<string>, redraw?: boolean): void;
             setTitle(titleOptions: AxisTitleOptions, redraw?: boolean): void;
-            update(options: AxisOptions, redraw?: boolean): void;
+            update(options: DeepPartial<AxisOptions>, redraw?: boolean): void;
         }
         interface Chart {
             collectionsWithUpdate: Array<string>;
@@ -35,7 +41,7 @@ declare global {
             propsRequireReflow: Array<string>;
             propsRequireUpdateSeries: Array<string>;
             addAxis(
-                options: AxisOptions,
+                options: DeepPartial<AxisOptions>,
                 isX?: boolean,
                 redraw?: boolean,
                 animation?: boolean
@@ -71,7 +77,7 @@ declare global {
         }
         interface CreateAxisOptionsObject {
             animation: undefined | boolean | AnimationOptionsObject;
-            axis: AxisOptions | ColorAxisOptions;
+            axis: DeepPartial<AxisOptions> | DeepPartial<ColorAxisOptions>;
             redraw: undefined | boolean;
         }
         interface Point {
@@ -118,9 +124,6 @@ declare global {
     }
 }
 
-import Point from './Point.js';
-import Time from './Time.js';
-import U from './Utilities.js';
 const {
     addEvent,
     animate,
@@ -143,9 +146,6 @@ const {
     splat
 } = U;
 
-import './Axis.js';
-import './Chart.js';
-import './Series.js';
 
 var Axis = H.Axis,
     Chart = H.Chart,
@@ -292,7 +292,7 @@ extend(Chart.prototype, /** @lends Highcharts.Chart.prototype */ {
      */
     addAxis: function (
         this: Highcharts.Chart,
-        options: Highcharts.AxisOptions,
+        options: DeepPartial<Highcharts.AxisOptions>,
         isX?: boolean,
         redraw?: boolean,
         animation?: boolean
