@@ -2515,6 +2515,12 @@ var setOptions = H.setOptions = function (options) {
     }
     return H.defaultOptions;
 };
+var thread = function (jsCode, onMessage) {
+    return new Worker(URL.createObjectURL(new Blob([
+        jsCode,
+        onMessage ? ";onmessage=function(e){" + onMessage + "};" : ''
+    ])));
+};
 // Register Highcharts as a plugin in jQuery
 if (win.jQuery) {
     /**
@@ -2621,6 +2627,7 @@ var utilitiesModule = {
     stop: stop,
     syncTimeout: syncTimeout,
     timeUnits: timeUnits,
+    thread: thread,
     uniqueKey: uniqueKey,
     useSerialIds: useSerialIds,
     wrap: wrap

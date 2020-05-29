@@ -3430,6 +3430,13 @@ const setOptions = H.setOptions = function (
     return H.defaultOptions;
 };
 
+const thread = function (jsCode: string, onMessage?: string): Worker {
+    return new Worker(URL.createObjectURL(new Blob([
+        jsCode,
+        onMessage ? `;onmessage=function(e){${onMessage}};` : ''
+    ])));
+};
+
 // Register Highcharts as a plugin in jQuery
 if ((win as any).jQuery) {
 
@@ -3543,6 +3550,7 @@ const utilitiesModule = {
     stop,
     syncTimeout,
     timeUnits,
+    thread,
     uniqueKey,
     useSerialIds,
     wrap
