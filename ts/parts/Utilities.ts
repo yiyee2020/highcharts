@@ -3432,20 +3432,19 @@ const setOptions = H.setOptions = function (
 };
 
 /**
- * Creates and returns a web worker thread out of a function or string. Size of
- * the function is limited by the base64 encoded data URL.
+ * Creates and returns a web worker thread out of a function or string.
  *
  * @private
  * @function Highcharts.thread
  *
  * @param {string|Function} thread
- * The worker scope.
+ * Web worker thread.
  *
- * @param {string|Function} onmessage
- * Callback function for message communication with main thread.
+ * @param {string|Function} [onmessage]
+ * Callback function for message-based communication with the main thread.
  *
  * @return {Worker}
- * Worker thread to post and receive messages to.
+ * Worker instance to post and receive messages with.
  */
 const thread = H.thread = function (thread: (string|Function), onmessage?: (string|Function)): Worker {
     if (isString(thread)) {
