@@ -337,6 +337,7 @@ declare global {
             delay: number,
             context?: unknown
         ): number;
+        function thread(thread: Function, onMessage?: Function): Worker;
         function uniqueKey(): string;
         function useSerialIds(mode?: boolean): (boolean|undefined);
         function wrap(
@@ -3430,10 +3431,32 @@ const setOptions = H.setOptions = function (
     return H.defaultOptions;
 };
 
-const thread = function (jsCode: string, onMessage?: string): Worker {
+/**
+ * Creates and returns a web worker thread out of a function or string. Size of
+ * the function is limited by the base64 encoded data URL.
+ *
+ * @private
+ * @function Highcharts.thread
+ *
+ * @param {string|Function} thread
+ * The worker scope.
+ *
+ * @param {string|Function} onmessage
+ * Callback function for message communication with main thread.
+ *
+ * @return {Worker}
+ * Worker thread to post and receive messages to.
+ */
+const thread = H.thread = function (thread: (string|Function), onmessage?: (string|Function)): Worker {
+    if (isString(thread)) {
+        thread = `function(){${thread}}`;
+    }
+    if (isString(onmessage)) {
+        onmessage = `function(message){${onmessage}}`;
+    }
     return new Worker(URL.createObjectURL(new Blob([
-        jsCode,
-        onMessage ? `;onmessage=function(e){${onMessage}};` : ''
+        `const thread=${thread};thread.call(this);`,
+        onmessage ? `;this.onmessage=${onmessage};` : ''
     ])));
 };
 

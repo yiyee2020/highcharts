@@ -2515,10 +2515,32 @@ var setOptions = H.setOptions = function (options) {
     }
     return H.defaultOptions;
 };
-var thread = function (jsCode, onMessage) {
+/**
+ * Creates and returns a web worker thread out of a function or string. Size of
+ * the function is limited by the base64 encoded data URL.
+ *
+ * @private
+ * @function Highcharts.thread
+ *
+ * @param {string|Function} thread
+ * The worker scope.
+ *
+ * @param {string|Function} onmessage
+ * Callback function for message communication with main thread.
+ *
+ * @return {Worker}
+ * Worker thread to post and receive messages to.
+ */
+var thread = H.thread = function (thread, onmessage) {
+    if (isString(thread)) {
+        thread = "function(){" + thread + "}";
+    }
+    if (isString(onmessage)) {
+        onmessage = "function(message){" + onmessage + "}";
+    }
     return new Worker(URL.createObjectURL(new Blob([
-        jsCode,
-        onMessage ? ";onmessage=function(e){" + onMessage + "};" : ''
+        "const thread=" + thread + ";thread.call(this);",
+        onmessage ? ";this.onmessage=" + onmessage + ";" : ''
     ])));
 };
 // Register Highcharts as a plugin in jQuery
