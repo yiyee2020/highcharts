@@ -337,7 +337,7 @@ declare global {
             delay: number,
             context?: unknown
         ): number;
-        function thread(thread: Function, onMessage?: Function): Worker;
+        function thread(fn: (string|Function), isInit?: boolean): Worker;
         function uniqueKey(): string;
         function useSerialIds(mode?: boolean): (boolean|undefined);
         function wrap(
@@ -3437,25 +3437,22 @@ const setOptions = H.setOptions = function (
  * @private
  * @function Highcharts.thread
  *
- * @param {string|Function} thread
- * Web worker thread.
+ * @param {string|Function} fn
+ * Function of the web worker thread. By default it handles message-based
+ * communication with the main thread, therefor runs only on incoming messages.
  *
- * @param {string|Function} [onmessage]
- * Callback function for message-based communication with the main thread.
+ * @param {boolean} [isInit]
+ * Set to true, if the function should initialize the web worker.
  *
  * @return {Worker}
  * Worker instance to post and receive messages with.
  */
-const thread = H.thread = function (thread: (string|Function), onmessage?: (string|Function)): Worker {
-    if (isString(thread)) {
-        thread = `function(){${thread}}`;
-    }
-    if (isString(onmessage)) {
-        onmessage = `function(message){${onmessage}}`;
+const thread = H.thread = function (fn: (string|Function), isInit?: boolean): Worker {
+    if (isString(fn)) {
+        fn = `function(message){${fn}}`;
     }
     return new Worker(URL.createObjectURL(new Blob([
-        `const thread=${thread};thread.call(this);`,
-        onmessage ? `;this.onmessage=${onmessage};` : ''
+        isInit ? `(${fn}).call(this);` : `this.onmessage=${fn};`
     ])));
 };
 

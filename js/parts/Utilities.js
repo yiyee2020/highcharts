@@ -2521,25 +2521,22 @@ var setOptions = H.setOptions = function (options) {
  * @private
  * @function Highcharts.thread
  *
- * @param {string|Function} thread
- * Web worker thread.
+ * @param {string|Function} fn
+ * Function of the web worker thread. By default it handles message-based
+ * communication with the main thread, therefor runs only on incoming messages.
  *
- * @param {string|Function} [onmessage]
- * Callback function for message-based communication with the main thread.
+ * @param {boolean} [isInit]
+ * Set to true, if the function should initialize the web worker.
  *
  * @return {Worker}
  * Worker instance to post and receive messages with.
  */
-var thread = H.thread = function (thread, onmessage) {
-    if (isString(thread)) {
-        thread = "function(){" + thread + "}";
-    }
-    if (isString(onmessage)) {
-        onmessage = "function(message){" + onmessage + "}";
+var thread = H.thread = function (fn, isInit) {
+    if (isString(fn)) {
+        fn = "function(message){" + fn + "}";
     }
     return new Worker(URL.createObjectURL(new Blob([
-        "const thread=" + thread + ";thread.call(this);",
-        onmessage ? ";this.onmessage=" + onmessage + ";" : ''
+        isInit ? "(" + fn + ").call(this);" : "this.onmessage=" + fn + ";"
     ])));
 };
 // Register Highcharts as a plugin in jQuery

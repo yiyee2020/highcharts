@@ -1,14 +1,12 @@
 QUnit.test("Web worker thread tests", function (assert) {
 
     const done = assert.async(1),
-        worker = Highcharts.thread(function () {
-            this.onmessage = function (message) {
-                if (message.data === 123) {
-                    this.postMessage({ shout: 'Hello, world!' });
-                } else {
-                    this.postMessage(false);
-                }
-            };
+        worker = Highcharts.thread(function (message) {
+            if (message.data === 123) {
+                this.postMessage({ shout: 'Hello, world!' });
+            } else {
+                this.postMessage(false);
+            }
         });
 
     worker.onmessage = function (message) {
